@@ -1,11 +1,5 @@
 # Project
 
-## **DRAFT**
-
-This is a draft project specification. It is subject to change. Repositories have not been created for you yet, nor submission enabled, but starter code can be viewed here.
-
----
-
 ## Aims
 
 * Appreciate issues in user interface design
