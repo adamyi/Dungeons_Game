@@ -36,7 +36,7 @@ After resolving who you will be working with, you should create a project group 
 
 Once created, your repository will be available here (replace *GROUP_NAME* with your group's name):
 
-https://gitlab.cse.unsw.edu.au/COMP2511/19T2/GROUP_NAME/project
+https://gitlab.cse.unsw.edu.au/COMP2511/19T2/GROUP_NAME
 
 ## Preliminary client requirements
 
