@@ -192,6 +192,7 @@ While it is up to you how to divide the work between you and your partner, both 
 
 * The first two milestones do not require a working UI. First determine how you are going to model a dungeon and its entities before turning to the UI.
 * The starter code uses the observer pattern to ensure the frontend is displaying the current state of the backend. It would be advisable to do the same for the changes you will make.
+* The majority of marks available (see below) are for having a well designed application that meets the requirements. Avoid adding extra complexity and extensions till you have something that meets the most basic requirements.
 
 ## Submission
 
