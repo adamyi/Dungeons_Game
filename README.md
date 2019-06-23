@@ -164,6 +164,11 @@ You are expected to use git appropriately by committing regularly with meaningfu
 
 While it is up to you how to divide the work between you and your partner, both of you are expected to contribute code. Just creating diagrams and documentation is not sufficient contribution. Both members of a pair *generally* receive the same mark, but if there is a significant imbalance in the amount of work done, the total mark may be scaled to match actual contribution.
 
+## Hints
+
+* The first two milestones do not require a working UI. First determine how you are going to model a dungeon and its entities before turning to the UI.
+* The starter code uses the observer pattern to ensure the frontend is displaying the current state of the backend. It would be advisable to do the same for the changes you will make.
+
 ## Submission
 
 ### Milestone 1
