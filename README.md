@@ -105,7 +105,7 @@ where *type* is one of
 
 > ["player", "wall", "exit", "treasure", "door", "key", "boulder", "switch", "bomb", "enemy", "sword", "invincibility"]
 
-The `wall` and `key` entities include an additional field `id` containing a number. Keys open the door with the same `id` (e.g. the key with `id` 0 opens the door with `id` 0).
+The `door` and `key` entities include an additional field `id` containing a number. Keys open the door with the same `id` (e.g. the key with `id` 0 opens the door with `id` 0).
 
 The goal condition is a JSON object representing the logical statement that defines the goal. Basic goals are:
 
