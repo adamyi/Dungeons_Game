@@ -59,7 +59,7 @@ To be specific, the layout of each dungeon is defined by a grid of squares, each
 | Entity               | Example | Description                             |
 | ------               | ------- | --------------------------------------- |
 | Player               | ![Player][player] | The player can be moved either up, down, left, or right into adjacent squares, as long as another entity does not stop them (e.g. a wall). |
-| Wall                 | ![Wall][wall] | Blocks the movement of the player, enemies, boulders and arrows. |
+| Wall                 | ![Wall][wall] | Blocks the movement of the player, enemies and boulders. |
 | Exit                 | ![Exit][exit] | If the player goes through an exit the puzzle is complete.  |
 | Treasure             | ![Treasure][treasure] | Can be collected by the player. |
 | Door                 | ![Door][door_open] ![Door][door_closed] | Exists in conjunction with a single key that can open it. If the player holds the key, they can open the door by moving through it. After opening it remains open. The client will be satisfied if dungeons can be made with up to 3 doors. |
