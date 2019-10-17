@@ -1,7 +1,6 @@
 package unsw.dungeon;
 
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.json.JSONTokener;
@@ -17,7 +16,7 @@ public abstract class DungeonLoader {
   private JSONObject json;
 
   public DungeonLoader(String filename) throws FileNotFoundException {
-    json = new JSONObject(new JSONTokener(new FileReader("dungeons/" + filename)));
+    json = new JSONObject(new JSONTokener(getClass().getResourceAsStream("/dungeons/" + filename)));
   }
 
   /**

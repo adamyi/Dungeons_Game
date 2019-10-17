@@ -1,0 +1,10 @@
+build --strict_java_deps=OFF
+build --host_javabase=//:openjfx_runtime
+build --javabase=//:openjfx_runtime
+build  --host_java_toolchain=@bazel_tools//tools/jdk:toolchain_vanilla
+build  --java_toolchain=@bazel_tools//tools/jdk:toolchain_vanilla
+run --strict_java_deps=OFF
+run --host_javabase=//:openjfx_runtime
+run  --javabase=//:openjfx_runtime
+run  --host_java_toolchain=@bazel_tools//tools/jdk:toolchain_vanilla
+run  --java_toolchain=@bazel_tools//tools/jdk:toolchain_vanilla

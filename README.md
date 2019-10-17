@@ -1,5 +1,11 @@
 # Project
 
+## Running 
+
+```
+bazel run --define=JFXBASE=$HOME/jdk-jfx //src/unsw/dungeon:DungeonApplication
+```
+
 ## Aims
 
 * Appreciate issues in user interface design

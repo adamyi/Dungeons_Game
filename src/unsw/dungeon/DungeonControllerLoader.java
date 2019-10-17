@@ -25,8 +25,8 @@ public class DungeonControllerLoader extends DungeonLoader {
   public DungeonControllerLoader(String filename) throws FileNotFoundException {
     super(filename);
     entities = new ArrayList<>();
-    playerImage = new Image("/human_new.png");
-    wallImage = new Image("/brick_brown_0.png");
+    playerImage = new Image(getClass().getResourceAsStream("/images/human_new.png"));
+    wallImage = new Image(getClass().getResourceAsStream("/images/brick_brown_0.png"));
   }
 
   @Override
