@@ -3,16 +3,17 @@ package unsw.dungeon.gameplay;
 import java.util.ArrayList;
 
 public class Cell {
-  ArrayList<MapObject> mapObjects;
-  Cell[] adjacentCells;
-
-  public Cell(Cell adjTop, Cell adjRight, Cell adjDown, Cell adjLeft) {
-    this.mapObjects = new ArrayList<MapObject>();
-    this.adjacentCells = new Cell[4];
-    this.adjacentCells[0] = adjTop;
-    this.adjacentCells[1] = adjRight;
-    this.adjacentCells[2] = adjDown;
-    this.adjacentCells[3] = adjLeft;
+  private ArrayList<MapObject> mapObjects;
+  private Cell[] adjacentCells;
+  
+  public Cell() {
+    mapObjects = new ArrayList<MapObject>();
+    adjacentCells = new Cell[4];
+  }
+  
+  
+  protected void setAdjacentCell(int direction, Cell cell) {
+    adjacentCells[direction] = cell;
   }
 
   protected void addMapObject(MapObject obj) {
@@ -39,7 +40,25 @@ public class Cell {
   protected Cell getAdjacentCell(int direction) {
     return adjacentCells[direction];
   }
-
+  
+  protected MapObject getMapObjectAtIndex(int index) {
+    return mapObjects.get(index);
+  }
+  
+  protected MapObject getMapObjectOfType(Class type) {
+    for (MapObject obj : mapObjects) {
+      if (type.isInstance(obj)) {
+        return obj;
+      }
+    }
+    
+    return null;
+  }
+  
+  protected int getNumberOfMapObjects() {
+    return mapObjects.size();
+  }
+  
   protected void playerInteraction(int direction, Player player) {
     for (MapObject obj : mapObjects) {
       obj.playerInteraction(adjacentCells[direction], player);
