@@ -1,6 +1,6 @@
 java_binary(
     name = "DungeonApplication",
-    srcs = glob(["*.java"]),
+    srcs = glob(["**/*.java"]),
     deps = [
         "//lib:json.jar",
     ],
@@ -12,4 +12,6 @@ java_binary(
     runtime_deps = [
         "//lib:json.jar",
     ],
+    visibility = ["//src:__subpackages__"],
 )
+
