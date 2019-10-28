@@ -4,9 +4,9 @@ import java.util.HashMap;
 import unsw.dungeon.MapObjectGroup;
 
 public abstract class MapObject {
-  private HashMap<String, MapObjectState> states;
-  private Cell cell;
-  private MapObjectGroup group;
+  protected HashMap<String, MapObjectState> states;
+  protected Cell cell;
+  protected MapObjectGroup group;
 
   public MapObject(MapObjectGroup group) {
     this.cell = null;
@@ -42,16 +42,24 @@ public abstract class MapObject {
   protected abstract boolean canWalkInto(Entity entity, Cell next);
 
   protected void moveTo(Cell next) {
-    throw new UnsupportedOperationException();
+    this.moveTo(Direction.UNKNOWN, next);
+  }
+
+  protected void moveTo(int direction, Cell next) {
+    this.cell.removeMapObject(this);
+    this.cell = next;
+    next.addMapObject(this);
+    // if next contains player
+    // next.playerInteraction(player)
   }
 
   public void moveTo(int direction) {
-    this.moveTo(cell.getAdjacentCell(direction));
+    this.moveTo(direction, cell.getAdjacentCell(direction));
   }
 
   protected abstract void playerInteraction(Cell next, Player player);
 
-  private void removeFromCell() {
+  protected void removeFromCell() {
     this.cell.removeMapObject(this);
     this.cell = null;
   }
