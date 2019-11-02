@@ -5,9 +5,10 @@ import org.json.JSONObject;
 import unsw.dungeon.gameplay.*;
 
 class Game {
-  Cell[][] grid;
-  HashMap<Class<? extends MapObject>, MapObjectGroup> mapObjectGroups;
-  ObjectiveNode goal;
+  private Cell[][] grid;
+  private HashMap<Class<? extends MapObject>, MapObjectGroup> mapObjectGroups;
+  private ObjectiveNode goal;
+  private HashMap<String, Pairable> pairs;
 
   public Game(int height, int width) {
     this.grid = new Cell[height][width];
@@ -26,10 +27,22 @@ class Game {
     }
     MapObjectHelper moh = new MapObjectHelper();
     this.mapObjectGroups = moh.newMapObjectGroups();
+    this.pairs = new HashMap<>();
   }
 
   public void addMapObject(Class<? extends MapObject> type, int y, int x, JSONObject properties) {
-    MapObject obj = this.mapObjectGroups.get(type).createNewMapObject();
+    MapObject obj = this.mapObjectGroups.get(type).createNewMapObject(properties);
+    if (Pairable.class.isInstance(obj)) {
+      Pairable p = (Pairable) obj;
+      String pk = String.format("%s_%d", p.getPairType(), properties.getInt("id"));
+      Pairable pp = pairs.get(pk);
+      if (pp != null) {
+        pp.setPair(p);
+        p.setPair(pp);
+      } else {
+        pairs.put(pk, p);
+      }
+    }
     grid[y][x].addMapObject(obj);
   }
 

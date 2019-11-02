@@ -1,6 +1,7 @@
 package unsw.dungeon.gameplay;
 
 import java.util.HashMap;
+import org.json.JSONObject;
 import unsw.dungeon.MapObjectGroup;
 
 public abstract class MapObject {
@@ -16,6 +17,8 @@ public abstract class MapObject {
   public void addToMapObjectGroup(MapObjectGroup group) {
     this.group = group;
   }
+
+  public void initProperties(JSONObject properties) {}
 
   public Cell getCell() {
     return cell;

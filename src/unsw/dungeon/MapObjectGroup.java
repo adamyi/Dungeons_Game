@@ -2,6 +2,7 @@ package unsw.dungeon;
 
 import java.util.ArrayList;
 import java.util.function.Supplier;
+import org.json.JSONObject;
 import unsw.dungeon.gameplay.AI;
 import unsw.dungeon.gameplay.MapObject;
 
@@ -25,9 +26,10 @@ public class MapObjectGroup<T extends MapObject> {
     }
   }
 
-  protected T createNewMapObject() {
+  protected T createNewMapObject(JSONObject properties) {
     T obj = supplier.get();
     obj.addToMapObjectGroup(this);
+    obj.initProperties(properties);
     this.mapObjects.add(obj);
     return obj;
   }
