@@ -1,3 +1,3 @@
 package unsw.dungeon;
 
-public class GameOverException extends Exception {}
+public class GameOverException extends RuntimeException {}

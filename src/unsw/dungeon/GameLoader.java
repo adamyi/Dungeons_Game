@@ -11,6 +11,7 @@ import unsw.dungeon.utils.JSONUtils;
 
 /** Loads a game from a .json file. */
 public class GameLoader {
+  public static final int MAX_MAP_EDGE_SIZE = 64;
 
   private JSONObject json;
 
@@ -30,6 +31,13 @@ public class GameLoader {
   public Game load() {
     int width = json.getInt("width");
     int height = json.getInt("height");
+
+    if (width > MAX_MAP_EDGE_SIZE) {
+      throw new RuntimeException("map too wide");
+    }
+    if (height > MAX_MAP_EDGE_SIZE) {
+      throw new RuntimeException("map too tall");
+    }
 
     Game game = new Game(height, width);
 
