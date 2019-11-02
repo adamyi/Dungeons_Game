@@ -1,10 +1,8 @@
 package unsw.dungeon.gameplay;
 
-import unsw.dungeon.MapObjectGroup;
-
 public abstract class Collectible extends MapObject {
-  public Collectible(MapObjectGroup group) {
-    super(group);
+  public Collectible() {
+    super();
   }
 
   private Player owner;

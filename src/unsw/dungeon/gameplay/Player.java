@@ -2,13 +2,12 @@ package unsw.dungeon.gameplay;
 
 import java.util.ArrayList;
 import unsw.dungeon.GameOverException;
-import unsw.dungeon.MapObjectGroup;
 
 public class Player extends Entity {
   ArrayList<Collectible> inventory;
 
-  protected Player(MapObjectGroup group) {
-    super(group);
+  public Player() {
+    super();
     this.inventory = new ArrayList<>();
   }
 

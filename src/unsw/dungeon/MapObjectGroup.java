@@ -27,6 +27,7 @@ public class MapObjectGroup<T extends MapObject> {
 
   protected T createNewMapObject() {
     T obj = supplier.get();
+    obj.addToMapObjectGroup(this);
     this.mapObjects.add(obj);
     return obj;
   }

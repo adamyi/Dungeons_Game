@@ -1,9 +1,10 @@
 package unsw.dungeon.gameplay;
 
-class Direction {
-  static final int TOP = 0;
-  static final int RIGHT = 1;
-  static final int DOWN = 2;
-  static final int LEFT = 3;
-  static final int UNKNOWN = -1;
+public class Direction {
+  public static final int UNKNOWN = -1;
+
+  public static final int UP = 0;
+  public static final int DOWN = 1;
+  public static final int LEFT = 2;
+  public static final int RIGHT = 3;
 }
