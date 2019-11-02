@@ -45,4 +45,9 @@ class Game {
     }
     grid[y][x].addMapObject(obj);
   }
+
+  protected boolean hasWon() {
+    // TODO: actually evaluate decision tree,
+    return false;
+  }
 }

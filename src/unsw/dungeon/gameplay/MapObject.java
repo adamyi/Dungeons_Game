@@ -72,17 +72,25 @@ public abstract class MapObject {
     states.remove(state);
   }
 
-  protected abstract boolean canWalkInto(Entity entity, Cell next);
+  protected abstract boolean canWalkInto(MapObject object);
 
   protected void moveTo(Cell next) {
-    throw new UnsupportedOperationException();
+    this.moveTo(Direction.UNKNOWN, next);
+  }
+
+  protected void moveTo(int direction, Cell next) {
+    this.cell.removeMapObject(this);
+    this.cell = next;
+    next.addMapObject(this);
+    // if next contains player
+    // next.playerInteraction(player)
   }
 
   public void moveTo(int direction) {
     this.moveTo(cell.getAdjacentCell(direction));
   }
 
-  protected abstract void playerInteraction(Cell next, Player player);
+  protected abstract void playerInteraction(int direction, Player player);
 
   protected void removeFromCell() {
     if (this.cell != null) {

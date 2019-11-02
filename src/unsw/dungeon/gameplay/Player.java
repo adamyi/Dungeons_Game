@@ -35,12 +35,12 @@ public class Player extends Entity {
   }
 
   @Override
-  protected boolean canWalkInto(MapObject object, Cell next) {
+  protected boolean canWalkInto(MapObject object) {
     throw new UnsupportedOperationException();
   }
 
   @Override
-  protected void playerInteraction(Cell next, Player player) {
+  protected void playerInteraction(int direction, Player player) {
     throw new UnsupportedOperationException();
   }
 }

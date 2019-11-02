@@ -33,7 +33,7 @@ public class Cell {
   public boolean canWalkInto(int direction, MapObject object) {
     // iterate through objects in mapObject list to see if they are walkable
     for (MapObject obj : mapObjects) {
-      if (!obj.canWalkInto(object, adjacentCells[direction])) {
+      if (!obj.canWalkInto(object)) {
         return false;
       }
     }
@@ -66,7 +66,7 @@ public class Cell {
 
   protected void playerInteraction(int direction, Player player) {
     for (MapObject obj : mapObjects) {
-      obj.playerInteraction(adjacentCells[direction], player);
+      obj.playerInteraction(direction, player);
     }
   }
 

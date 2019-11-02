@@ -6,12 +6,12 @@ public class Wall extends Terrain {
   }
 
   @Override
-  protected boolean canWalkInto(MapObject object, Cell next) {
+  protected boolean canWalkInto(MapObject object) {
     return false;
   }
 
   @Override
-  protected void playerInteraction(Cell next, Player player) {
+  protected void playerInteraction(int direction, Player player) {
     throw new UnsupportedOperationException();
   }
 }

@@ -1,5 +1,7 @@
 package unsw.dungeon.gameplay;
 
+import unsw.dungeon.SharedConstants;
+
 public class FloorSwitch extends Terrain implements AI {
   public FloorSwitch() {
     super();
@@ -19,23 +21,23 @@ public class FloorSwitch extends Terrain implements AI {
     }
 
     if (isActive) {
-      if (this.getState("ACTIVE") == null) {
-        this.setState("ACTIVE");
+      if (this.getState(SharedConstants.FLOORSWITCH_ACTIVE_STATE) == null) {
+        this.setState(SharedConstants.FLOORSWITCH_ACTIVE_STATE);
         this.getMapObjectGroup().decrementCounter();
       }
     } else {
-      if (this.getState("ACTIVE") != null) {
-        this.removeState("ACTIVE");
+      if (this.getState(SharedConstants.FLOORSWITCH_ACTIVE_STATE) != null) {
+        this.removeState(SharedConstants.FLOORSWITCH_ACTIVE_STATE);
         this.getMapObjectGroup().incrementCounter();
       }
     }
   }
 
   @Override
-  protected boolean canWalkInto(MapObject object, Cell next) {
+  protected boolean canWalkInto(MapObject object) {
     return true;
   }
 
   @Override
-  protected void playerInteraction(Cell next, Player player) {}
+  protected void playerInteraction(int direction, Player player) {}
 }

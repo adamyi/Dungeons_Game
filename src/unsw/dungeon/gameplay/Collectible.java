@@ -15,7 +15,7 @@ public abstract class Collectible extends MapObject {
   protected boolean canHaveExtra() {
     return !singleOnly;
   }
-  
+
   private Player owner;
 
   protected Player getOwner() {
@@ -29,12 +29,12 @@ public abstract class Collectible extends MapObject {
   }
 
   @Override
-  protected boolean canWalkInto(MapObject object, Cell next) {
-    return true;
+  protected boolean canWalkInto(MapObject object) {
+    return Player.class.isInstance(object);
   }
 
   @Override
-  protected void playerInteraction(Cell next, Player player) {
+  protected void playerInteraction(int direction, Player player) {
     if ((!singleOnly) || owner.getCollectibleOfTypeInInventory(this.getClass()) == null) {
       this.pickup(player);
     }

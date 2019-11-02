@@ -6,12 +6,12 @@ public class Exit extends Terrain {
   }
 
   @Override
-  protected boolean canWalkInto(MapObject object, Cell next) {
+  protected boolean canWalkInto(MapObject object) {
     return true;
   }
 
   @Override
-  protected void playerInteraction(Cell next, Player player) {
+  protected void playerInteraction(int direction, Player player) {
     // TODO: check if objectives satisfied then allow player through then throw Exception GameWon()
   }
 }

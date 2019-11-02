@@ -13,10 +13,21 @@ public class Direction {
   public static final int SIZE = 4;
 
   public static int getOppositeDirection(int direction) {
-    if (direction == UP) return DOWN;
-    if (direction == RIGHT) return LEFT;
-    if (direction == DOWN) return UP;
-    if (direction == LEFT) return RIGHT;
-    return UNKNOWN;
+    switch (direction) {
+      case UP:
+        return DOWN;
+        
+      case RIGHT:
+        return LEFT;
+
+      case DOWN:
+        return UP;
+
+      case LEFT:
+        return RIGHT;
+
+      default:
+        return UNKNOWN;
+    }
   }
 }

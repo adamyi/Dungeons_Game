@@ -1,6 +1,8 @@
 package unsw.dungeon.gameplay;
 
-public class Door extends Terrain {
+import unsw.dungeon.SharedConstants;
+
+public class Door extends Terrain implements Pairable {
   private Key pair;
 
   public Door(Key key) {
@@ -10,25 +12,40 @@ public class Door extends Terrain {
       throw new IllegalArgumentException();
     }
 
-    pair = key;
+    this.setPair(pair);
+  }
+
+  public Pairable getPair() {
+    return pair;
+  }
+
+  public void setPair(Pairable pair) {
+    if (!Key.class.isInstance(pair)) {
+      throw new IllegalArgumentException();
+    }
+    this.pair = (Key)pair;
+  }
+
+  public String getPairType() {
+    return "Key";
   }
 
   @Override
-  protected boolean canWalkInto(MapObject object, Cell next) {
-    if (this.getState("OPEN") != null) {
+  protected boolean canWalkInto(MapObject object) {
+    if (this.getState(SharedConstants.DOOR_OPEN_STATE) != null) {
       return true;
     }
     if (Player.class.isInstance(object)) {
-      if (((Player) object).hasObjectInInventory(pair)) return true;
+      if (Key.class.isInstance(pair) && ((Player) object).hasObjectInInventory(pair)) return true;
     }
     return false;
   }
 
   @Override
-  protected void playerInteraction(Cell next, Player player) {
-    if (this.getState("OPEN") == null) {
-      if (player.hasObjectInInventory(pair)) {
-        this.setState("OPEN");
+  protected void playerInteraction(int direction, Player player) {
+    if (this.getState(SharedConstants.DOOR_OPEN_STATE) == null) {
+      if (Key.class.isInstance(pair) && (player.hasObjectInInventory(pair))) {
+        this.setState(SharedConstants.DOOR_OPEN_STATE);
 
         player.removeFromInventory(pair);
       }

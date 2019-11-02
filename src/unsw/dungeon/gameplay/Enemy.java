@@ -11,12 +11,12 @@ public class Enemy extends Entity implements AI {
   }
 
   @Override
-  protected boolean canWalkInto(Entity entity, Cell next) {
-    return Player.class.isInstance(entity);
+  protected boolean canWalkInto(MapObject object) {
+    return Player.class.isInstance(object);
   }
 
   @Override
-  protected void playerInteraction(Cell next, Player player) {
+  protected void playerInteraction(int direction, Player player) {
     // TODO: check sword
     if (player.getState(SharedConstants.PLAYER_INVINCIBLE_STATE) != null) {
       this.removeFromCell();
@@ -79,11 +79,11 @@ public class Enemy extends Entity implements AI {
 
   @Override
   public void act() {
-    int mind = weightedDistanceToPlayer(this.cell.getAdjacentCell(Direction.ITERATE_MIN));
+    int mind = weightedDistanceToPlayer(this.getCell().getAdjacentCell(Direction.ITERATE_MIN));
     int dir = Direction.ITERATE_MIN;
     boolean doMove = false;
     for (int i = Direction.ITERATE_MIN + 1; i <= Direction.ITERATE_MAX; i++) {
-      int d = weightedDistanceToPlayer(this.cell.getAdjacentCell(i));
+      int d = weightedDistanceToPlayer(this.getCell().getAdjacentCell(i));
       if (d != mind) {
         doMove = true;
         if (d < mind) {

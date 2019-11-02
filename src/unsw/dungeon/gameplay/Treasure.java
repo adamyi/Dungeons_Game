@@ -6,7 +6,7 @@ public class Treasure extends Collectible {
   }
 
   @Override
-  protected void playerInteraction(Cell next, Player player) {
+  protected void playerInteraction(int direction, Player player) {
     this.pickup(player);
     this.getMapObjectGroup().decrementCounter();
   }

@@ -14,21 +14,23 @@ public class Portal extends Terrain {
   }
 
   private void movePlayer(Player player) {
+    Cell portalAdjacentCell = null;
     for (int direction = Direction.ITERATE_MIN; direction <= Direction.ITERATE_MAX; direction++) {
-      if (pair.getCell().getAdjacentCell(direction).canWalkInto(direction, player)) {
-        pair.getCell().getAdjacentCell(direction).addMapObject(player);
+      portalAdjacentCell = pair.getCell().getAdjacentCell(direction);
+      if (portalAdjacentCell.canWalkInto(direction, player)) {
+        portalAdjacentCell.addMapObject(player);
       }
     }
     player.removeFromCell();
   }
 
   @Override
-  protected boolean canWalkInto(MapObject object, Cell next) {
+  protected boolean canWalkInto(MapObject object) {
     return Player.class.isInstance(object);
   }
 
   @Override
-  protected void playerInteraction(Cell next, Player player) {
+  protected void playerInteraction(int direction, Player player) {
     this.movePlayer(player);
   }
 }
