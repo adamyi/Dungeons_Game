@@ -7,6 +7,10 @@ public abstract class Collectible extends MapObject {
 
   private Player owner;
 
+  protected Player getOwner() {
+    return owner;
+  }
+
   protected void pickup(Player player) {
     this.removeFromCell();
     this.owner = player;

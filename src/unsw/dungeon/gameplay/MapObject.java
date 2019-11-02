@@ -13,6 +13,10 @@ public abstract class MapObject {
     this.states = new HashMap<>();
   }
 
+  protected MapObjectGroup getMapObjectGroup() {
+    return group;
+  }
+
   public void addToMapObjectGroup(MapObjectGroup group) {
     this.group = group;
   }
@@ -36,6 +40,10 @@ public abstract class MapObject {
     state.extendDeadline(seconds);
   }
 
+  protected void setState(String name) {
+    this.setState(name, -1);
+  }
+
   protected MapObjectState getState(String name) {
     return states.get(name);
   }
@@ -44,7 +52,7 @@ public abstract class MapObject {
     states.remove(name);
   }
 
-  protected abstract boolean canWalkInto(MapObject object, Cell next) {
+  protected abstract boolean canWalkInto(MapObject object, Cell next);
 
   protected void moveTo(Cell next) {
     throw new UnsupportedOperationException();

@@ -4,33 +4,27 @@ public class Boulder extends Terrain {
   public Boulder() {
     super();
   }
-  
+
   @Override
   protected boolean canWalkInto(MapObject object, Cell next) {
-    if (!object.isInstance(player)) {
+    if (!(Player.class.isInstance(object))) {
       return false;
     }
-    
+
     // find cell opposite to player
     Cell boulderCell = this.getCell();
     int playerDirection = Direction.UNKNOWN;
-    int directions[] = {Direction.TOP, Direction.RIGHT, Direction.DOWN, Direction.LEFT};
-    
-    for (int direction : directions) {
-      if (boulderCell.getAdjacentCell(direction).getMapObjectOfType(Player) != null) {
+
+    for (int direction = Direction.ITERATE_MIN; direction <= Direction.ITERATE_MAX; direction++) {
+      if (boulderCell.getAdjacentCell(direction).getMapObjectOfType(Player.class) != null) {
         playerDirection = direction;
       }
     }
-    
+
     int opposite = Direction.getOppositeDirection(playerDirection);
-    if (boulderCell.getAdjacentCell(opposite).canWalkInto(object, next)) {
-      return true;
-    }
-    
-    return false;
+    return boulderCell.getAdjacentCell(opposite).canWalkInto(opposite, this);
   }
-  
-  
+
   @Override
   protected void playerInteraction(Cell next, Player player) {
     this.removeFromCell();

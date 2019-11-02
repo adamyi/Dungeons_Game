@@ -11,12 +11,12 @@ public class Direction {
   public static final int ITERATE_MIN = 0;
   public static final int ITERATE_MAX = 3;
   public static final int SIZE = 4;
-  
+
   public static int getOppositeDirection(int direction) {
     if (direction == UP) return DOWN;
     if (direction == RIGHT) return LEFT;
-    if (direction == DOWN ) return UP;
-    if (direction == LEFT ) return RIGHT;
-    if (direction == UNKNOWN) return UNKNOWN;
+    if (direction == DOWN) return UP;
+    if (direction == LEFT) return RIGHT;
+    return UNKNOWN;
   }
 }

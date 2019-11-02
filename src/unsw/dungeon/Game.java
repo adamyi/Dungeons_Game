@@ -44,4 +44,5 @@ class Game {
       }
     }
     grid[y][x].addMapObject(obj);
+  }
 }
