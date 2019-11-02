@@ -66,12 +66,14 @@ public abstract class MapObject {
 
   protected abstract boolean canWalkInto(Entity entity, Cell next);
 
-  protected void moveTo(Cell next) {
+  public void moveTo(Cell next) {
     this.moveTo(Direction.UNKNOWN, next);
   }
 
   protected void moveTo(int direction, Cell next) {
-    this.cell.removeMapObject(this);
+    if (cell != null) {
+      this.cell.removeMapObject(this);
+    }
     this.cell = next;
     next.addMapObject(this);
     // if next contains player
@@ -79,7 +81,8 @@ public abstract class MapObject {
   }
 
   public void moveTo(int direction) {
-    this.moveTo(direction, cell.getAdjacentCell(direction));
+    if (cell != null && cell.getAdjacentCell(direction) != null)
+      this.moveTo(direction, cell.getAdjacentCell(direction));
   }
 
   protected abstract void playerInteraction(Cell next, Player player);
@@ -90,4 +93,6 @@ public abstract class MapObject {
       this.cell = null;
     }
   }
+
+  protected abstract StringBuilder printCLI();
 }

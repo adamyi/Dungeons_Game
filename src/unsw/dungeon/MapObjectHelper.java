@@ -51,6 +51,7 @@ public class MapObjectHelper {
   public HashMap<Class<? extends MapObject>, MapObjectGroup> newMapObjectGroups() {
     HashMap<Class<? extends MapObject>, MapObjectGroup> ret = new HashMap<>();
     for (MapObjectWrapper mow : enabledMapObjectTypes) {
+      System.out.println(mow.getType().toString());
       ret.put(mow.getType(), mow.createMapObjectGroup());
     }
     return ret;
