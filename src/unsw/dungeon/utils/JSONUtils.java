@@ -2,7 +2,7 @@
 // https://github.com/MessageOnTap/MessageOnTap_API/blob/master/api/src/main/java/edu/cmu/chimps/messageontap_api/JSONUtils.java
 //
 // which I, Adam (Xuan) Yi <i@adamyi.com, xuan@yiad.am, z5231521@cse.unsw.edu.au>, wrote back in
-// 2017. I authorize myself to use it here.
+// 2017. I, on behalf of CHIMPS Lab at CMU, authorize myself to use it here.
 //
 // (btw I miss using gson)
 
