@@ -6,7 +6,10 @@ public class Cell {
   private ArrayList<MapObject> mapObjects;
   private Cell[] adjacentCells;
 
-  public Cell() {
+  private int id;
+
+  public Cell(int id) {
+    this.id = id;
     mapObjects = new ArrayList<MapObject>();
     adjacentCells = new Cell[4];
     for (int i = 0; i < 4; i++) {
@@ -86,5 +89,11 @@ public class Cell {
         mapObjects.remove(obj);
       }
     }
+  }
+
+  // we don't support map larger than 65535x65535
+  @Override
+  public int hashCode() {
+    return id;
   }
 }

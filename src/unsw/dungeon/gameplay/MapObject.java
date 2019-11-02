@@ -56,8 +56,10 @@ public abstract class MapObject {
 
   protected abstract void playerInteraction(Cell next, Player player);
 
-  private void removeFromCell() {
-    this.cell.removeMapObject(this);
-    this.cell = null;
+  protected void removeFromCell() {
+    if (this.cell != null) {
+      this.cell.removeMapObject(this);
+      this.cell = null;
+    }
   }
 }
