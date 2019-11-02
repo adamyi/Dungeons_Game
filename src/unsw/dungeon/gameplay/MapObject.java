@@ -24,24 +24,44 @@ public abstract class MapObject {
   }
 
   protected void setState(MapObjectState state) {
-    states.put(state.getName(), state);
-  }
-
-  protected void setState(String name, int seconds) {
-    MapObjectState state = states.get(name);
-    if (state == null) {
-      state = new MapObjectState(name);
+    String name = state.getName();
+    if (!state.isActive()) {
+      System.out.println("trying to add expired state " + name + ". Ignoring");
+    } else {
+      if (states.get(name) != null) System.out.println("Warning: overriding state " + name);
       states.put(name, state);
     }
-    state.extendDeadline(seconds);
   }
 
+  // NOTES(adamyi@): there's a race condition vuln here. But #WONTFIX for now since we are currently
+  // using single thread.
+  protected void setState(String name, int seconds) {
+    MapObjectState state = this.getState(name);
+    if (state == null) {
+      state = new MapObjectState(name, seconds);
+      states.put(name, state);
+    } else {
+      state.extendDeadline(seconds);
+    }
+  }
+
+  // implements lazy evaluation for state invalidation
   protected MapObjectState getState(String name) {
-    return states.get(name);
+    MapObjectState state = states.get(name);
+    if (state == null) return null;
+    if (!state.isActive()) {
+      states.remove(state);
+      return null;
+    }
+    return state;
   }
 
   protected void removeState(String name) {
     states.remove(name);
+  }
+
+  protected void removeState(MapObjectState state) {
+    states.remove(state);
   }
 
   protected abstract boolean canWalkInto(Entity entity, Cell next);
