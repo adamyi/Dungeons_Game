@@ -8,11 +8,16 @@ public abstract class MapObject {
   protected Cell cell;
   protected MapObjectGroup group;
 
-  public MapObject(MapObjectGroup group) {
+  public MapObject() {
     this.cell = null;
-    this.group = group;
     this.states = new HashMap<>();
   }
+
+  public void addToMapObjectGroup(MapObjectGroup group) {
+    this.group = group;
+  }
+
+  public void initProperties(HashMap<String, Object> properties) {}
 
   public Cell getCell() {
     return cell;

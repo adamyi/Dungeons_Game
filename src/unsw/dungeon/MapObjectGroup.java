@@ -1,6 +1,7 @@
 package unsw.dungeon;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.function.Supplier;
 import unsw.dungeon.gameplay.AI;
 import unsw.dungeon.gameplay.MapObject;
@@ -25,8 +26,10 @@ public class MapObjectGroup<T extends MapObject> {
     }
   }
 
-  protected T createNewMapObject() {
+  protected T createNewMapObject(HashMap<String, Object> properties) {
     T obj = supplier.get();
+    obj.addToMapObjectGroup(this);
+    obj.initProperties(properties);
     this.mapObjects.add(obj);
     return obj;
   }

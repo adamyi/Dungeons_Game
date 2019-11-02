@@ -5,18 +5,20 @@ import java.util.ArrayList;
 public class Cell {
   private ArrayList<MapObject> mapObjects;
   private Cell[] adjacentCells;
-  
+
   public Cell() {
     mapObjects = new ArrayList<MapObject>();
     adjacentCells = new Cell[4];
+    for (int i = 0; i < 4; i++) {
+      adjacentCells[i] = null;
+    }
   }
-  
-  
-  protected void setAdjacentCell(int direction, Cell cell) {
+
+  public void setAdjacentCell(int direction, Cell cell) {
     adjacentCells[direction] = cell;
   }
 
-  protected void addMapObject(MapObject obj) {
+  public void addMapObject(MapObject obj) {
     mapObjects.add(obj);
   }
 
@@ -40,25 +42,25 @@ public class Cell {
   protected Cell getAdjacentCell(int direction) {
     return adjacentCells[direction];
   }
-  
+
   protected MapObject getMapObjectAtIndex(int index) {
     return mapObjects.get(index);
   }
-  
+
   protected MapObject getMapObjectOfType(Class type) {
     for (MapObject obj : mapObjects) {
       if (type.isInstance(obj)) {
         return obj;
       }
     }
-    
+
     return null;
   }
-  
+
   protected int getNumberOfMapObjects() {
     return mapObjects.size();
   }
-  
+
   protected void playerInteraction(int direction, Player player) {
     for (MapObject obj : mapObjects) {
       obj.playerInteraction(adjacentCells[direction], player);
