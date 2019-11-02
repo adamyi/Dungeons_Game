@@ -3,9 +3,11 @@ package unsw.dungeon;
 import java.io.FileNotFoundException;
 import java.util.HashMap;
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import unsw.dungeon.gameplay.*;
+import unsw.dungeon.utils.JSONUtils;
 
 /** Loads a game from a .json file. */
 public class GameLoader {
@@ -43,7 +45,13 @@ public class GameLoader {
         System.out.printf("[DEBUG] Unknown map object type: %s at (%d, %d)\n", type, x, y);
       } else {
         System.out.printf("[DEBUG] adding map object type: %s at (%d, %d)\n", type, x, y);
-        game.addMapObject(typeclass, y, x, obj);
+        try {
+          HashMap<String, Object> properties = JSONUtils.jsonToMap(obj);
+          game.addMapObject(typeclass, y, x, properties);
+        } catch (JSONException e) {
+          System.out.printf(
+              "[DEBUG] JSONException: error adding map object type: %s at (%d, %d)\n", type, x, y);
+        }
       }
     }
 

@@ -1,7 +1,6 @@
 package unsw.dungeon;
 
 import java.util.HashMap;
-import org.json.JSONObject;
 import unsw.dungeon.gameplay.*;
 
 class Game {
@@ -30,11 +29,12 @@ class Game {
     this.pairs = new HashMap<>();
   }
 
-  public void addMapObject(Class<? extends MapObject> type, int y, int x, JSONObject properties) {
+  public void addMapObject(
+      Class<? extends MapObject> type, int y, int x, HashMap<String, Object> properties) {
     MapObject obj = this.mapObjectGroups.get(type).createNewMapObject(properties);
     if (Pairable.class.isInstance(obj)) {
       Pairable p = (Pairable) obj;
-      String pk = String.format("%s_%d", p.getPairType(), properties.getInt("id"));
+      String pk = String.format("%s_%d", p.getPairType(), (int) properties.get("id"));
       Pairable pp = pairs.get(pk);
       if (pp != null) {
         pp.setPair(p);
