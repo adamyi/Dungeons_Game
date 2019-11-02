@@ -18,27 +18,40 @@ public class Cell {
     adjacentCells[direction] = cell;
   }
 
-  public void addMapObject(MapObject obj) {
+  
+  protected void setAdjacentCell(int direction, Cell cell)
+  {
+    adjacentCells[direction] = cell;
+  }
+  
+  protected void addMapObject(MapObject obj) {
     mapObjects.add(obj);
   }
-
+  
   /**
    * Can an entity walk into this cell?
    *
-   * <p>When calling this method, use a Direction.<attribute> value.
+   * When calling this method, use a Direction.<attribute> value.
+   *
+   *
    */
-  public boolean canWalkInto(int direction, Entity entity) {
+  public boolean canWalkInto(int direction, MapObject object) {
     // iterate through objects in mapObject list to see if they are walkable
     for (MapObject obj : mapObjects) {
-      if (!obj.canWalkInto(entity, adjacentCells[direction])) {
+      if (!obj.canWalkInto(object, adjacentCells[direction])) {
         return false;
       }
     }
-
+    
     return true;
   }
-
-  /** When calling this method, use a Direction.<attribute> value. */
+  
+  /**
+   *
+   * When calling this method, use a Direction.<attribute> value.
+   *
+   *
+   */
   protected Cell getAdjacentCell(int direction) {
     return adjacentCells[direction];
   }
@@ -66,7 +79,7 @@ public class Cell {
       obj.playerInteraction(adjacentCells[direction], player);
     }
   }
-
+  
   protected void removeMapObject(MapObject obj) {
     for (int i = 0; i < mapObjects.size(); i++) {
       if (mapObjects.get(i) == obj) {

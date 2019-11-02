@@ -44,10 +44,4 @@ class Game {
       }
     }
     grid[y][x].addMapObject(obj);
-  }
-
-  protected boolean hasWon() {
-    // RUN THROUGH OBJECTIVE NODE
-    return false;
-  }
 }

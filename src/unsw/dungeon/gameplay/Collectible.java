@@ -14,6 +14,11 @@ public abstract class Collectible extends MapObject {
   }
 
   @Override
+  protected boolean canWalkInto(MapObject object, Cell next) {
+    return true;
+  }
+
+  @Override
   protected void playerInteraction(Cell next, Player player) {
     this.pickup(player);
   }

@@ -1,3 +1,5 @@
 package unsw.dungeon;
 
-public class ObjectiveNode {}
+public class ObjectiveNode {
+  
+}
