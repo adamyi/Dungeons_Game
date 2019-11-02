@@ -37,6 +37,7 @@ public class MapObjectHelper {
   public MapObjectHelper() {
     this.enabledMapObjectTypes = new ArrayList<>();
     enabledMapObjectTypes.add(new MapObjectWrapper<Player>(Player.class, Player::new, "player"));
+    enabledMapObjectTypes.add(new MapObjectWrapper<Enemy>(Enemy.class, Enemy::new, "enemy"));
   }
 
   public HashMap<String, Class<? extends MapObject>> getMapObjectStringToClass() {

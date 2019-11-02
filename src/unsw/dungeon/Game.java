@@ -13,7 +13,7 @@ class Game {
     this.grid = new Cell[height][width];
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        this.grid[i][j] = new Cell();
+        this.grid[i][j] = new Cell(i * width + j);
       }
     }
     for (int i = 0; i < height; i++) {
