@@ -41,7 +41,7 @@ public abstract class MapObject {
   }
 
   protected void setState(String name) {
-    this.setState(name, -1);
+    this.setState(name, Integer.MAX_VALUE);
   }
 
   protected MapObjectState getState(String name) {

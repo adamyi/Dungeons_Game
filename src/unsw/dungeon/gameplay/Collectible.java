@@ -1,10 +1,21 @@
 package unsw.dungeon.gameplay;
 
 public abstract class Collectible extends MapObject {
+  private boolean singleOnly;
+
   public Collectible() {
     super();
+    singleOnly = false;
   }
 
+  protected void leaveAloneForeverWithCats() {
+    singleOnly = true;
+  }
+
+  protected boolean canHaveExtra() {
+    return !singleOnly;
+  }
+  
   private Player owner;
 
   protected Player getOwner() {
@@ -24,6 +35,8 @@ public abstract class Collectible extends MapObject {
 
   @Override
   protected void playerInteraction(Cell next, Player player) {
-    this.pickup(player);
+    if ((!singleOnly) || owner.getCollectibleOfTypeInInventory(this.getClass()) == null) {
+      this.pickup(player);
+    }
   }
 }

@@ -14,10 +14,12 @@ public class Portal extends Terrain {
   }
 
   private void movePlayer(Player player) {
+    for (int direction = Direction.ITERATE_MIN; direction <= Direction.ITERATE_MAX; direction++) {
+      if (pair.getCell().getAdjacentCell(direction).canWalkInto(direction, player)) {
+        pair.getCell().getAdjacentCell(direction).addMapObject(player);
+      }
+    }
     player.removeFromCell();
-    pair.getCell()
-        .getAdjacentCell(Direction.DOWN)
-        .addMapObject(player); // can use Math.random to randomize teleport position
   }
 
   @Override

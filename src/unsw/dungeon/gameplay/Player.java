@@ -23,7 +23,7 @@ public class Player extends Entity {
     inventory.add(object);
   }
 
-  protected Collectible getObjectOfType(Class type) {
+  protected Collectible getCollectibleOfTypeInInventory(Class<? extends Collectible> type) {
     for (Collectible item : inventory) {
       if (type.isInstance(item)) return item;
     }
