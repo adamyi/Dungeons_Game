@@ -85,6 +85,9 @@ class Game {
         if (act != null) {
           player.moveTo(act);
         }
+        for (MapObjectGroup group : mapObjectGroups.values()) {
+          group.act();
+        }
       }
     } catch (Exception e) {
       e.printStackTrace(System.out);
