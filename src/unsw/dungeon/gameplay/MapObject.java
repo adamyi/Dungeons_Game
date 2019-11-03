@@ -76,8 +76,10 @@ public abstract class MapObject {
     }
     this.cell = next;
     next.addMapObject(this);
-    // if next contains player
-    // next.playerInteraction(player)
+    Player player = (Player) next.getMapObjectOfType(Player.class);
+    if (player != null) {
+      this.playerInteraction(null, player);
+    }
   }
 
   public void moveTo(int direction) {
