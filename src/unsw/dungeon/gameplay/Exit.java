@@ -14,7 +14,7 @@ public class Exit extends Terrain implements AutonomousObject {
 
   @Override
   protected void playerInteraction(Cell direction, Player player) {
-    if (this.getState(SharedConstants.EXIT_ENTERED_STATE) != null) {
+    if (this.getState(SharedConstants.EXIT_ENTERED_STATE) == null) {
       this.setState(SharedConstants.EXIT_ENTERED_STATE);
       this.getMapObjectGroup().decrementCounter();
     }
@@ -27,7 +27,7 @@ public class Exit extends Terrain implements AutonomousObject {
 
   @Override
   public void act() {
-    if (this.getCell().getMapObjectOfType(Player.class) != null) {
+    if (this.getCell().getMapObjectOfType(Player.class) == null) {
       if (this.getState(SharedConstants.EXIT_ENTERED_STATE) != null) {
         this.removeState(SharedConstants.EXIT_ENTERED_STATE);
         this.getMapObjectGroup().incrementCounter();
