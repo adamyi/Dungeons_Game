@@ -90,7 +90,7 @@ public abstract class MapObject {
     this.moveTo(cell.getAdjacentCell(direction));
   }
 
-  protected abstract void playerInteraction(int direction, Player player);
+  protected abstract void playerInteraction(Cell start, Player player);
 
   protected void removeFromCell() {
     if (this.cell != null) {

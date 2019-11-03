@@ -1,5 +1,7 @@
 package unsw.dungeon.gameplay;
 
+import unsw.dungeon.utils.DirectionUtils;
+
 public class Boulder extends Terrain {
   public Boulder() {
     super();
@@ -21,13 +23,13 @@ public class Boulder extends Terrain {
       }
     }
 
-    int opposite = Direction.getOppositeDirection(playerDirection);
+    int opposite = DirectionUtils.getOppositeDirection(playerDirection);
     return boulderCell.getAdjacentCell(opposite).canWalkInto(opposite, this);
   }
 
   @Override
-  protected void playerInteraction(int direction, Player player) {
-    this.getCell().getAdjacentCell(direction).addMapObject(this);
+  protected void playerInteraction(Cell start, Player player) {
+    this.getCell().getAdjacentCell(DirectionUtils.getDirectionBetweenAdjacentCells(start, this.getCell())).addMapObject(this);
     this.removeFromCell();
   }
 }

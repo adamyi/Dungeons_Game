@@ -12,7 +12,7 @@ public class Door extends Terrain implements Pairable {
       throw new IllegalArgumentException();
     }
 
-    this.setPair(pair);
+    this.setPair(key);
   }
 
   public Pairable getPair() {
@@ -27,7 +27,7 @@ public class Door extends Terrain implements Pairable {
   }
 
   public String getPairType() {
-    return "Key";
+    return SharedConstants.DOOR_KEY_PAIR;
   }
 
   @Override
@@ -42,7 +42,7 @@ public class Door extends Terrain implements Pairable {
   }
 
   @Override
-  protected void playerInteraction(int direction, Player player) {
+  protected void playerInteraction(Cell start, Player player) {
     if (this.getState(SharedConstants.DOOR_OPEN_STATE) == null) {
       if (Key.class.isInstance(pair) && (player.hasObjectInInventory(pair))) {
         this.setState(SharedConstants.DOOR_OPEN_STATE);

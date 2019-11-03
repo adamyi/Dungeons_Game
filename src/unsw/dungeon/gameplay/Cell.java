@@ -42,11 +42,11 @@ public class Cell {
   }
 
   /** When calling this method, use a Direction.<attribute> value. */
-  protected Cell getAdjacentCell(int direction) {
+  public Cell getAdjacentCell(int direction) {
     return adjacentCells[direction];
   }
 
-  protected MapObject getMapObjectAtIndex(int index) {
+  public MapObject getMapObjectAtIndex(int index) {
     return mapObjects.get(index);
   }
 
@@ -60,13 +60,13 @@ public class Cell {
     return null;
   }
 
-  protected int getNumberOfMapObjects() {
+  public int getNumberOfMapObjects() {
     return mapObjects.size();
   }
 
-  protected void playerInteraction(int direction, Player player) {
+  protected void playerInteraction(Cell start, Player player) {
     for (MapObject obj : mapObjects) {
-      obj.playerInteraction(direction, player);
+      obj.playerInteraction(start, player);
     }
   }
 

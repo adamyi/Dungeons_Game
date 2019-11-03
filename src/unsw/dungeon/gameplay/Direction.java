@@ -11,23 +11,4 @@ public class Direction {
   public static final int ITERATE_MIN = 0;
   public static final int ITERATE_MAX = 3;
   public static final int SIZE = 4;
-
-  public static int getOppositeDirection(int direction) {
-    switch (direction) {
-      case UP:
-        return DOWN;
-        
-      case RIGHT:
-        return LEFT;
-
-      case DOWN:
-        return UP;
-
-      case LEFT:
-        return RIGHT;
-
-      default:
-        return UNKNOWN;
-    }
-  }
 }

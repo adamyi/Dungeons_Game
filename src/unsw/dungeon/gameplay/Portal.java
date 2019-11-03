@@ -1,6 +1,8 @@
 package unsw.dungeon.gameplay;
 
-public class Portal extends Terrain {
+import unsw.dungeon.SharedConstants;
+
+public class Portal extends Terrain implements Pairable {
   private Portal pair;
 
   public Portal(Portal portal) {
@@ -10,7 +12,7 @@ public class Portal extends Terrain {
       throw new IllegalArgumentException();
     }
 
-    pair = portal;
+    this.setPair(portal);
   }
 
   private void movePlayer(Player player) {
@@ -25,12 +27,30 @@ public class Portal extends Terrain {
   }
 
   @Override
+  public Pairable getPair() {
+    return pair;
+  }
+
+  @Override
+  public void setPair(Pairable pair) {
+    if (!Portal.class.isInstance(pair)) {
+      throw new IllegalArgumentException();
+    }
+    this.pair = (Portal)pair;
+  }
+
+  @Override
+  public String getPairType() {
+    return SharedConstants.PORTAL_PORTAL_PAIR;
+  }
+
+  @Override
   protected boolean canWalkInto(MapObject object) {
     return Player.class.isInstance(object);
   }
 
   @Override
-  protected void playerInteraction(int direction, Player player) {
+  protected void playerInteraction(Cell start, Player player) {
     this.movePlayer(player);
   }
 }

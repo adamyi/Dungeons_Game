@@ -39,5 +39,5 @@ public class FloorSwitch extends Terrain implements AI {
   }
 
   @Override
-  protected void playerInteraction(int direction, Player player) {}
+  protected void playerInteraction(Cell start, Player player) {}
 }

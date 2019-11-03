@@ -11,7 +11,7 @@ public class Wall extends Terrain {
   }
 
   @Override
-  protected void playerInteraction(int direction, Player player) {
+  protected void playerInteraction(Cell start, Player player) {
     throw new UnsupportedOperationException();
   }
 }

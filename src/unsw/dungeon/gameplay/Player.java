@@ -40,7 +40,7 @@ public class Player extends Entity {
   }
 
   @Override
-  protected void playerInteraction(int direction, Player player) {
+  protected void playerInteraction(Cell start, Player player) {
     throw new UnsupportedOperationException();
   }
 }
