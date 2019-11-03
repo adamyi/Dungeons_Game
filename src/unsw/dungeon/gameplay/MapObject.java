@@ -97,11 +97,16 @@ public abstract class MapObject {
 
   protected abstract void playerInteraction(Cell start, Player player);
 
-  protected void removeFromCell() {
+  protected void removeFromCell(Boolean decrementCounter) {
     if (this.cell != null) {
       this.cell.removeMapObject(this);
       this.cell = null;
     }
+    if (decrementCounter) this.group.decrementCounter();
+  }
+
+  protected void removeFromCell() {
+    this.removeFromCell(true);
   }
 
   protected abstract StringBuilder printCLI();

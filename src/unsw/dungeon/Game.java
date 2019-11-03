@@ -2,8 +2,9 @@ package unsw.dungeon;
 
 import java.util.HashMap;
 import unsw.dungeon.gameplay.*;
+import unsw.dungeon.objectives.ObjectiveNode;
 
-class Game {
+class Game implements Observer {
   private Cell[][] grid;
   private HashMap<Class<? extends MapObject>, MapObjectGroup> mapObjectGroups;
   private ObjectiveNode goal;
@@ -31,6 +32,10 @@ class Game {
     MapObjectHelper moh = new MapObjectHelper();
     this.mapObjectGroups = moh.newMapObjectGroups();
     this.pairs = new HashMap<>();
+    HashMap<String, Class<? extends MapObject>> objToClass = moh.getObjectiveStringToClass();
+    for (Class<? extends MapObject> cls : objToClass.values()) {
+      mapObjectGroups.get(cls).attach(this);
+    }
   }
 
   public void addMapObject(
@@ -50,9 +55,12 @@ class Game {
     obj.moveTo(grid[y][x]);
   }
 
+  public void setObjective(ObjectiveNode goal) {
+    this.goal = goal;
+  }
+
   protected boolean hasWon() {
-    // TODO: actually evaluate decision tree,
-    return false;
+    return this.goal.hasWon(mapObjectGroups);
   }
 
   public void makeMove(int direction) {
@@ -95,6 +103,13 @@ class Game {
       }
     } catch (Exception e) {
       e.printStackTrace(System.out);
+    }
+  }
+
+  @Override
+  public void update(Subject subject) {
+    if (this.hasWon()) {
+      throw new GameOverException(true);
     }
   }
 }
