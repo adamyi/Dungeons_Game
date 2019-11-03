@@ -36,7 +36,7 @@ public class Portal extends Terrain implements Pairable {
     if (!Portal.class.isInstance(pair)) {
       throw new IllegalArgumentException();
     }
-    this.pair = (Portal)pair;
+    this.pair = (Portal) pair;
   }
 
   @Override
@@ -52,5 +52,10 @@ public class Portal extends Terrain implements Pairable {
   @Override
   protected void playerInteraction(Cell start, Player player) {
     this.movePlayer(player);
+  }
+
+  @Override
+  protected StringBuilder printCLI() {
+    return new StringBuilder("O");
   }
 }

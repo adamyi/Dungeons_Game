@@ -10,4 +10,9 @@ public class Treasure extends Collectible {
     this.pickup(player);
     this.getMapObjectGroup().decrementCounter();
   }
+
+  @Override
+  protected StringBuilder printCLI() {
+    return new StringBuilder("T");
+  }
 }

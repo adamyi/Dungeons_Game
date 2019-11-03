@@ -3,6 +3,10 @@ package unsw.dungeon.gameplay;
 public class Sword extends Collectible {
   private int durability;
 
+  public Sword() {
+    this(5);
+  }
+
   public Sword(int durability) {
     super();
 
@@ -23,5 +27,10 @@ public class Sword extends Collectible {
     if (durability == 0) {
       this.getOwner().removeFromInventory(this);
     }
+  }
+
+  @Override
+  protected StringBuilder printCLI() {
+    return new StringBuilder("S");
   }
 }

@@ -40,4 +40,9 @@ public class FloorSwitch extends Terrain implements AI {
 
   @Override
   protected void playerInteraction(Cell start, Player player) {}
+
+  @Override
+  protected StringBuilder printCLI() {
+    return new StringBuilder("S");
+  }
 }

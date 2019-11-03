@@ -37,7 +37,20 @@ public class MapObjectHelper {
   public MapObjectHelper() {
     this.enabledMapObjectTypes = new ArrayList<>();
     enabledMapObjectTypes.add(new MapObjectWrapper<Player>(Player.class, Player::new, "player"));
+
+    enabledMapObjectTypes.add(
+        new MapObjectWrapper<Boulder>(Boulder.class, Boulder::new, "boulder"));
+    enabledMapObjectTypes.add(new MapObjectWrapper<Door>(Door.class, Door::new, "door"));
     enabledMapObjectTypes.add(new MapObjectWrapper<Enemy>(Enemy.class, Enemy::new, "enemy"));
+    enabledMapObjectTypes.add(
+        new MapObjectWrapper<FloorSwitch>(FloorSwitch.class, FloorSwitch::new, "switch"));
+    enabledMapObjectTypes.add(new MapObjectWrapper<Key>(Key.class, Key::new, "key"));
+    enabledMapObjectTypes.add(
+        new MapObjectWrapper<Potion>(Potion.class, Potion::new, "invincibility"));
+    enabledMapObjectTypes.add(new MapObjectWrapper<Sword>(Sword.class, Sword::new, "sword"));
+    enabledMapObjectTypes.add(
+        new MapObjectWrapper<Treasure>(Treasure.class, Treasure::new, "treasure"));
+    enabledMapObjectTypes.add(new MapObjectWrapper<Wall>(Wall.class, Wall::new, "wall"));
   }
 
   public HashMap<String, Class<? extends MapObject>> getMapObjectStringToClass() {

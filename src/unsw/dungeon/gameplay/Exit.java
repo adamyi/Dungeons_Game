@@ -14,4 +14,9 @@ public class Exit extends Terrain {
   protected void playerInteraction(Cell direction, Player player) {
     // TODO: check if objectives satisfied then allow player through then throw Exception GameWon()
   }
+
+  @Override
+  protected StringBuilder printCLI() {
+    return new StringBuilder("X");
+  }
 }

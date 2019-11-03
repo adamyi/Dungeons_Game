@@ -46,6 +46,10 @@ public class MapObjectGroup<T extends MapObject> {
     return mapObjects.get(index);
   }
 
+  protected T getMapObject() {
+    return this.getMapObject(0);
+  }
+
   public void incrementCounter() {
     counter++;
   }

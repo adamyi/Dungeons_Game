@@ -5,14 +5,8 @@ import unsw.dungeon.SharedConstants;
 public class Door extends Terrain implements Pairable {
   private Key pair;
 
-  public Door(Key key) {
+  public Door() {
     super();
-
-    if (key == null) {
-      throw new IllegalArgumentException();
-    }
-
-    this.setPair(key);
   }
 
   public Pairable getPair() {
@@ -23,7 +17,7 @@ public class Door extends Terrain implements Pairable {
     if (!Key.class.isInstance(pair)) {
       throw new IllegalArgumentException();
     }
-    this.pair = (Key)pair;
+    this.pair = (Key) pair;
   }
 
   public String getPairType() {
@@ -50,5 +44,11 @@ public class Door extends Terrain implements Pairable {
         player.removeFromInventory(pair);
       }
     }
+  }
+
+  @Override
+  protected StringBuilder printCLI() {
+    if (this.getState(SharedConstants.DOOR_OPEN_STATE) == null) return new StringBuilder("D");
+    return new StringBuilder("d");
   }
 }

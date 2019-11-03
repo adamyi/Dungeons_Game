@@ -14,4 +14,9 @@ public class Wall extends Terrain {
   protected void playerInteraction(Cell start, Player player) {
     throw new UnsupportedOperationException();
   }
+
+  @Override
+  protected StringBuilder printCLI() {
+    return new StringBuilder("W");
+  }
 }

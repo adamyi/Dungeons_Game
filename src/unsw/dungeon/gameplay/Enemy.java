@@ -96,4 +96,9 @@ public class Enemy extends Entity implements AI {
       this.moveTo(dir);
     }
   }
+
+  @Override
+  protected StringBuilder printCLI() {
+    return new StringBuilder("E");
+  }
 }

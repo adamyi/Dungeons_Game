@@ -11,4 +11,9 @@ public class Potion extends Collectible {
     this.getOwner().setState(SharedConstants.PLAYER_INVINCIBLE_STATE, 10);
     this.getOwner().removeFromInventory(this);
   }
+
+  @Override
+  protected StringBuilder printCLI() {
+    return new StringBuilder("I");
+  }
 }
