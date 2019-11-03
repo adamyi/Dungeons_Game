@@ -55,6 +55,14 @@ class Game {
     return false;
   }
 
+  public void makeMove(int direction) {
+    Player player = (Player) mapObjectGroups.get(Player.class).getMapObject();
+    player.moveTo(direction);
+    for (MapObjectGroup group : mapObjectGroups.values()) {
+      group.act();
+    }
+  }
+
   public void printCLI() {
     StringBuilder sb = new StringBuilder();
     for (int y = 0; y < height; y++) {
@@ -73,7 +81,6 @@ class Game {
       actions.put('l', Direction.RIGHT);
       actions.put('j', Direction.UP);
       actions.put('k', Direction.DOWN);
-      Player player = (Player) mapObjectGroups.get(Player.class).getMapObject(0);
       while (true) {
         System.out.print("\033[H\033[2J");
         System.out.flush();
@@ -83,10 +90,7 @@ class Game {
         Character cmd = (char) System.in.read();
         Integer act = actions.get(cmd);
         if (act != null) {
-          player.moveTo(act);
-          for (MapObjectGroup group : mapObjectGroups.values()) {
-            group.act();
-          }
+          this.makeMove(act);
         }
       }
     } catch (Exception e) {
