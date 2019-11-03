@@ -44,7 +44,7 @@ public class Enemy extends Entity implements AI {
   }
 
   private int weightedDistanceToPlayer(Cell cell) {
-    if (cell == null) return Integer.MAX_VALUE;
+    if (cell == null || (!cell.canWalkInto(this))) return Integer.MAX_VALUE;
     HashSet<Cell> visited = new HashSet<>();
     Queue<BFSTuple> queue = new LinkedList<>();
     visited.add(cell);

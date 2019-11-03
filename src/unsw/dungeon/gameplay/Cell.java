@@ -31,7 +31,7 @@ public class Cell {
    *
    * <p>When calling this method, use a Direction.<attribute> value.
    */
-  public boolean canWalkInto(int direction, MapObject object) {
+  public boolean canWalkInto(MapObject object) {
     // iterate through objects in mapObject list to see if they are walkable
     for (MapObject obj : mapObjects) {
       if (!obj.canWalkInto(object)) {

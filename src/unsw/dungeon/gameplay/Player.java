@@ -36,7 +36,7 @@ public class Player extends Entity {
 
   @Override
   protected boolean canWalkInto(MapObject object) {
-    throw new UnsupportedOperationException();
+    return object.canWalkInto(this);
   }
 
   @Override

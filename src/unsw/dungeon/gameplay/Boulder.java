@@ -24,7 +24,7 @@ public class Boulder extends Terrain {
     }
 
     int opposite = DirectionUtils.getOppositeDirection(playerDirection);
-    return boulderCell.getAdjacentCell(opposite).canWalkInto(opposite, this);
+    return boulderCell.getAdjacentCell(opposite).canWalkInto(this);
   }
 
   @Override

@@ -19,7 +19,7 @@ public class Portal extends Terrain implements Pairable {
     Cell portalAdjacentCell = null;
     for (int direction = Direction.ITERATE_MIN; direction <= Direction.ITERATE_MAX; direction++) {
       portalAdjacentCell = pair.getCell().getAdjacentCell(direction);
-      if (portalAdjacentCell.canWalkInto(direction, player)) {
+      if (portalAdjacentCell.canWalkInto(player)) {
         portalAdjacentCell.addMapObject(player);
       }
     }
