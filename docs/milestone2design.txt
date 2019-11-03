@@ -1,0 +1,316 @@
+@startuml
+
+skinparam defaultFontName Consolas
+skinparam nodesep 75
+
+' package "Objective" <<Rectangle>> {
+  class "FOLAndObjectiveNode" {
+    children : ArrayList<ObjectiveNode>
+    addChild(ObjectiveNode)
+    hasWon(HashMap<Class<? extends MapObject>, MapObjectGroup>) : Boolean
+  }
+
+  class "FOLOrObjectiveNode" {
+    children : ArrayList<ObjectiveNode>
+    addChild(ObjectiveNode)
+    hasWon(HashMap<Class<? extends MapObject>, MapObjectGroup>) : Boolean
+  }
+
+  class "LeafObjectiveNode" {
+    type : Class<? extends MapObject>
+    hasWon(HashMap<Class<? extends MapObject>, MapObjectGroup>) : Boolean
+  }
+  interface "ObjectiveNode" {
+    hasWon(HashMap<Class<? extends MapObject>, MapObjectGroup>) : Boolean
+  }
+' }
+
+package "Utils" <<Rectangle>> {
+class "JSONUtils"
+class "TextUtils"
+class "DirectionUtils"
+}
+
+class "GameLoader" {
+  json : JSONObject
+  typeToMapObjectClass : HashMap<String, Class<? extends MapObject>>
+  objectiveStringToMapObjectClass : HashMap<String, Class<? extends MapObject>>
+  load() : Game
+  parseObjective(JSONObject) : ObjectiveNode
+}
+
+interface "Observer" {
+  update(Subject)
+}
+
+interface "Subject" {
+  attach(Observer)
+  detach(Observer)
+  notifyObservers()
+}
+
+class "GameOverException" {
+  win : Boolean
+  hasWon() : Boolean
+}
+class "SharedConstants"
+
+class "MapObjectGroup"<T> {
+  supplier : Supplier<T>
+  counter : int
+  mapObjects : List<T>
+  observers : List<Observer>
+  act()
+  attach(Observer)
+  createNewMapObject(HashMap<String, Object>) : T
+  decrementCounter()
+  detach(Observer)
+  getMapObject(int) : T
+  incrementCounter()
+  notifyObservers()
+  removeMapObject(MapObject)
+}
+
+class "Game" {
+  grid : Cell[][]
+  mapObjectGroups : HashMap<Class<? extends MapObject>, MapObjectGroup>
+  goal : ObjectiveNode
+  pairs : HashMap<String, Pairable>
+  height : int
+  width : int
+  addMapObject(Class<? extends MapObject>, int, int, HashMap<String, Object>)
+  hasWon() : boolean
+  makeMove(int)
+  playCLIVersion()
+  printCLI()
+  update(Subject)
+}
+
+class "MapObjectHelper" {
+  enabledMapObjectTypes : ArrayList<MapObjectWrapper>
+  newMapObjectGroups() : HashMap<Class<? extends MapObject>, MapObjectGroup>
+}
+
+package "Gameplay" <<Rectangle>> {
+
+  interface "AutonomousObject" {
+    act()
+  }
+
+  class "Boulder" {
+    canWalkInto(MapObject) : boolean
+    playerInteraction(Cell, Player)
+    printCLI() : StringBuilder
+  }
+
+  class "Cell" {
+    mapObjects : ArrayList<MapObject>
+    adjacentCells : Cell[]
+    id : int
+    addMapObject(MapObject)
+    canWalkInto(MapObject) : boolean
+    getAdjacentCell(int) : Cell
+    getMapObjectAtIndex(int) : MapObject
+    getMapObjectOfType(Class<? extends MapObject>) : MapObject
+    playerInteraction(Cell, Player)
+    printCLI() : StringBuilder
+    removeMapObject(MapObject)
+    setAdjacentCell(int, Cell)
+  }
+
+  abstract class "Collectible" {
+    singleOnly : boolean
+    owner : Player
+    canHaveExtra() : boolean
+    canWalkInto(MapObject) : boolean
+    leaveAloneForeverWithCats()
+    pickup(Player)
+    playerInteraction(Cell, Player)
+  }
+
+  class "Direction"
+
+
+  class "Door" {
+    pair : Key
+    canWalkInto(MapObject) : boolean
+    playerInteraction(Cell, Player)
+    printCLI() : StringBuilder
+  }
+
+
+  class "Enemy" {
+    act()
+    canWalkInto(MapObject) : boolean
+    playerInteraction(Cell, Player)
+    printCLI() : StringBuilder
+    weightedDistanceToPlayer(Cell) : int
+  }
+
+  abstract class "Entity"
+
+  class "Exit" {
+    act()
+    canWalkInto(MapObject) : boolean
+    playerInteraction(Cell, Player)
+    printCLI() : StringBuilder
+  }
+
+
+  class "FloorSwitch" {
+    act()
+    canWalkInto(MapObject) : boolean
+    playerInteraction(Cell, Player)
+    printCLI() : StringBuilder
+  }
+
+
+
+  class "Key" {
+    pair : Door
+    printCLI() : StringBuilder
+  }
+
+
+  abstract class "MapObject" {
+    states : HashMap<String, MapObjectState>
+    cell : Cell
+    group : MapObjectGroup
+    addToMapObjectGroup(MapObjectGroup)
+    canWalkInto(MapObject) : boolean
+    getState(String) : MapObjectState
+    initProperties(HashMap<String, Object>)
+    moveTo(Cell)
+    moveTo(int)
+    playerInteraction(Cell, Player)
+    printCLI() : StringBuilder
+    removeFromCell()
+    removeFromCell(Boolean)
+    removeState(String)
+    removeState(MapObjectState)
+    setState(MapObjectState)
+    setState(String, int)
+  }
+
+
+
+  class "MapObjectState" {
+    name : String
+    forever : Boolean
+    deadline : LocalDateTime
+    extendDeadline(int)
+  }
+
+
+
+  interface "Pairable" {
+    setPair(Pairable)
+    getPair() : Pairable
+    getPairType() : String
+  }
+
+  class "Player" {
+    inventory : ArrayList<Collectible>
+    addToInventory(Collectible)
+    canWalkInto(MapObject) : boolean
+    die()
+    getCollectibleOfTypeInInventory(Class<? extends Collectible>) : Collectible
+    hasObjectInInventory(Collectible) : boolean
+    moveTo(Cell)
+    playerInteraction(Cell, Player)
+    printCLI() : StringBuilder
+    removeFromInventory(Collectible)
+  }
+
+  class "Portal" {
+    pair : Portal
+    canWalkInto(MapObject) : boolean
+    movePlayer(Player)
+    playerInteraction(Cell, Player)
+    printCLI() : StringBuilder
+  }
+
+  class "Potion" {
+    printCLI() : StringBuilder
+    use()
+  }
+
+
+
+  class "Sword" {
+    durability : int
+    printCLI() : StringBuilder
+    reduceDurability()
+  }
+
+  abstract class "Terrain"
+
+
+  class "Treasure" {
+    playerInteraction(Cell, Player)
+    printCLI() : StringBuilder
+  }
+
+  class "Wall" {
+    canWalkInto(MapObject) : boolean
+    playerInteraction(Cell, Player)
+    printCLI() : StringBuilder
+  }
+}
+
+"AutonomousObject" <|.. "Enemy"
+"AutonomousObject" <|.right. "Exit"
+"AutonomousObject" <|.. "FloorSwitch"
+"Cell" -left- "*" "MapObject"
+"Collectible" <|-right- "Key"
+"Collectible" "*" <-up-> "Player"
+"Collectible" <|-- "Potion"
+"Collectible" <|-- "Sword"
+"Collectible" <|-- "Treasure"
+"Door" -down- "Key"
+"Entity" <|-- "Enemy"
+"Entity" <|-- "Player"
+"GameLoader" -left-> "Game"
+"Game" --* "MapObjectGroup"
+"Game" --o "ObjectiveNode"
+"Game" --* "Cell"
+"Game" -left-> "Pairable"
+"MapObject" <|-- "Collectible"
+"MapObject" <|-- "Entity"
+"MapObjectGroup" --o "*" "Observer"
+"MapObjectHelper" -- "MapObjectGroup"
+"MapObject" -right-* "MapObjectGroup"
+"MapObject" *-right- "MapObjectState"
+"MapObject" <|-- "Terrain"
+"ObjectiveNode" "*" o-down- "FOLAndObjectiveNode"
+"ObjectiveNode" "*" o-down- "FOLOrObjectiveNode"
+"ObjectiveNode" <|-down- "FOLAndObjectiveNode"
+"ObjectiveNode" <|-down- "FOLOrObjectiveNode"
+"ObjectiveNode" <|-right- "LeafObjectiveNode"
+' "ObjectiveNode" -- "MapObjectGroup"
+"Observer" <|.. "Game"
+"Observer" -right- "Subject"
+"Pairable" <|.. "Door"
+"Pairable" <|.. "Key"
+"Pairable" <|-left- "Portal"
+' "Player" -up-> "Cell"
+"Subject" <|.. "MapObjectGroup"
+"Terrain" <|-- "Boulder"
+"Terrain" <|-- "Door"
+"Terrain" <|-left- "Exit"
+"Terrain" <|-- "FloorSwitch"
+"Terrain" <|-right- "Portal"
+"Terrain" <|-- "Wall"
+
+note "Observer Pattern" as N1
+Observer .. N1
+N1 .. Subject
+
+note "Composite Pattern" as N2
+ObjectiveNode .. N2
+
+note "An extensible API to facilitate State Pattern, which is used in Player, Switch, Boulder" as N3
+MapObjectState .up. N3
+
+@enduml
+

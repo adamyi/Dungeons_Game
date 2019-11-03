@@ -1,0 +1,209 @@
+@startuml
+' Source of Truth: https://colab.research.google.com/drive/1Q2AwSYXKGuRxyJTJxVJbIaHQfWN0Cr62
+
+skinparam defaultFontName Consolas
+skinparam nodesep 75
+
+class Game {
+    -ArrayList<ArrayList<Cell>> Grid
+    -HashMap<Class, MapObjectGroup> mapObjectGroups
+    -ObjectiveNode goal
+    #bool hasWon()
+}
+
+
+class Map {
+    
+}
+
+class ObjectiveNode {
+  -Class goalClass
+  -ObjectiveNodeType type
+  -ArrayList<ObjectiveNode> children
+  #bool isMet(HashMap<Class, MapObjectGroup> mapObjectGroups)
+}
+
+
+Game "1" - "1" Map
+Game "1" *-- "1" ObjectiveNode
+ObjectiveNode "1" *-- "0..*" ObjectiveNode
+
+package "Gameplay" <<Rectangle>> {
+  abstract class MapObject {
+      -HashMap<String, MapObjectState> states
+      -Cell cell
+      -MapObjectGroup group
+      
+      +Cell getCell()
+      
+      #void setState(MapObjectState state)
+      #void setState(String name, int seconds)
+      #MapObjectState getState(String name)
+      #void removeState(String name)
+      
+      #bool canWalkInto(Entity entity, Cell next)
+      #void moveTo(Cell next)
+      +void moveTo(int direction)
+      #void playerInteraction(Cell next, Player player)
+      
+      -void removeFromCell()
+  }
+  
+  class MapObjectState {
+      -LocalDateTime deadline
+      -String name
+      #bool isActive()
+      #void extendDeadline(int seconds)
+      #void getName()
+  }
+    
+  class Cell {
+    -ArrayList<MapObject> mapObjects
+    -Cell[4] adjacentCells
+    #void addMapObject(MapObject)
+    +bool canWalkInto(Entity entity, Cell next)
+    #Cell getAdjacentCell(int direction)
+    #MapObject getMapObjectAtIndex(int index)
+    #MapObject getMapObjectOfType(Class type)
+    #int getNumberOfMapObjects()
+    #void playerInteraction(Player player)
+    #void removeMapObject(MapObject)
+  }
+    
+  MapObject "1" *-- "0..*" MapObjectState
+    
+  abstract class Terrain {
+      
+  }
+
+  class Wall {
+
+  }
+
+  class Door {
+    -Key pair
+  }
+  
+
+  class Exit {
+
+  }
+
+  class Boulder {
+
+  }
+
+  class FloorSwitch {
+
+  }
+
+  class Portal {
+    -Portal pair
+    #void movePlayer(Player player)
+  }
+
+  
+  Terrain <|-- Boulder
+  Terrain <|-- Door
+  Terrain <|-- Exit
+  Terrain <|-- FloorSwitch
+  Terrain <|-- Portal
+  Terrain <|-- Wall
+    
+  abstract class Collectible {
+    -Player owner
+    #void pickup(Player player)
+  }
+
+  class Potion {
+    #void use()
+  }
+
+  class Key {
+    -Door pair
+  }
+
+  class Sword {
+    -int durability
+    #int getDurability()
+    #void reduceDurability()
+  }
+
+  class Treasure {
+
+  }
+  
+  Collectible <|-- Potion
+  Collectible <|-- Key
+  Collectible <|-- Sword
+  Collectible <|-- Treasure
+
+
+  abstract class Entity {
+    
+  }
+
+  class Enemy {
+
+  }
+
+  class Player {
+    -bool isAlive
+    -ArrayList<Collectible> inventory
+    #void addToInventory(Collectible object)
+    #void die()
+    #bool hasObjectInInventory(Collectible object)
+    #Collectible getObjectOfType(Class) 'Collectible'
+    #void removeFromInventory(Collectible object)
+  }
+
+  interface AI {
+    +void act()
+  }
+    
+  AI <|.. Enemy
+  AI <|.. FloorSwitch
+    
+    
+  Entity <|-- Enemy
+  Entity <|-- Player
+      
+    
+  MapObject <|-right- Collectible
+  MapObject <|-down- Entity
+  MapObject <|-left- Terrain
+    
+  
+}
+
+
+class MapObjectGroup<T> {
+    -int counter
+    -ArrayList<T> mapObjects
+    #void act()
+    #T createNewMapObject()
+    #void decrementCounter()
+    #int getCounter()
+    #T getMapObject(int index)
+    #void incrementCounter()
+    #int numberOfMapObjects()
+    
+    
+}
+
+Game "1" *-left- "1..*" MapObjectGroup
+MapObjectGroup "1" *-- "0..*" MapObject
+
+
+'Cell "1" o-- "many" MapObject
+Player -down- MapObject
+Player "1" o-- "0..*" Collectible
+
+Game "1" *-- "1..*" Cell
+
+Cell "1" -- "0..*" MapObject
+
+Cell -- Cell
+
+
+@enduml
