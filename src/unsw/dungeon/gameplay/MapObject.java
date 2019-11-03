@@ -75,10 +75,9 @@ public abstract class MapObject {
   protected abstract boolean canWalkInto(MapObject object);
 
   public void moveTo(Cell next) {
-    this.moveTo(Direction.UNKNOWN, next);
-  }
-
-  protected void moveTo(int direction, Cell next) {
+    if (!next.canWalkInto(this)) {
+      return;
+    }
     if (cell != null) {
       this.cell.removeMapObject(this);
     }

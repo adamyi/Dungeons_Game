@@ -31,7 +31,7 @@ public class MapObjectHelper {
     }
 
     protected String getObjectiveName() {
-      return name;
+      return objectiveName;
     }
 
     protected Class getType() {

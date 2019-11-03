@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.function.Supplier;
-import unsw.dungeon.gameplay.AI;
+import unsw.dungeon.gameplay.AutonomousObject;
 import unsw.dungeon.gameplay.MapObject;
 
 public class MapObjectGroup<T extends MapObject> implements Subject {
@@ -22,9 +22,9 @@ public class MapObjectGroup<T extends MapObject> implements Subject {
 
   protected void act() {
     if (this.mapObjects.isEmpty()) return;
-    if (AI.class.isInstance(this.mapObjects.get(0))) {
+    if (AutonomousObject.class.isInstance(this.mapObjects.get(0))) {
       for (T obj : this.mapObjects) {
-        ((AI) obj).act();
+        ((AutonomousObject) obj).act();
       }
     }
   }
