@@ -4,13 +4,17 @@ import java.util.HashMap;
 import unsw.dungeon.MapObjectGroup;
 
 public abstract class MapObject {
-  protected HashMap<String, MapObjectState> states;
-  protected Cell cell;
-  protected MapObjectGroup group;
+  private HashMap<String, MapObjectState> states;
+  private Cell cell;
+  private MapObjectGroup group;
 
   public MapObject() {
     this.cell = null;
     this.states = new HashMap<>();
+  }
+
+  protected MapObjectGroup getMapObjectGroup() {
+    return group;
   }
 
   public void addToMapObjectGroup(MapObjectGroup group) {
@@ -45,6 +49,10 @@ public abstract class MapObject {
     }
   }
 
+  protected void setState(String name) {
+    this.setState(name, Integer.MAX_VALUE);
+  }
+
   // implements lazy evaluation for state invalidation
   protected MapObjectState getState(String name) {
     MapObjectState state = states.get(name);
@@ -64,7 +72,7 @@ public abstract class MapObject {
     states.remove(state);
   }
 
-  protected abstract boolean canWalkInto(Entity entity, Cell next);
+  protected abstract boolean canWalkInto(MapObject object);
 
   public void moveTo(Cell next) {
     this.moveTo(Direction.UNKNOWN, next);
@@ -84,10 +92,10 @@ public abstract class MapObject {
 
   public void moveTo(int direction) {
     if (cell != null && cell.getAdjacentCell(direction) != null)
-      this.moveTo(direction, cell.getAdjacentCell(direction));
+      this.moveTo(cell.getAdjacentCell(direction));
   }
 
-  protected abstract void playerInteraction(Cell next, Player player);
+  protected abstract void playerInteraction(Cell start, Player player);
 
   protected void removeFromCell() {
     if (this.cell != null) {

@@ -31,10 +31,10 @@ public class Cell {
    *
    * <p>When calling this method, use a Direction.<attribute> value.
    */
-  public boolean canWalkInto(int direction, Entity entity) {
+  public boolean canWalkInto(MapObject object) {
     // iterate through objects in mapObject list to see if they are walkable
     for (MapObject obj : mapObjects) {
-      if (!obj.canWalkInto(entity, adjacentCells[direction])) {
+      if (!obj.canWalkInto(object)) {
         return false;
       }
     }
@@ -43,15 +43,15 @@ public class Cell {
   }
 
   /** When calling this method, use a Direction.<attribute> value. */
-  protected Cell getAdjacentCell(int direction) {
+  public Cell getAdjacentCell(int direction) {
     return adjacentCells[direction];
   }
 
-  protected MapObject getMapObjectAtIndex(int index) {
+  public MapObject getMapObjectAtIndex(int index) {
     return mapObjects.get(index);
   }
 
-  protected MapObject getMapObjectOfType(Class type) {
+  protected MapObject getMapObjectOfType(Class<? extends MapObject> type) {
     for (MapObject obj : mapObjects) {
       if (type.isInstance(obj)) {
         return obj;
@@ -61,15 +61,13 @@ public class Cell {
     return null;
   }
 
-  protected int getNumberOfMapObjects() {
+  public int getNumberOfMapObjects() {
     return mapObjects.size();
   }
 
-  protected void playerInteraction(int direction, Player player) {
-    if (direction != Direction.UNKNOWN) {
-      for (MapObject obj : mapObjects) {
-        obj.playerInteraction(adjacentCells[direction], player);
-      }
+  protected void playerInteraction(Cell start, Player player) {
+    for (MapObject obj : mapObjects) {
+      obj.playerInteraction(start, player);
     }
   }
 

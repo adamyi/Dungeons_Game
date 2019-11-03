@@ -51,7 +51,7 @@ class Game {
   }
 
   protected boolean hasWon() {
-    // RUN THROUGH OBJECTIVE NODE
+    // TODO: actually evaluate decision tree,
     return false;
   }
 

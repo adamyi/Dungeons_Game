@@ -1,2 +1,5 @@
 bazel-*
 *.class
+
+# for terrible text editors that do this
+*~

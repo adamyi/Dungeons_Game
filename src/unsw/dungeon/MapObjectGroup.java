@@ -34,7 +34,7 @@ public class MapObjectGroup<T extends MapObject> {
     return obj;
   }
 
-  protected void decrementCounter() {
+  public void decrementCounter() {
     counter--;
   }
 
@@ -42,19 +42,23 @@ public class MapObjectGroup<T extends MapObject> {
     return counter;
   }
 
-  protected T getMapObject(int index) {
+  public T getMapObject(int index) {
     return mapObjects.get(index);
+  }
+
+  public void removeMapObject(MapObject obj) {
+    this.mapObjects.remove(obj);
   }
 
   protected T getMapObject() {
     return this.getMapObject(0);
   }
 
-  protected void incrementCounter() {
+  public void incrementCounter() {
     counter++;
   }
 
-  protected int numberOfMapObjects() {
+  public int getNumberOfMapObjects() {
     return mapObjects.size();
   }
 }
