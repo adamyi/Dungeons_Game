@@ -7,6 +7,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 import unsw.dungeon.gameplay.*;
+import unsw.dungeon.objectives.*;
 import unsw.dungeon.utils.JSONUtils;
 
 /** Loads a game from a .json file. */
@@ -16,11 +17,13 @@ public class GameLoader {
   private JSONObject json;
 
   private HashMap<String, Class<? extends MapObject>> typeToMapObjectClass;
+  private HashMap<String, Class<? extends MapObject>> objectiveStringToMapObjectClass;
 
   public GameLoader(String filename) throws FileNotFoundException {
     json = new JSONObject(new JSONTokener(getClass().getResourceAsStream("/dungeons/" + filename)));
     MapObjectHelper moh = new MapObjectHelper();
     this.typeToMapObjectClass = moh.getMapObjectStringToClass();
+    this.objectiveStringToMapObjectClass = moh.getObjectiveStringToClass();
   }
 
   /**
@@ -63,7 +66,37 @@ public class GameLoader {
       }
     }
 
-    // TODO: parse objective
+    game.setObjective(parseObjective(json.getJSONObject("goal-condition")));
+
     return game;
+  }
+
+  private ObjectiveNode parseObjective(JSONObject objective) {
+    String type = objective.getString("goal");
+    if ("AND".equals(type)) {
+      FOLAndObjectiveNode objNode = new FOLAndObjectiveNode();
+      JSONArray subgoals = objective.getJSONArray("subgoals");
+      for (int i = 0; i < subgoals.length(); i++) {
+        JSONObject subgoal = subgoals.getJSONObject(i);
+        objNode.addChild(parseObjective(subgoal));
+      }
+      return objNode;
+    }
+    if ("OR".equals(type)) {
+      FOLOrObjectiveNode objNode = new FOLOrObjectiveNode();
+      JSONArray subgoals = objective.getJSONArray("subgoals");
+      for (int i = 0; i < subgoals.length(); i++) {
+        JSONObject subgoal = subgoals.getJSONObject(i);
+        objNode.addChild(parseObjective(subgoal));
+      }
+      return objNode;
+    }
+    if (this.objectiveStringToMapObjectClass.get(type) != null) {
+      LeafObjectiveNode objNode =
+          new LeafObjectiveNode(this.objectiveStringToMapObjectClass.get(type));
+      return objNode;
+    }
+    System.out.printf("Unknown objective type: %s. Ignored.\n", type);
+    return null;
   }
 }

@@ -2,6 +2,7 @@ package unsw.dungeon.gameplay;
 
 import java.util.ArrayList;
 import unsw.dungeon.GameOverException;
+import unsw.dungeon.SharedConstants;
 
 public class Player extends Entity {
   ArrayList<Collectible> inventory;
@@ -9,10 +10,11 @@ public class Player extends Entity {
   public Player() {
     super();
     this.inventory = new ArrayList<>();
+    this.setState(SharedConstants.PLAYER_INVINCIBLE_STATE, Integer.MAX_VALUE);
   }
 
   protected void die() throws GameOverException {
-    throw new GameOverException();
+    throw new GameOverException(false);
   }
 
   protected boolean hasObjectInInventory(Collectible object) {

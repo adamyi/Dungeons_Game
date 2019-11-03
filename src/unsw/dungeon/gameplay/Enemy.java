@@ -17,7 +17,6 @@ public class Enemy extends Entity implements AI {
 
   @Override
   protected void playerInteraction(Cell next, Player player) {
-    Thread.dumpStack();
     // TODO: check sword
     if (player.getState(SharedConstants.PLAYER_INVINCIBLE_STATE) != null) {
       this.removeFromCell();
