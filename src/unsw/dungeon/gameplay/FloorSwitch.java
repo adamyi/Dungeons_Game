@@ -2,7 +2,7 @@ package unsw.dungeon.gameplay;
 
 import unsw.dungeon.SharedConstants;
 
-public class FloorSwitch extends Terrain implements AI {
+public class FloorSwitch extends Terrain implements AutonomousObject {
   public FloorSwitch() {
     super();
   }

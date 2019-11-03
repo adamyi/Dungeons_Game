@@ -1,5 +1,5 @@
 package unsw.dungeon.gameplay;
 
-public interface AI {
+public interface AutonomousObject {
   public void act();
 }

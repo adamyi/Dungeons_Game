@@ -5,7 +5,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 import unsw.dungeon.SharedConstants;
 
-public class Enemy extends Entity implements AI {
+public class Enemy extends Entity implements AutonomousObject {
   public Enemy() {
     super();
   }

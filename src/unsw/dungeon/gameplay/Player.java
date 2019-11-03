@@ -44,9 +44,10 @@ public class Player extends Entity {
   protected void playerInteraction(Cell start, Player player) {}
 
   @Override
-  protected void moveTo(int direction, Cell next) {
-    super.moveTo(direction, next);
-    next.playerInteraction(this.getCell(), this);
+  public void moveTo(Cell next) {
+    Cell original = this.getCell();
+    super.moveTo(next);
+    this.getCell().playerInteraction(original, this);
   }
 
   @Override
