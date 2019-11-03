@@ -5,14 +5,8 @@ import unsw.dungeon.SharedConstants;
 public class Portal extends Terrain implements Pairable {
   private Portal pair;
 
-  public Portal(Portal portal) {
+  public Portal() {
     super();
-
-    if (portal == null || portal == this) {
-      throw new IllegalArgumentException();
-    }
-
-    this.setPair(portal);
   }
 
   private void movePlayer(Player player) {
@@ -33,6 +27,9 @@ public class Portal extends Terrain implements Pairable {
   @Override
   public void setPair(Pairable pair) {
     if (!Portal.class.isInstance(pair)) {
+      throw new IllegalArgumentException();
+    }
+    if (pair == this) {
       throw new IllegalArgumentException();
     }
     this.pair = (Portal) pair;

@@ -37,6 +37,7 @@ public class Player extends Entity {
 
   @Override
   protected boolean canWalkInto(MapObject object) {
+    if (object == this) return true;
     return object.canWalkInto(this);
   }
 
