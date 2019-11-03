@@ -69,3 +69,43 @@ java_test(
         "//lib:junit.jar",
     ],
 )
+
+java_test(
+    name = "CollectiblesAddedToInventoryTest",
+    srcs = ["CollectiblesAddedToInventoryTest.java"],
+    test_class = "unsw.dungeon.gameplay.CollectiblesAddedToInventoryTest",
+    deps = [
+        "//src/unsw/dungeon",
+        "//lib:junit.jar",
+    ],
+)
+
+java_test(
+    name = "PotionTimerTest",
+    srcs = ["PotionTimerTest.java"],
+    test_class = "unsw.dungeon.gameplay.PotionTimerTest",
+    deps = [
+        "//src/unsw/dungeon",
+        "//lib:junit.jar",
+    ],
+)
+
+java_test(
+    name = "WallTest",
+    srcs = ["WallTest.java"],
+    test_class = "unsw.dungeon.gameplay.WallTest",
+    deps = [
+        "//src/unsw/dungeon",
+        "//lib:junit.jar",
+    ],
+)
+
+java_test(
+    name = "WinningConditionTest",
+    srcs = ["WinningConditionTest.java"],
+    test_class = "unsw.dungeon.gameplay.WinningConditionTest",
+    deps = [
+        "//src/unsw/dungeon",
+        "//lib:junit.jar",
+    ],
+)
