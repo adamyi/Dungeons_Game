@@ -69,7 +69,7 @@ public abstract class MapObject {
   }
 
   protected void removeState(MapObjectState state) {
-    states.remove(state);
+    states.remove(state.getName());
   }
 
   protected abstract boolean canWalkInto(MapObject object);

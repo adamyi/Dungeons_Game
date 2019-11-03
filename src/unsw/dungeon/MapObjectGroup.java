@@ -29,7 +29,7 @@ public class MapObjectGroup<T extends MapObject> implements Subject {
     }
   }
 
-  protected T createNewMapObject(HashMap<String, Object> properties) {
+  public T createNewMapObject(HashMap<String, Object> properties) {
     T obj = supplier.get();
     obj.addToMapObjectGroup(this);
     obj.initProperties(properties);
