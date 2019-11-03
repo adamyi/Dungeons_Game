@@ -67,7 +67,7 @@ class Game implements Observer {
     Player player = (Player) mapObjectGroups.get(Player.class).getMapObject();
     player.moveTo(direction);
     for (MapObjectGroup group : mapObjectGroups.values()) {
-      // group.act();
+      group.act();
     }
   }
 

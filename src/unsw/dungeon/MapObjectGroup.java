@@ -49,8 +49,12 @@ public class MapObjectGroup<T extends MapObject> implements Subject {
     return counter;
   }
 
-  protected T getMapObject(int index) {
+  public T getMapObject(int index) {
     return mapObjects.get(index);
+  }
+
+  public void removeMapObject(MapObject obj) {
+    this.mapObjects.remove(obj);
   }
 
   protected T getMapObject() {
@@ -61,7 +65,7 @@ public class MapObjectGroup<T extends MapObject> implements Subject {
     counter++;
   }
 
-  protected int numberOfMapObjects() {
+  public int getNumberOfMapObjects() {
     return mapObjects.size();
   }
 

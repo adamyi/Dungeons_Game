@@ -2,7 +2,6 @@ package unsw.dungeon.gameplay;
 
 import java.util.ArrayList;
 import unsw.dungeon.GameOverException;
-import unsw.dungeon.SharedConstants;
 
 public class Player extends Entity {
   ArrayList<Collectible> inventory;
@@ -10,7 +9,7 @@ public class Player extends Entity {
   public Player() {
     super();
     this.inventory = new ArrayList<>();
-    this.setState(SharedConstants.PLAYER_INVINCIBLE_STATE, Integer.MAX_VALUE);
+    // this.setState(SharedConstants.PLAYER_INVINCIBLE_STATE, Integer.MAX_VALUE);
   }
 
   protected void die() throws GameOverException {
@@ -25,7 +24,7 @@ public class Player extends Entity {
     inventory.add(object);
   }
 
-  protected Collectible getObjectOfType(Class type) {
+  protected Collectible getCollectibleOfTypeInInventory(Class<? extends Collectible> type) {
     for (Collectible item : inventory) {
       if (type.isInstance(item)) return item;
     }
@@ -37,20 +36,17 @@ public class Player extends Entity {
   }
 
   @Override
-  protected boolean canWalkInto(Entity entity, Cell next) {
-    throw new UnsupportedOperationException();
+  protected boolean canWalkInto(MapObject object) {
+    return object.canWalkInto(this);
   }
 
   @Override
-  protected void playerInteraction(Cell next, Player player) {}
+  protected void playerInteraction(Cell start, Player player) {}
 
   @Override
   protected void moveTo(int direction, Cell next) {
-    if (cell != null) cell.removeMapObject(this);
-    cell = next;
-    next.addMapObject(this);
-
-    next.playerInteraction(direction, this);
+    super.moveTo(direction, next);
+    next.playerInteraction(this.getCell(), this);
   }
 
   @Override

@@ -11,17 +11,22 @@ public class Enemy extends Entity implements AI {
   }
 
   @Override
-  protected boolean canWalkInto(Entity entity, Cell next) {
-    return Player.class.isInstance(entity);
+  protected boolean canWalkInto(MapObject object) {
+    return Player.class.isInstance(object);
   }
 
   @Override
-  protected void playerInteraction(Cell next, Player player) {
-    // TODO: check sword
+  protected void playerInteraction(Cell start, Player player) {
     if (player.getState(SharedConstants.PLAYER_INVINCIBLE_STATE) != null) {
       this.removeFromCell();
     } else {
-      player.die();
+      Sword sword = (Sword) player.getCollectibleOfTypeInInventory(Sword.class);
+      if (sword != null) {
+        sword.reduceDurability();
+        this.removeFromCell();
+      } else {
+        player.die();
+      }
     }
   }
 
@@ -44,7 +49,7 @@ public class Enemy extends Entity implements AI {
   }
 
   private int weightedDistanceToPlayer(Cell cell) {
-    if (cell == null) return Integer.MAX_VALUE;
+    if (cell == null || (!cell.canWalkInto(this))) return Integer.MAX_VALUE;
     HashSet<Cell> visited = new HashSet<>();
     Queue<BFSTuple> queue = new LinkedList<>();
     visited.add(cell);
@@ -79,11 +84,15 @@ public class Enemy extends Entity implements AI {
 
   @Override
   public void act() {
-    int mind = weightedDistanceToPlayer(this.cell.getAdjacentCell(Direction.ITERATE_MIN));
+    if (this.getCell() == null) {
+      // already died
+      return;
+    }
+    int mind = weightedDistanceToPlayer(this.getCell().getAdjacentCell(Direction.ITERATE_MIN));
     int dir = Direction.ITERATE_MIN;
     boolean doMove = false;
     for (int i = Direction.ITERATE_MIN + 1; i <= Direction.ITERATE_MAX; i++) {
-      int d = weightedDistanceToPlayer(this.cell.getAdjacentCell(i));
+      int d = weightedDistanceToPlayer(this.getCell().getAdjacentCell(i));
       if (d != mind) {
         doMove = true;
         if (d < mind) {
