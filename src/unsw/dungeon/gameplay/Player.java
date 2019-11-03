@@ -40,16 +40,19 @@ public class Player extends Entity {
   }
 
   @Override
-  protected void playerInteraction(Cell next, Player player) {
-    throw new UnsupportedOperationException();
-  }
+  protected void playerInteraction(Cell next, Player player) {}
 
   @Override
   protected void moveTo(int direction, Cell next) {
-    cell.removeMapObject(this);
+    if (cell != null) cell.removeMapObject(this);
     cell = next;
     next.addMapObject(this);
 
     next.playerInteraction(direction, this);
+  }
+
+  @Override
+  protected StringBuilder printCLI() {
+    return new StringBuilder("P");
   }
 }

@@ -3,6 +3,7 @@ package unsw.dungeon.gameplay;
 import java.util.ArrayList;
 
 public class Cell {
+  public static final int CLI_MODE_PRINT_LENGTH = 4;
   private ArrayList<MapObject> mapObjects;
   private Cell[] adjacentCells;
 
@@ -65,8 +66,10 @@ public class Cell {
   }
 
   protected void playerInteraction(int direction, Player player) {
-    for (MapObject obj : mapObjects) {
-      obj.playerInteraction(adjacentCells[direction], player);
+    if (direction != Direction.UNKNOWN) {
+      for (MapObject obj : mapObjects) {
+        obj.playerInteraction(adjacentCells[direction], player);
+      }
     }
   }
 
@@ -82,5 +85,16 @@ public class Cell {
   @Override
   public int hashCode() {
     return id;
+  }
+
+  public StringBuilder printCLI() {
+    StringBuilder sb = new StringBuilder("#");
+    for (MapObject obj : mapObjects) {
+      sb.append(obj.printCLI());
+    }
+    for (int i = sb.length(); i < CLI_MODE_PRINT_LENGTH; i++) {
+      sb.append(" ");
+    }
+    return sb;
   }
 }

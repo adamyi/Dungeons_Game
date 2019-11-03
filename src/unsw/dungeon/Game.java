@@ -8,9 +8,13 @@ class Game {
   private HashMap<Class<? extends MapObject>, MapObjectGroup> mapObjectGroups;
   private ObjectiveNode goal;
   private HashMap<String, Pairable> pairs;
+  private int height;
+  private int width;
 
   public Game(int height, int width) {
     this.grid = new Cell[height][width];
+    this.height = height;
+    this.width = width;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         this.grid[i][j] = new Cell(i * width + j);
@@ -43,11 +47,54 @@ class Game {
         pairs.put(pk, p);
       }
     }
-    grid[y][x].addMapObject(obj);
+    obj.moveTo(grid[y][x]);
   }
 
   protected boolean hasWon() {
     // RUN THROUGH OBJECTIVE NODE
     return false;
+  }
+
+  public void makeMove(int direction) {
+    Player player = (Player) mapObjectGroups.get(Player.class).getMapObject();
+    player.moveTo(direction);
+    for (MapObjectGroup group : mapObjectGroups.values()) {
+      group.act();
+    }
+  }
+
+  public void printCLI() {
+    StringBuilder sb = new StringBuilder();
+    for (int y = 0; y < height; y++) {
+      for (int x = 0; x < width; x++) {
+        sb.append(grid[y][x].printCLI());
+      }
+      sb.append('\n');
+    }
+    System.out.println(sb.toString());
+  }
+
+  public void playCLIVersion() {
+    try {
+      HashMap<Character, Integer> actions = new HashMap<>();
+      actions.put('h', Direction.LEFT);
+      actions.put('l', Direction.RIGHT);
+      actions.put('j', Direction.UP);
+      actions.put('k', Direction.DOWN);
+      while (true) {
+        System.out.print("\033[H\033[2J");
+        System.out.flush();
+        this.printCLI();
+        System.out.printf("\nWhat's your move? (h: left, l: right, j: up, k: down) ");
+        System.out.flush();
+        Character cmd = (char) System.in.read();
+        Integer act = actions.get(cmd);
+        if (act != null) {
+          this.makeMove(act);
+        }
+      }
+    } catch (Exception e) {
+      e.printStackTrace(System.out);
+    }
   }
 }
