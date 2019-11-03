@@ -46,6 +46,10 @@ public class MapObjectGroup<T extends MapObject> {
     return mapObjects.get(index);
   }
 
+  public void removeMapObject(MapObject obj) {
+    this.mapObjects.remove(obj);
+  }
+
   protected T getMapObject() {
     return this.getMapObject(0);
   }

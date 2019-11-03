@@ -29,10 +29,7 @@ public class Boulder extends Terrain {
 
   @Override
   protected void playerInteraction(Cell start, Player player) {
-    this.getCell()
-        .getAdjacentCell(DirectionUtils.getDirectionBetweenAdjacentCells(start, this.getCell()))
-        .addMapObject(this);
-    this.removeFromCell();
+    this.moveTo(DirectionUtils.getDirectionBetweenAdjacentCells(start, this.getCell()));
   }
 
   @Override

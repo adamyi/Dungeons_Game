@@ -35,7 +35,7 @@ public abstract class Collectible extends MapObject {
 
   @Override
   protected void playerInteraction(Cell start, Player player) {
-    if ((!singleOnly) || owner.getCollectibleOfTypeInInventory(this.getClass()) == null) {
+    if ((!singleOnly) || player.getCollectibleOfTypeInInventory(this.getClass()) == null) {
       this.pickup(player);
     }
   }

@@ -15,6 +15,8 @@ public class Sword extends Collectible {
     }
 
     this.durability = durability;
+
+    this.leaveAloneForeverWithCats();
   }
 
   protected int getDurability() {

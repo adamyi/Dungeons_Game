@@ -17,11 +17,16 @@ public class Enemy extends Entity implements AI {
 
   @Override
   protected void playerInteraction(Cell start, Player player) {
-    // TODO: check sword
     if (player.getState(SharedConstants.PLAYER_INVINCIBLE_STATE) != null) {
       this.removeFromCell();
     } else {
-      player.die();
+      Sword sword = (Sword) player.getCollectibleOfTypeInInventory(Sword.class);
+      if (sword != null) {
+        sword.reduceDurability();
+        this.removeFromCell();
+      } else {
+        player.die();
+      }
     }
   }
 
@@ -79,6 +84,10 @@ public class Enemy extends Entity implements AI {
 
   @Override
   public void act() {
+    if (this.getCell() == null) {
+      // already died
+      return;
+    }
     int mind = weightedDistanceToPlayer(this.getCell().getAdjacentCell(Direction.ITERATE_MIN));
     int dir = Direction.ITERATE_MIN;
     boolean doMove = false;
