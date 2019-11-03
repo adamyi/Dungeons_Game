@@ -4,6 +4,7 @@
 
 ```
 bazel run --define=JFXBASE=$HOME/jdk-jfx //src/unsw/dungeon:DungeonApplication
+bazel test --define=JFXBASE=$HOME/jdk-jfx //src/test/unsw/dungeon/...
 ```
 
 ## Aims
