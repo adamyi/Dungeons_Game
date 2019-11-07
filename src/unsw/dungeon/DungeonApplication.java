@@ -35,9 +35,12 @@ public class DungeonApplication extends Application {
   }
 
   public static void main(String[] args) throws Exception {
-    /* GameLoader gameLoader = new GameLoader("advanced.json");
-    Game game = gameLoader.load();
-    game.playCLIVersion(); */
-    launch(args);
+    if (args.length > 0 && args[0].equals("--cli")) {
+      GameLoader gameLoader = new GameLoader("advanced.json");
+      Game game = gameLoader.load();
+      game.playCLIVersion();
+    } else {
+      launch(args);
+    }
   }
 }
