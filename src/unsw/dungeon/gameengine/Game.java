@@ -88,6 +88,9 @@ public class Game implements Observer {
   public void makeMove(int direction) {
     Player player = (Player) mapObjectGroups.get(Player.class).getMapObject();
     player.moveTo(direction);
+  }
+
+  public void loop() {
     for (MapObjectGroup group : mapObjectGroups.values()) {
       group.act();
     }
@@ -121,6 +124,7 @@ public class Game implements Observer {
         Integer act = actions.get(cmd);
         if (act != null) {
           this.makeMove(act);
+          this.loop();
         }
       }
     } catch (Exception e) {

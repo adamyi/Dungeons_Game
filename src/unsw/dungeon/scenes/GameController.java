@@ -1,18 +1,24 @@
 package unsw.dungeon.scenes;
 
 import java.io.IOException;
+import java.util.HashSet;
+import java.util.Set;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import unsw.dungeon.gameengine.Game;
 import unsw.dungeon.gameengine.GameOverException;
 import unsw.dungeon.gameengine.gameplay.Cell;
@@ -25,9 +31,13 @@ public class GameController {
   @FXML private GridPane squares;
 
   private Game game;
+  private Set<KeyCode> keysPressed;
+  private int direction;
 
   public GameController(Game game) {
     this.game = game;
+    this.keysPressed = new HashSet<>();
+    this.direction = Direction.UNKNOWN;
   }
 
   @FXML
@@ -41,43 +51,64 @@ public class GameController {
     }
 
     game.setGameController(this);
+
+    Timeline timeline =
+        new Timeline(
+            new KeyFrame(
+                Duration.millis(500),
+                event -> {
+                  try {
+                    this.keysPressed.clear();
+                    if (direction != Direction.UNKNOWN) {
+                      game.makeMove(direction);
+                      direction = Direction.UNKNOWN;
+                    }
+                    game.loop();
+                  } catch (GameOverException e) {
+                    GameOverController controller;
+                    if (e.hasWon()) {
+                      System.out.println("won");
+                      controller = new GameOverController("You won!");
+
+                    } else {
+                      System.out.println("lost");
+                      controller = new GameOverController("You died!");
+                    }
+                    try {
+                      Stage stage = (Stage) squares.getScene().getWindow();
+                      FXMLLoader loader =
+                          new FXMLLoader(getClass().getResource("GameOverView.fxml"));
+                      loader.setController(controller);
+                      Parent root = loader.load();
+                      Scene scene = new Scene(root);
+                      stage.setScene(scene);
+                    } catch (IOException ee) {
+                      throw new RuntimeException(ee);
+                    }
+                  }
+                }));
+    timeline.setCycleCount(Animation.INDEFINITE);
+    timeline.play();
   }
 
   @FXML
   public void handleKeyPress(KeyEvent event) throws IOException {
-    try {
-      switch (event.getCode()) {
-        case UP:
-          game.makeMove(Direction.UP);
-          break;
-        case DOWN:
-          game.makeMove(Direction.DOWN);
-          break;
-        case LEFT:
-          game.makeMove(Direction.LEFT);
-          break;
-        case RIGHT:
-          game.makeMove(Direction.RIGHT);
-          break;
-        default:
-          break;
-      }
-    } catch (GameOverException e) {
-      GameOverController controller;
-      if (e.hasWon()) {
-        System.out.println("won");
-        controller = new GameOverController("You won!");
-
-      } else {
-        System.out.println("lost");
-        controller = new GameOverController("You died!");
-      }
-      Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-      FXMLLoader loader = new FXMLLoader(getClass().getResource("GameOverView.fxml"));
-      loader.setController(controller);
-      Parent root = loader.load();
-      Scene scene = new Scene(root);
-      stage.setScene(scene);
+    keysPressed.add(event.getCode());
+    switch (event.getCode()) {
+      case UP:
+        this.direction = Direction.UP;
+        break;
+      case DOWN:
+        this.direction = Direction.DOWN;
+        break;
+      case LEFT:
+        this.direction = Direction.LEFT;
+        break;
+      case RIGHT:
+        this.direction = Direction.RIGHT;
+        break;
+      default:
+        break;
     }
   }
 
