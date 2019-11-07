@@ -19,7 +19,7 @@ public class DungeonApplication extends Application {
     // DungeonControllerLoader dungeonLoader = new DungeonControllerLoader("maze.json");
     // DungeonController controller = dungeonLoader.loadController();
     //
-    GameLoader gameLoader = new GameLoader("advanced.json");
+    GameLoader gameLoader = new GameLoader("boulders.json");
     Game game = gameLoader.load();
     GameController controller = new GameController(game);
 

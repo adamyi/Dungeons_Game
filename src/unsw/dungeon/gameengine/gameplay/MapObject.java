@@ -129,4 +129,6 @@ public abstract class MapObject {
   }
 
   protected abstract StringBuilder printCLI();
+
+  public abstract double viewOrder();
 }

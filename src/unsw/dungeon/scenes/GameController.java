@@ -49,6 +49,7 @@ public class GameController {
     for (int x = 0; x < game.getWidth(); x++) {
       for (int y = 0; y < game.getHeight(); y++) {
         ImageView g = new ImageView(ground);
+        g.setViewOrder(Double.POSITIVE_INFINITY);
         dungeonPane.getChildren().add(g);
         g.setTranslateX(x * CELL_SIZE);
         g.setTranslateY(y * CELL_SIZE);
@@ -136,6 +137,7 @@ public class GameController {
   public void setupMapObject(MapObject mapObject) {
     Image img = new Image(getClass().getResourceAsStream("/images/" + mapObject.getImage()));
     ImageView node = new ImageView(img);
+    node.setViewOrder(mapObject.viewOrder());
     // AnchorPane.setLeftAnchor(node, mapObject.getCell().getX() * CELL_SIZE);
     // AnchorPane.setTopAnchor(node, mapObject.getCell().getY() * CELL_SIZE);
     dungeonPane.getChildren().add(node);

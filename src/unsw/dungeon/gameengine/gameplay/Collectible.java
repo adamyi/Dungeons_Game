@@ -39,4 +39,9 @@ public abstract class Collectible extends MapObject {
       this.pickup(player);
     }
   }
+
+  @Override
+  public double viewOrder() {
+    return 100;
+  }
 }
