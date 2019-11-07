@@ -13,8 +13,9 @@ java_binary(
     deps = [
         "//lib:json.jar",
     ],
-    resources = [
-        ":DungeonView.fxml",
+    resources = glob([
+        "scenes/*.fxml",
+    ]) + [
         "//dungeons",
         "//images",
     ],

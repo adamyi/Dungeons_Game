@@ -6,6 +6,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import unsw.dungeon.scenes.GameController;
 
 public class DungeonApplication extends Application {
 
@@ -20,7 +21,7 @@ public class DungeonApplication extends Application {
     Game game = gameLoader.load();
     GameController controller = new GameController(game);
 
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("DungeonView.fxml"));
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/DungeonView.fxml"));
     loader.setController(controller);
     Parent root = loader.load();
     Scene scene = new Scene(root);

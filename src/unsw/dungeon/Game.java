@@ -3,8 +3,9 @@ package unsw.dungeon;
 import java.util.HashMap;
 import unsw.dungeon.gameplay.*;
 import unsw.dungeon.objectives.ObjectiveNode;
+import unsw.dungeon.scenes.GameController;
 
-class Game implements Observer {
+public class Game implements Observer {
   private Cell[][] grid;
   private HashMap<Class<? extends MapObject>, MapObjectGroup> mapObjectGroups;
   private ObjectiveNode goal;
