@@ -1,8 +1,8 @@
 package unsw.dungeon.scenes;
 
 import java.io.IOException;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalDateTime;
+import java.util.HashMap;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -35,13 +35,11 @@ public class GameController {
   @FXML private AnchorPane dungeonPane;
 
   private Game game;
-  private Set<KeyCode> keysPressed;
-  private int direction;
+  private HashMap<KeyCode, LocalDateTime> keysPressed;
 
   public GameController(Game game) {
     this.game = game;
-    this.keysPressed = new HashSet<>();
-    this.direction = Direction.UNKNOWN;
+    this.keysPressed = new HashMap<>();
   }
 
   @FXML
@@ -65,58 +63,74 @@ public class GameController {
                 Duration.millis(LOOP_INTERVAL_MS),
                 event -> {
                   try {
-                    this.keysPressed.clear();
-                    if (direction != Direction.UNKNOWN) {
-                      game.makeMove(direction);
-                      direction = Direction.UNKNOWN;
-                    }
                     game.loop();
                   } catch (GameOverException e) {
-                    GameOverController controller;
-                    if (e.hasWon()) {
-                      System.out.println("won");
-                      controller = new GameOverController("You won!");
-
-                    } else {
-                      System.out.println("lost");
-                      controller = new GameOverController("You died!");
-                    }
-                    try {
-                      Stage stage = (Stage) dungeonPane.getScene().getWindow();
-                      FXMLLoader loader =
-                          new FXMLLoader(getClass().getResource("GameOverView.fxml"));
-                      loader.setController(controller);
-                      Parent root = loader.load();
-                      Scene scene = new Scene(root);
-                      stage.setScene(scene);
-                    } catch (IOException ee) {
-                      throw new RuntimeException(ee);
-                    }
+                    handleGameOverException(e);
                   }
                 }));
     timeline.setCycleCount(Animation.INDEFINITE);
     timeline.play();
   }
 
+  private void handleGameOverException(GameOverException e) {
+    GameOverController controller;
+    if (e.hasWon()) {
+      System.out.println("won");
+      controller = new GameOverController("You won!");
+
+    } else {
+      System.out.println("lost");
+      controller = new GameOverController("You died!");
+    }
+    try {
+      Stage stage = (Stage) dungeonPane.getScene().getWindow();
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("GameOverView.fxml"));
+      loader.setController(controller);
+      Parent root = loader.load();
+      Scene scene = new Scene(root);
+      stage.setScene(scene);
+    } catch (IOException ee) {
+      throw new RuntimeException(ee);
+    }
+  }
+
+  private Boolean hasPressed(KeyCode keyCode) {
+    LocalDateTime lastPressed = keysPressed.get(keyCode);
+    if (lastPressed != null
+        && LocalDateTime.now().isBefore(lastPressed.plusNanos((long) LOOP_INTERVAL_MS * 1000000)))
+      return true;
+    return false;
+  }
+
   @FXML
   public void handleKeyPress(KeyEvent event) throws IOException {
-    keysPressed.add(event.getCode());
-    switch (event.getCode()) {
-      case UP:
-        this.direction = Direction.UP;
-        break;
-      case DOWN:
-        this.direction = Direction.DOWN;
-        break;
-      case LEFT:
-        this.direction = Direction.LEFT;
-        break;
-      case RIGHT:
-        this.direction = Direction.RIGHT;
-        break;
-      default:
-        break;
+    if (hasPressed(event.getCode())) return;
+    try {
+      if (!(hasPressed(KeyCode.UP)
+          || hasPressed(KeyCode.DOWN)
+          || hasPressed(KeyCode.LEFT)
+          || hasPressed(KeyCode.RIGHT))) {
+        switch (event.getCode()) {
+          case UP:
+            game.makeMove(Direction.UP);
+            break;
+          case DOWN:
+            game.makeMove(Direction.DOWN);
+            break;
+          case LEFT:
+            game.makeMove(Direction.LEFT);
+            break;
+          case RIGHT:
+            game.makeMove(Direction.RIGHT);
+            break;
+          default:
+            break;
+        }
+      }
+    } catch (GameOverException e) {
+      handleGameOverException(e);
     }
+    keysPressed.put(event.getCode(), LocalDateTime.now());
   }
 
   public void setupMapObject(MapObject mapObject) {
