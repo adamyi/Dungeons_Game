@@ -13,11 +13,11 @@ import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
-import unsw.dungeon.Game;
-import unsw.dungeon.GameOverException;
-import unsw.dungeon.gameplay.Cell;
-import unsw.dungeon.gameplay.Direction;
-import unsw.dungeon.gameplay.MapObject;
+import unsw.dungeon.gameengine.Game;
+import unsw.dungeon.gameengine.GameOverException;
+import unsw.dungeon.gameengine.gameplay.Cell;
+import unsw.dungeon.gameengine.gameplay.Direction;
+import unsw.dungeon.gameengine.gameplay.MapObject;
 
 /** A JavaFX controller for the dungeon. */
 public class GameController {

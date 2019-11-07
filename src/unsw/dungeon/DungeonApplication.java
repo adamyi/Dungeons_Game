@@ -6,6 +6,8 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import unsw.dungeon.gameengine.Game;
+import unsw.dungeon.gameengine.GameLoader;
 import unsw.dungeon.scenes.GameController;
 
 public class DungeonApplication extends Application {

@@ -29,6 +29,6 @@ public class GameOverController {
 
   @FXML
   public void handleExitButton() {
-    System.out.println("clicked exit");
+    System.exit(0);
   }
 }

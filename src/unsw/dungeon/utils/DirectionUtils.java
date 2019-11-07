@@ -1,7 +1,7 @@
 package unsw.dungeon.utils;
 
-import unsw.dungeon.gameplay.Cell;
-import unsw.dungeon.gameplay.Direction;
+import unsw.dungeon.gameengine.gameplay.Cell;
+import unsw.dungeon.gameengine.gameplay.Direction;
 
 public class DirectionUtils {
   public static int getOppositeDirection(int direction) {
