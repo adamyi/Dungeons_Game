@@ -26,7 +26,9 @@ public class DungeonApplication extends Application {
     FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/DungeonView.fxml"));
     loader.setController(controller);
     Parent root = loader.load();
-    Scene scene = new Scene(root);
+    Scene scene =
+        new Scene(
+            root, game.getWidth() * controller.CELL_SIZE, game.getHeight() * controller.CELL_SIZE);
     root.requestFocus();
     primaryStage.setScene(scene);
     primaryStage.show();

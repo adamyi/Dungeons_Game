@@ -6,6 +6,7 @@ import java.util.Set;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
+import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.fxml.FXML;
@@ -16,7 +17,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
-import javafx.scene.layout.GridPane;
+import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import unsw.dungeon.gameengine.Game;
@@ -27,8 +28,11 @@ import unsw.dungeon.gameengine.gameplay.MapObject;
 
 /** A JavaFX controller for the dungeon. */
 public class GameController {
+  public static final double CELL_SIZE = 32;
+  public static final double LOOP_INTERVAL_MS = 500;
 
-  @FXML private GridPane squares;
+  // @FXML private GridPane squares;
+  @FXML private AnchorPane dungeonPane;
 
   private Game game;
   private Set<KeyCode> keysPressed;
@@ -46,7 +50,10 @@ public class GameController {
 
     for (int x = 0; x < game.getWidth(); x++) {
       for (int y = 0; y < game.getHeight(); y++) {
-        squares.add(new ImageView(ground), x, y);
+        ImageView g = new ImageView(ground);
+        dungeonPane.getChildren().add(g);
+        g.setTranslateX(x * CELL_SIZE);
+        g.setTranslateY(y * CELL_SIZE);
       }
     }
 
@@ -55,7 +62,7 @@ public class GameController {
     Timeline timeline =
         new Timeline(
             new KeyFrame(
-                Duration.millis(500),
+                Duration.millis(LOOP_INTERVAL_MS),
                 event -> {
                   try {
                     this.keysPressed.clear();
@@ -75,7 +82,7 @@ public class GameController {
                       controller = new GameOverController("You died!");
                     }
                     try {
-                      Stage stage = (Stage) squares.getScene().getWindow();
+                      Stage stage = (Stage) dungeonPane.getScene().getWindow();
                       FXMLLoader loader =
                           new FXMLLoader(getClass().getResource("GameOverView.fxml"));
                       loader.setController(controller);
@@ -115,9 +122,11 @@ public class GameController {
   public void setupMapObject(MapObject mapObject) {
     Image img = new Image(getClass().getResourceAsStream("/images/" + mapObject.getImage()));
     ImageView node = new ImageView(img);
-    GridPane.setColumnIndex(node, mapObject.getCell().getX());
-    GridPane.setRowIndex(node, mapObject.getCell().getY());
-    squares.getChildren().add(node);
+    // AnchorPane.setLeftAnchor(node, mapObject.getCell().getX() * CELL_SIZE);
+    // AnchorPane.setTopAnchor(node, mapObject.getCell().getY() * CELL_SIZE);
+    dungeonPane.getChildren().add(node);
+    node.setTranslateX(mapObject.getCell().getX() * CELL_SIZE);
+    node.setTranslateY(mapObject.getCell().getY() * CELL_SIZE);
     mapObject
         .cell()
         .addListener(
@@ -127,10 +136,26 @@ public class GameController {
                   ObservableValue<? extends Cell> observable, Cell oldValue, Cell newValue) {
                 if (newValue != null) {
                   node.setVisible(true);
-                  GridPane.setColumnIndex(node, newValue.getX());
-                  GridPane.setRowIndex(node, newValue.getY());
+                  if (oldValue == null) {
+                    node.setTranslateX(newValue.getX() * CELL_SIZE);
+                    node.setTranslateY(newValue.getY() * CELL_SIZE);
+                  } else {
+                    TranslateTransition tt =
+                        new TranslateTransition(Duration.millis(LOOP_INTERVAL_MS), node);
+                    tt.setFromX(oldValue.getX() * CELL_SIZE);
+                    tt.setFromY(oldValue.getY() * CELL_SIZE);
+                    tt.setToX(newValue.getX() * CELL_SIZE);
+                    tt.setToY(newValue.getY() * CELL_SIZE);
+                    tt.play();
+                  }
                 } else {
-                  node.setVisible(false);
+                  TranslateTransition tt =
+                      new TranslateTransition(Duration.millis(LOOP_INTERVAL_MS * 0.5), node);
+                  tt.setOnFinished(
+                      event -> {
+                        node.setVisible(false);
+                      });
+                  tt.play();
                 }
               }
             });
