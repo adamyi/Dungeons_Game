@@ -8,7 +8,7 @@ public class DirectionUtils {
     switch (direction) {
       case Direction.UP:
         return Direction.DOWN;
-        
+
       case Direction.RIGHT:
         return Direction.LEFT;
 
@@ -25,6 +25,7 @@ public class DirectionUtils {
 
   /**
    * Finds the direction of end relative to start
+   *
    * @param start
    * @param end
    * @return Direction if cells are adjacent, Direction.UNKNOWN if not adjacent

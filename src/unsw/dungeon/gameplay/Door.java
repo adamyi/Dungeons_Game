@@ -51,4 +51,9 @@ public class Door extends Terrain implements Pairable {
     if (this.getState(SharedConstants.DOOR_OPEN_STATE) == null) return new StringBuilder("D");
     return new StringBuilder("d");
   }
+
+  @Override
+  public String initialImage() {
+    return "closed_door.png";
+  }
 }

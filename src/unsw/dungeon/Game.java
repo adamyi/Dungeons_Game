@@ -11,6 +11,7 @@ class Game implements Observer {
   private HashMap<String, Pairable> pairs;
   private int height;
   private int width;
+  private GameController controller;
 
   public Game(int height, int width) {
     this.grid = new Cell[height][width];
@@ -18,7 +19,7 @@ class Game implements Observer {
     this.width = width;
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
-        this.grid[i][j] = new Cell(i * width + j);
+        this.grid[i][j] = new Cell(j, i);
       }
     }
     for (int i = 0; i < height; i++) {
@@ -38,6 +39,15 @@ class Game implements Observer {
     }
   }
 
+  public void setGameController(GameController gameController) {
+    this.controller = gameController;
+    for (MapObjectGroup group : this.mapObjectGroups.values()) {
+      for (int i = 0; i < group.getNumberOfMapObjects(); i++) {
+        controller.setupMapObject(group.getMapObject(i));
+      }
+    }
+  }
+
   public void addMapObject(
       Class<? extends MapObject> type, int y, int x, HashMap<String, Object> properties) {
     MapObject obj = this.mapObjectGroups.get(type).createNewMapObject(properties);
@@ -53,6 +63,9 @@ class Game implements Observer {
       }
     }
     obj.moveTo(grid[y][x]);
+    if (controller != null) {
+      controller.setupMapObject(obj);
+    }
   }
 
   public void setObjective(ObjectiveNode goal) {
@@ -61,6 +74,14 @@ class Game implements Observer {
 
   protected boolean hasWon() {
     return this.goal.hasWon(mapObjectGroups);
+  }
+
+  public int getHeight() {
+    return this.height;
+  }
+
+  public int getWidth() {
+    return this.width;
   }
 
   public void makeMove(int direction) {

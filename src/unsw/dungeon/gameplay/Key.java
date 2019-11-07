@@ -31,4 +31,9 @@ public class Key extends Collectible implements Pairable {
   protected StringBuilder printCLI() {
     return new StringBuilder("K");
   }
+
+  @Override
+  public String initialImage() {
+    return "key.png";
+  }
 }

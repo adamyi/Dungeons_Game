@@ -54,4 +54,9 @@ public class Portal extends Terrain implements Pairable {
   protected StringBuilder printCLI() {
     return new StringBuilder("O");
   }
+
+  @Override
+  public String initialImage() {
+    return "portal.png";
+  }
 }

@@ -16,4 +16,9 @@ public class Potion extends Collectible {
   protected StringBuilder printCLI() {
     return new StringBuilder("I");
   }
+
+  @Override
+  public String initialImage() {
+    return "brilliant_blue_new.png";
+  }
 }

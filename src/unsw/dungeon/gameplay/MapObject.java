@@ -1,16 +1,22 @@
 package unsw.dungeon.gameplay;
 
 import java.util.HashMap;
+import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import unsw.dungeon.MapObjectGroup;
 
 public abstract class MapObject {
   private HashMap<String, MapObjectState> states;
-  private Cell cell;
+  private ObjectProperty<Cell> cell;
+  private StringProperty image;
   private MapObjectGroup group;
 
   public MapObject() {
-    this.cell = null;
+    this.cell = new SimpleObjectProperty<Cell>(null);
     this.states = new HashMap<>();
+    this.image = new SimpleStringProperty(this.initialImage());
   }
 
   protected MapObjectGroup getMapObjectGroup() {
@@ -23,9 +29,23 @@ public abstract class MapObject {
 
   public void initProperties(HashMap<String, Object> properties) {}
 
-  public Cell getCell() {
+  public ObjectProperty<Cell> cell() {
     return cell;
   }
+
+  public StringProperty image() {
+    return image;
+  }
+
+  public Cell getCell() {
+    return cell.get();
+  }
+
+  public String getImage() {
+    return image.get();
+  }
+
+  public abstract String initialImage();
 
   protected void setState(MapObjectState state) {
     String name = state.getName();
@@ -78,10 +98,10 @@ public abstract class MapObject {
     if (!next.canWalkInto(this)) {
       return;
     }
-    if (cell != null) {
-      this.cell.removeMapObject(this);
+    if (getCell() != null) {
+      this.getCell().removeMapObject(this);
     }
-    this.cell = next;
+    this.cell.set(next);
     next.addMapObject(this);
     Player player = (Player) next.getMapObjectOfType(Player.class);
     if (player != null) {
@@ -90,16 +110,16 @@ public abstract class MapObject {
   }
 
   public void moveTo(int direction) {
-    if (cell != null && cell.getAdjacentCell(direction) != null)
-      this.moveTo(cell.getAdjacentCell(direction));
+    if (getCell() != null && getCell().getAdjacentCell(direction) != null)
+      this.moveTo(getCell().getAdjacentCell(direction));
   }
 
   protected abstract void playerInteraction(Cell start, Player player);
 
   protected void removeFromCell(Boolean decrementCounter) {
-    if (this.cell != null) {
-      this.cell.removeMapObject(this);
-      this.cell = null;
+    if (this.getCell() != null) {
+      this.getCell().removeMapObject(this);
+      this.cell.set(null);
     }
     if (decrementCounter) this.group.decrementCounter();
   }

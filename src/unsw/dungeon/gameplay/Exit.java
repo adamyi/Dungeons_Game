@@ -34,4 +34,9 @@ public class Exit extends Terrain implements AutonomousObject {
       }
     }
   }
+
+  @Override
+  public String initialImage() {
+    return "exit.png";
+  }
 }

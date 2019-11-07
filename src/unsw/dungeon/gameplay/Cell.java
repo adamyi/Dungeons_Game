@@ -7,10 +7,12 @@ public class Cell {
   private ArrayList<MapObject> mapObjects;
   private Cell[] adjacentCells;
 
-  private int id;
+  private int x;
+  private int y;
 
-  public Cell(int id) {
-    this.id = id;
+  public Cell(int x, int y) {
+    this.x = x;
+    this.y = y;
     mapObjects = new ArrayList<MapObject>();
     adjacentCells = new Cell[4];
     for (int i = 0; i < 4; i++) {
@@ -79,10 +81,18 @@ public class Cell {
     }
   }
 
+  public int getX() {
+    return x;
+  }
+
+  public int getY() {
+    return y;
+  }
+
   // we don't support map larger than 65535x65535
   @Override
   public int hashCode() {
-    return id;
+    return (x << 16) | y;
   }
 
   public StringBuilder printCLI() {

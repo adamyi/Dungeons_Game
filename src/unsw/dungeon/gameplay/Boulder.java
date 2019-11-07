@@ -36,4 +36,9 @@ public class Boulder extends Terrain {
   protected StringBuilder printCLI() {
     return new StringBuilder("B");
   }
+
+  @Override
+  public String initialImage() {
+    return "boulder.png";
+  }
 }

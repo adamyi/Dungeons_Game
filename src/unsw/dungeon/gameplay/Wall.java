@@ -19,4 +19,9 @@ public class Wall extends Terrain {
   protected StringBuilder printCLI() {
     return new StringBuilder("W");
   }
+
+  @Override
+  public String initialImage() {
+    return "brick_brown_0.png";
+  }
 }

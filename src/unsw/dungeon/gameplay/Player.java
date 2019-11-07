@@ -55,4 +55,9 @@ public class Player extends Entity {
   protected StringBuilder printCLI() {
     return new StringBuilder("P");
   }
+
+  @Override
+  public String initialImage() {
+    return "human_new.png";
+  }
 }

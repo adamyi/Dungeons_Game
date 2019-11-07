@@ -110,4 +110,9 @@ public class Enemy extends Entity implements AutonomousObject {
   protected StringBuilder printCLI() {
     return new StringBuilder("E");
   }
+
+  @Override
+  public String initialImage() {
+    return "deep_elf_master_archer.png";
+  }
 }
