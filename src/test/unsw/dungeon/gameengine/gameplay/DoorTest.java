@@ -1,20 +1,14 @@
-package unsw.dungeon.gameplay;
+package unsw.dungeon.gameengine.gameplay;
 
 import org.junit.Test;
-
-import unsw.dungeon.MapObjectGroup;
-import unsw.dungeon.gameplay.Cell;
-import unsw.dungeon.gameplay.Direction;
-import unsw.dungeon.gameplay.Door;
-import unsw.dungeon.gameplay.Player;
-
+import unsw.dungeon.gameengine.MapObjectGroup;
 
 public class DoorTest {
 
   @Test
   public void lockedTest() {
-    Cell playerCell = new Cell(0);
-    Cell doorCell = new Cell(1);
+    Cell playerCell = new Cell(0, 0);
+    Cell doorCell = new Cell(0, 1);
     Player player = new Player();
     MapObjectGroup<Door> doorGroup = new MapObjectGroup<Door>(Door::new);
     Door door = doorGroup.createNewMapObject(null);
@@ -24,9 +18,9 @@ public class DoorTest {
     doorCell.setAdjacentCell(Direction.LEFT, playerCell);
 
     player.moveTo(playerCell);
-    assert(player.getCell() == playerCell);
+    assert (player.getCell() == playerCell);
     door.moveTo(doorCell);
-    assert(door.getCell() == doorCell);
+    assert (door.getCell() == doorCell);
 
     Key key = new Key();
     key.setPair(door);
@@ -49,13 +43,11 @@ public class DoorTest {
     // player acquires key
     System.err.println(key.getCell());
     player.addToInventory(key);
-    assert(player.hasObjectInInventory(key));
+    assert (player.hasObjectInInventory(key));
 
     // player enters door
     player.moveTo(doorCell);
-    assert(player.getCell() == doorCell);
-    assert(door.getState("door_open_state") != null);
-
-
+    assert (player.getCell() == doorCell);
+    assert (door.getState("door_open_state") != null);
   }
 }

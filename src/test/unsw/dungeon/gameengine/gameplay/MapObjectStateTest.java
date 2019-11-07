@@ -1,11 +1,6 @@
-package unsw.dungeon.gameplay;
+package unsw.dungeon.gameengine.gameplay;
 
 import org.junit.Test;
-
-import unsw.dungeon.gameplay.Cell;
-import unsw.dungeon.gameplay.MapObject;
-import unsw.dungeon.gameplay.MapObjectState;
-import unsw.dungeon.gameplay.Player;
 
 public class MapObjectStateTest {
   class TestMapObject extends MapObject {
@@ -31,6 +26,11 @@ public class MapObjectStateTest {
     @Override
     protected StringBuilder printCLI() {
       return new StringBuilder("T");
+    }
+
+    @Override
+    public String initialImage() {
+      return "deep_elf_master_archer.png";
     }
   }
 
@@ -61,5 +61,4 @@ public class MapObjectStateTest {
     assert (test.getState("state3") == null);
     assert (test.getState("state4") == null);
   }
-
 }

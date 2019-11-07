@@ -1,20 +1,15 @@
-package unsw.dungeon.gameplay;
+package unsw.dungeon.gameengine.gameplay;
 
 import org.junit.Test;
-
-import unsw.dungeon.MapObjectGroup;
-import unsw.dungeon.gameplay.Cell;
-import unsw.dungeon.gameplay.Direction;
-import unsw.dungeon.gameplay.Boulder;
-import unsw.dungeon.gameplay.Player;
+import unsw.dungeon.gameengine.MapObjectGroup;
 
 public class BoulderMoveTest {
   @Test
   public void playerMoveBoulder() {
-    Cell playerCell = new Cell(0);
-    Cell boulderCell = new Cell(1);
-    Cell emptyCellRight = new Cell(2);
-    Cell otherDirectionCell= new Cell(3);
+    Cell playerCell = new Cell(0, 0);
+    Cell boulderCell = new Cell(0, 1);
+    Cell emptyCellRight = new Cell(0, 2);
+    Cell otherDirectionCell = new Cell(0, 3);
     Player player = new Player();
     MapObjectGroup<Boulder> boulderGroup = new MapObjectGroup<Boulder>(Boulder::new);
     Boulder boulder = boulderGroup.createNewMapObject(null);
@@ -37,18 +32,16 @@ public class BoulderMoveTest {
     assert (player.getCell() == boulderCell);
     assert (boulder.getCell() == emptyCellRight);
     assert (emptyCellRight.getNumberOfMapObjects() == 1);
-
-
   }
 
   // cannot move if 2 boulder are in a line
-  @Test 
+  @Test
   public void playerCannotMoveBoulder() {
-    Cell playerCell = new Cell(0);
-    Cell boulderCell1 = new Cell(1);
-    Cell boulderCell2 = new Cell(2);
-    Cell otherDirectionCell1 = new Cell(3);
-    Cell otherDirectionCell2 = new Cell(4);
+    Cell playerCell = new Cell(0, 0);
+    Cell boulderCell1 = new Cell(0, 1);
+    Cell boulderCell2 = new Cell(0, 2);
+    Cell otherDirectionCell1 = new Cell(0, 3);
+    Cell otherDirectionCell2 = new Cell(0, 4);
     Player player = new Player();
     MapObjectGroup<Boulder> boulderGroup = new MapObjectGroup<Boulder>(Boulder::new);
     Boulder boulder1 = boulderGroup.createNewMapObject(null);
@@ -80,6 +73,5 @@ public class BoulderMoveTest {
     assert (player.getCell() == playerCell);
     assert (boulder1.getCell() == boulderCell1);
     assert (boulder2.getCell() == boulderCell2);
-
   }
 }

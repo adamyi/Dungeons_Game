@@ -1,37 +1,21 @@
-package unsw.dungeon.gameplay;
+package unsw.dungeon.gameengine.gameplay;
 
 import java.util.HashMap;
-
 import org.junit.Test;
-
-import unsw.dungeon.MapObjectGroup;
-import unsw.dungeon.SharedConstants;
-import unsw.dungeon.gameplay.Boulder;
-import unsw.dungeon.gameplay.Cell;
-import unsw.dungeon.gameplay.Direction;
-import unsw.dungeon.gameplay.Enemy;
-import unsw.dungeon.gameplay.Exit;
-import unsw.dungeon.gameplay.FloorSwitch;
-import unsw.dungeon.gameplay.Key;
-import unsw.dungeon.gameplay.MapObject;
-import unsw.dungeon.gameplay.Player;
-import unsw.dungeon.gameplay.Potion;
-import unsw.dungeon.gameplay.Sword;
-import unsw.dungeon.gameplay.Treasure;
-import unsw.dungeon.gameplay.Wall;
-import unsw.dungeon.objectives.FOLAndObjectiveNode;
-import unsw.dungeon.objectives.FOLOrObjectiveNode;
-import unsw.dungeon.objectives.LeafObjectiveNode;
-import unsw.dungeon.objectives.ObjectiveNode;
+import unsw.dungeon.gameengine.MapObjectGroup;
+import unsw.dungeon.gameengine.SharedConstants;
+import unsw.dungeon.gameengine.objectives.FOLAndObjectiveNode;
+import unsw.dungeon.gameengine.objectives.FOLOrObjectiveNode;
+import unsw.dungeon.gameengine.objectives.LeafObjectiveNode;
 
 public class WinningConditionTest {
   @Test
   public void victoryByTreasure() {
-    Cell playerCell = new Cell(0);
-    Cell treasureCell1 = new Cell(1);
-    Cell treasureCell2 = new Cell(2);
-    Cell treasureCell3 = new Cell(3);
-    
+    Cell playerCell = new Cell(0, 0);
+    Cell treasureCell1 = new Cell(0, 1);
+    Cell treasureCell2 = new Cell(0, 2);
+    Cell treasureCell3 = new Cell(0, 3);
+
     Player player = new Player();
 
     // P T T T
@@ -46,7 +30,7 @@ public class WinningConditionTest {
     Treasure treasure1 = treasureGroup.createNewMapObject(null);
     Treasure treasure2 = treasureGroup.createNewMapObject(null);
     Treasure treasure3 = treasureGroup.createNewMapObject(null);
-    
+
     assert (treasureGroup.getCounter() == 3);
 
     assert (treasure1.getMapObjectGroup() == treasureGroup);
@@ -76,11 +60,11 @@ public class WinningConditionTest {
 
   @Test
   public void victoryBySlaughter() {
-    Cell playerCell = new Cell(0);
-    Cell enemyCell1 = new Cell(1);
-    Cell enemyCell2 = new Cell(2);
-    Cell enemyCell3 = new Cell(3);
-    
+    Cell playerCell = new Cell(0, 0);
+    Cell enemyCell1 = new Cell(0, 1);
+    Cell enemyCell2 = new Cell(0, 2);
+    Cell enemyCell3 = new Cell(0, 3);
+
     Player player = new Player();
 
     // P T T T
@@ -95,7 +79,7 @@ public class WinningConditionTest {
     Enemy enemy1 = enemyGroup.createNewMapObject(null);
     Enemy enemy2 = enemyGroup.createNewMapObject(null);
     Enemy enemy3 = enemyGroup.createNewMapObject(null);
-    
+
     assert (enemyGroup.getCounter() == 3);
 
     assert (enemy1.getMapObjectGroup() == enemyGroup);
@@ -129,8 +113,8 @@ public class WinningConditionTest {
 
   @Test
   public void victoryByEscape() {
-    Cell playerCell = new Cell(0);
-    Cell exitCell = new Cell(1);
+    Cell playerCell = new Cell(0, 0);
+    Cell exitCell = new Cell(0, 1);
 
     Player player = new Player();
 
@@ -163,14 +147,14 @@ public class WinningConditionTest {
   @Test
   public void victoryByIndianaJones() {
     // P B1 S1 #1 #2 B1 S1 #3
-    Cell playerCell = new Cell(0);
-    Cell boulderCell1 = new Cell(1);
-    Cell floorSwitchCell1 = new Cell(2);
-    Cell emptyCell1 = new Cell(3);
-    Cell emptyCell2 = new Cell(4);
-    Cell boulderCell2 = new Cell(5);
-    Cell floorSwitchCell2 = new Cell(6);
-    Cell emptyCell3 = new Cell(7);
+    Cell playerCell = new Cell(0, 0);
+    Cell boulderCell1 = new Cell(0, 1);
+    Cell floorSwitchCell1 = new Cell(0, 2);
+    Cell emptyCell1 = new Cell(0, 3);
+    Cell emptyCell2 = new Cell(0, 4);
+    Cell boulderCell2 = new Cell(0, 5);
+    Cell floorSwitchCell2 = new Cell(0, 6);
+    Cell emptyCell3 = new Cell(0, 7);
 
     playerCell.setAdjacentCell(Direction.RIGHT, boulderCell1);
     boulderCell1.setAdjacentCell(Direction.LEFT, playerCell);
@@ -195,8 +179,9 @@ public class WinningConditionTest {
     Player player = new Player();
     Boulder boulder1 = new Boulder();
     Boulder boulder2 = new Boulder();
-    
-    MapObjectGroup<FloorSwitch> floorSwitchGroup = new MapObjectGroup<FloorSwitch>(FloorSwitch::new);
+
+    MapObjectGroup<FloorSwitch> floorSwitchGroup =
+        new MapObjectGroup<FloorSwitch>(FloorSwitch::new);
     FloorSwitch floorSwitch1 = floorSwitchGroup.createNewMapObject(null);
     FloorSwitch floorSwitch2 = floorSwitchGroup.createNewMapObject(null);
 
@@ -263,7 +248,7 @@ public class WinningConditionTest {
     orNode.addChild(a);
     orNode.addChild(b);
 
-    HashMap<Class<? extends MapObject>, MapObjectGroup> mapObjectGroups = new HashMap(); 
+    HashMap<Class<? extends MapObject>, MapObjectGroup> mapObjectGroups = new HashMap();
     mapObjectGroups.put(Treasure.class, treasureGroup);
     mapObjectGroups.put(Enemy.class, enemyGroup);
 
@@ -281,7 +266,7 @@ public class WinningConditionTest {
     assert (orNode.hasWon(mapObjectGroups) == false);
 
     treasureGroup.decrementCounter();
-    
+
     assert (andNode.hasWon(mapObjectGroups) == false);
     assert (orNode.hasWon(mapObjectGroups) == true);
   }

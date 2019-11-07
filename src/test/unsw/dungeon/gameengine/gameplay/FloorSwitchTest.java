@@ -1,23 +1,18 @@
-package unsw.dungeon.gameplay;
+package unsw.dungeon.gameengine.gameplay;
 
 import org.junit.Test;
-
-import unsw.dungeon.MapObjectGroup;
-import unsw.dungeon.gameplay.Boulder;
-import unsw.dungeon.gameplay.Cell;
-import unsw.dungeon.gameplay.Direction;
-import unsw.dungeon.gameplay.FloorSwitch;
-import unsw.dungeon.gameplay.Player;
+import unsw.dungeon.gameengine.MapObjectGroup;
 
 public class FloorSwitchTest {
   @Test
   public void entityCanWalkIntoFloorSwitch() {
-    Cell playerCell = new Cell(0);
-    Cell boulderCell = new Cell(1);
-    Cell floorSwitchCell = new Cell(2);
-    Cell emptyCell = new Cell(3);
+    Cell playerCell = new Cell(0, 0);
+    Cell boulderCell = new Cell(0, 1);
+    Cell floorSwitchCell = new Cell(0, 2);
+    Cell emptyCell = new Cell(0, 3);
     Player player = new Player();
-    MapObjectGroup<FloorSwitch> floorSwitchGroup = new MapObjectGroup<FloorSwitch>(FloorSwitch::new);
+    MapObjectGroup<FloorSwitch> floorSwitchGroup =
+        new MapObjectGroup<FloorSwitch>(FloorSwitch::new);
     FloorSwitch floorSwitch = floorSwitchGroup.createNewMapObject(null);
     floorSwitch.addToMapObjectGroup(floorSwitchGroup);
 
@@ -53,6 +48,4 @@ public class FloorSwitchTest {
     floorSwitch.act();
     assert (floorSwitch.getState("floorswitch_active_state") != null);
   }
-
-  
 }

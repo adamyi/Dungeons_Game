@@ -1,27 +1,18 @@
-package unsw.dungeon.gameplay;
+package unsw.dungeon.gameengine.gameplay;
 
 import org.junit.Test;
-
-import unsw.dungeon.MapObjectGroup;
-import unsw.dungeon.gameplay.Cell;
-import unsw.dungeon.gameplay.Collectible;
-import unsw.dungeon.gameplay.Direction;
-import unsw.dungeon.gameplay.Key;
-import unsw.dungeon.gameplay.Player;
-import unsw.dungeon.gameplay.Potion;
-import unsw.dungeon.gameplay.Sword;
-import unsw.dungeon.gameplay.Treasure;
+import unsw.dungeon.gameengine.MapObjectGroup;
 
 public class CollectiblesAddedToInventoryTest {
   @Test
   public void addCollectiblesToInventory() {
-    Cell playerCell = new Cell(0);
-    Cell keyCell = new Cell(1);
-    Cell potionCell = new Cell(2);
-    Cell swordCell = new Cell(3);
-    Cell treasureCell = new Cell(4);
+    Cell playerCell = new Cell(0, 0);
+    Cell keyCell = new Cell(0, 1);
+    Cell potionCell = new Cell(0, 2);
+    Cell swordCell = new Cell(0, 3);
+    Cell treasureCell = new Cell(0, 4);
     Player player = new Player();
-    
+
     MapObjectGroup<Key> keyGroup = new MapObjectGroup<Key>(Key::new);
     Key key = new Key();
     key.addToMapObjectGroup(keyGroup);

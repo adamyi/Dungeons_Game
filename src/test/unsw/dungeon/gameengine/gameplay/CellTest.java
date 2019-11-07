@@ -1,10 +1,6 @@
-package unsw.dungeon.gameplay;
+package unsw.dungeon.gameengine.gameplay;
 
 import org.junit.Test;
-
-import unsw.dungeon.gameplay.Cell;
-import unsw.dungeon.gameplay.MapObject;
-import unsw.dungeon.gameplay.Player;
 
 public class CellTest {
 
@@ -34,6 +30,11 @@ public class CellTest {
     protected StringBuilder printCLI() {
       return new StringBuilder("T");
     }
+
+    @Override
+    public String initialImage() {
+      return "deep_elf_master_archer.png";
+    }
   }
 
   protected class MapObjectChild1 extends MapObject {
@@ -52,6 +53,11 @@ public class CellTest {
     @Override
     protected StringBuilder printCLI() {
       return new StringBuilder("T");
+    }
+
+    @Override
+    public String initialImage() {
+      return "deep_elf_master_archer.png";
     }
   }
 
@@ -72,12 +78,17 @@ public class CellTest {
     protected StringBuilder printCLI() {
       return new StringBuilder("T");
     }
+
+    @Override
+    public String initialImage() {
+      return "deep_elf_master_archer.png";
+    }
   }
 
   // test adding and removing from mapObject ArrayList
   @Test
   public void arrayListMapObjectTest() {
-    Cell testCell = new Cell(0);
+    Cell testCell = new Cell(0, 0);
 
     TestMapObject first = new TestMapObject(null);
     TestMapObject second = new TestMapObject(null);
@@ -114,7 +125,7 @@ public class CellTest {
 
   @Test
   public void getMapObjectOfTypeTest() {
-    Cell testCell = new Cell(0);
+    Cell testCell = new Cell(0, 0);
 
     MapObjectChild1 first = new MapObjectChild1();
     MapObjectChild1 second = new MapObjectChild1();
@@ -152,12 +163,11 @@ public class CellTest {
     assert (testCell.getMapObjectOfType(TestMapObject.class) == null);
     assert (testCell.getMapObjectOfType(MapObjectChild1.class) == null);
     assert (testCell.getMapObjectOfType(MapObjectChild2.class) != null);
-
   }
 
   @Test
   public void canWalkIntoTest() {
-    Cell testCell = new Cell(0);
+    Cell testCell = new Cell(0, 0);
 
     // empty test
     assert (testCell.canWalkInto(null) == true);
@@ -185,7 +195,7 @@ public class CellTest {
 
   @Test
   public void playerInteractionTest() {
-    Cell testCell = new Cell(0);
+    Cell testCell = new Cell(0, 0);
 
     TestMapObject first = new TestMapObject(true);
     TestMapObject second = new TestMapObject(true);

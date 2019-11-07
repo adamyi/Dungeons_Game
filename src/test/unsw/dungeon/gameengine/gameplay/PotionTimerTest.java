@@ -1,26 +1,18 @@
-package unsw.dungeon.gameplay;
+package unsw.dungeon.gameengine.gameplay;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
-
 import org.junit.Test;
-
-import unsw.dungeon.MapObjectGroup;
-import unsw.dungeon.SharedConstants;
-import unsw.dungeon.gameplay.Cell;
-import unsw.dungeon.gameplay.Collectible;
-import unsw.dungeon.gameplay.Direction;
-import unsw.dungeon.gameplay.Player;
-import unsw.dungeon.gameplay.Potion;
+import unsw.dungeon.gameengine.MapObjectGroup;
+import unsw.dungeon.gameengine.SharedConstants;
 
 public class PotionTimerTest {
   @Test
   public void potionTimerTest() {
-    Cell playerCell = new Cell(0);
-    Cell potionCell = new Cell(1);
+    Cell playerCell = new Cell(0, 0);
+    Cell potionCell = new Cell(0, 1);
     Player player = new Player();
-    
+
     MapObjectGroup<Potion> potionGroup = new MapObjectGroup<Potion>(Potion::new);
     Potion potion = potionGroup.createNewMapObject(null);
     potion.addToMapObjectGroup(potionGroup);
@@ -39,7 +31,7 @@ public class PotionTimerTest {
     LocalDateTime start = LocalDateTime.now();
     potion.use();
     while (player.getState(SharedConstants.PLAYER_INVINCIBLE_STATE) != null) {
-      //Thread.sleep(500);
+      // Thread.sleep(500);
     }
     LocalDateTime end = LocalDateTime.now();
 

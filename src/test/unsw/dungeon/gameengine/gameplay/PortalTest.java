@@ -1,20 +1,14 @@
-package unsw.dungeon.gameplay;
+package unsw.dungeon.gameengine.gameplay;
 
 import org.junit.Test;
-
-import unsw.dungeon.MapObjectGroup;
-import unsw.dungeon.gameplay.Cell;
-import unsw.dungeon.gameplay.Direction;
-import unsw.dungeon.gameplay.Portal;
-import unsw.dungeon.gameplay.Player;
 
 public class PortalTest {
   @Test
   public void entityCanWalkIntoPortal() {
-    Cell playerCell = new Cell(0);
-    Cell portalCell1 = new Cell(1);
-    Cell portalCell2 = new Cell(2);
-    Cell emptyCell = new Cell(3);
+    Cell playerCell = new Cell(0, 0);
+    Cell portalCell1 = new Cell(0, 1);
+    Cell portalCell2 = new Cell(0, 2);
+    Cell emptyCell = new Cell(0, 3);
     Player player = new Player();
     Portal portal1 = new Portal();
     Portal portal2 = new Portal();
@@ -45,6 +39,4 @@ public class PortalTest {
     assert (portal1.getCell() == portalCell1);
     assert (portal2.getCell() == portalCell2);
   }
-
-  
 }

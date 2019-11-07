@@ -1,25 +1,13 @@
-package unsw.dungeon.gameplay;
+package unsw.dungeon.gameengine.gameplay;
 
 import org.junit.Test;
-
-import unsw.dungeon.MapObjectGroup;
-import unsw.dungeon.SharedConstants;
-import unsw.dungeon.gameplay.Cell;
-import unsw.dungeon.gameplay.Direction;
-import unsw.dungeon.gameplay.Enemy;
-import unsw.dungeon.gameplay.Key;
-import unsw.dungeon.gameplay.Player;
-import unsw.dungeon.gameplay.Potion;
-import unsw.dungeon.gameplay.Sword;
-import unsw.dungeon.gameplay.Treasure;
-import unsw.dungeon.gameplay.Wall;
 
 public class WallTest {
   @Test
   public void walkIntoWalls() {
-    Cell playerCell = new Cell(0);
-    Cell enemyCell = new Cell(1);
-    Cell wallCell = new Cell(2);
+    Cell playerCell = new Cell(0, 0);
+    Cell enemyCell = new Cell(0, 1);
+    Cell wallCell = new Cell(0, 2);
 
     Player player = new Player();
     Enemy enemy = new Enemy();
