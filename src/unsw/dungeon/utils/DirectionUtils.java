@@ -1,14 +1,14 @@
 package unsw.dungeon.utils;
 
-import unsw.dungeon.gameplay.Cell;
-import unsw.dungeon.gameplay.Direction;
+import unsw.dungeon.gameengine.gameplay.Cell;
+import unsw.dungeon.gameengine.gameplay.Direction;
 
 public class DirectionUtils {
   public static int getOppositeDirection(int direction) {
     switch (direction) {
       case Direction.UP:
         return Direction.DOWN;
-        
+
       case Direction.RIGHT:
         return Direction.LEFT;
 
@@ -25,6 +25,7 @@ public class DirectionUtils {
 
   /**
    * Finds the direction of end relative to start
+   *
    * @param start
    * @param end
    * @return Direction if cells are adjacent, Direction.UNKNOWN if not adjacent
