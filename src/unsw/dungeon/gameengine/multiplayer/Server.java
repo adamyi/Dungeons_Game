@@ -19,12 +19,13 @@ public class Server implements Runnable, Observer {
   Game game;
   DatagramSocket serverSocket;
 
-  public Server(Game game) {
+  public Server(Game game, int serverPort) {
     ip2players = new HashMap<String, Player>();
     this.game = game;
-    int serverPort = 6789;
     try {
       serverSocket = new DatagramSocket(serverPort);
+      game.setSocket(serverSocket);
+      System.out.printf("Listening on port %d\n", serverPort);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -101,6 +102,7 @@ public class Server implements Runnable, Observer {
       byte[] receiveData = new byte[1024];
 
       while (true) {
+        if (!game.isRunning()) break;
         // receive UDP datagram
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         serverSocket.receive(receivePacket);
@@ -149,5 +151,6 @@ public class Server implements Runnable, Observer {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    serverSocket.close();
   }
 }

@@ -20,7 +20,17 @@ public class GameLoader {
   private HashMap<String, Class<? extends MapObject>> objectiveStringToMapObjectClass;
 
   public GameLoader(String filename) throws FileNotFoundException {
-    json = new JSONObject(new JSONTokener(getClass().getResourceAsStream("/dungeons/" + filename)));
+    this.json =
+        new JSONObject(new JSONTokener(getClass().getResourceAsStream("/dungeons/" + filename)));
+    this.init();
+  }
+
+  public GameLoader(JSONObject json) {
+    this.json = json;
+    this.init();
+  }
+
+  private void init() {
     MapObjectHelper moh = new MapObjectHelper();
     this.typeToMapObjectClass = moh.getMapObjectStringToClass();
     this.objectiveStringToMapObjectClass = moh.getObjectiveStringToClass();

@@ -1,8 +1,12 @@
 package unsw.dungeon.scenes;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.stage.Stage;
 
 public class GameOverController {
 
@@ -24,7 +28,16 @@ public class GameOverController {
 
   @FXML
   public void handleBackButton() {
-    System.out.println("clicked back");
+    try {
+      Stage stage = (Stage) winLabel.getScene().getWindow();
+      FXMLLoader loader = new FXMLLoader(getClass().getResource("ModeSelectView.fxml"));
+      loader.setController(new ModeSelectController());
+      Parent root = loader.load();
+      Scene scene = new Scene(root);
+      stage.setScene(scene);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   @FXML

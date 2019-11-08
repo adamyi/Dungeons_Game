@@ -1,5 +1,6 @@
 package unsw.dungeon.gameengine;
 
+import java.net.DatagramSocket;
 import java.util.HashMap;
 import javafx.application.Platform;
 import unsw.dungeon.gameengine.gameplay.*;
@@ -21,19 +22,21 @@ public class Game implements Observer {
   private Server server;
   private Client client;
   private Thread mpThread;
+  private Boolean running;
+  private DatagramSocket socket;
 
-  public Game() {
+  public Game(String server, int port) {
     this.height = 0;
     this.width = 0;
     init();
-    this.client = new Client(this, "localhost", 6789);
+    this.client = new Client(this, server, port);
     mpThread = new Thread(client);
   }
 
   public Game(int height, int width) {
     init();
     setUpGrid(height, width);
-    this.server = new Server(this);
+    this.server = new Server(this, 6789);
     mpThread = new Thread(server);
   }
 
@@ -42,6 +45,7 @@ public class Game implements Observer {
   }
 
   private void init() {
+    this.running = true;
     MapObjectHelper moh = new MapObjectHelper();
     this.mapObjectGroups = moh.newMapObjectGroups();
     this.pairs = new HashMap<>();
@@ -93,14 +97,16 @@ public class Game implements Observer {
       int id, Class<? extends MapObject> type, int y, int x, HashMap<String, Object> properties) {
     MapObject obj = this.mapObjectGroups.get(type).createNewMapObject(properties);
     if (Pairable.class.isInstance(obj)) {
-      Pairable p = (Pairable) obj;
-      String pk = String.format("%s_%d", p.getPairType(), (int) properties.get("id"));
-      Pairable pp = pairs.get(pk);
-      if (pp != null) {
-        pp.setPair(p);
-        p.setPair(pp);
-      } else {
-        pairs.put(pk, p);
+      if (properties != null) {
+        Pairable p = (Pairable) obj;
+        String pk = String.format("%s_%d", p.getPairType(), (int) properties.get("id"));
+        Pairable pp = pairs.get(pk);
+        if (pp != null) {
+          pp.setPair(p);
+          p.setPair(pp);
+        } else {
+          pairs.put(pk, p);
+        }
       }
     }
     obj.setId(id);
@@ -210,6 +216,8 @@ public class Game implements Observer {
     if (server != null) {
       server.gameOver(hasWon);
     }
+    this.running = false;
+    if (this.socket != null) this.socket.close();
     if (controller != null) {
       Platform.runLater(
           () -> {
@@ -218,6 +226,14 @@ public class Game implements Observer {
     } else {
       throw new GameOverException(hasWon);
     }
+  }
+
+  public Boolean isRunning() {
+    return this.running;
+  }
+
+  public void setSocket(DatagramSocket socket) {
+    this.socket = socket;
   }
 
   @Override

@@ -25,6 +25,7 @@ public class Client implements Runnable {
       this.game = game;
       this.serverPort = port;
       clientSocket = new DatagramSocket();
+      game.setSocket(clientSocket);
     } catch (Exception e) {
       throw new RuntimeException(e);
     }
@@ -76,6 +77,7 @@ public class Client implements Runnable {
       byte[] receiveData = new byte[1024];
 
       while (true) {
+        if (!game.isRunning()) break;
         // receive UDP datagram
         DatagramPacket receivePacket = new DatagramPacket(receiveData, receiveData.length);
         clientSocket.receive(receivePacket);
@@ -112,5 +114,6 @@ public class Client implements Runnable {
     } catch (Exception e) {
       e.printStackTrace();
     }
+    clientSocket.close();
   }
 }
