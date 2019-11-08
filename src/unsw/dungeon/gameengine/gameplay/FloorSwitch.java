@@ -50,4 +50,9 @@ public class FloorSwitch extends Terrain implements AutonomousObject {
   public String initialImage() {
     return "pressure_plate.png";
   }
+
+  @Override
+  public double viewOrder() {
+    return 2000;
+  }
 }
