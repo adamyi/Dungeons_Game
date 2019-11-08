@@ -1,20 +1,60 @@
 package unsw.dungeon.gameengine;
 
 import java.util.HashMap;
+import javafx.application.Platform;
 import unsw.dungeon.gameengine.gameplay.*;
+import unsw.dungeon.gameengine.multiplayer.Client;
+import unsw.dungeon.gameengine.multiplayer.Server;
 import unsw.dungeon.gameengine.objectives.ObjectiveNode;
 import unsw.dungeon.scenes.GameController;
 
 public class Game implements Observer {
   private Cell[][] grid;
   private HashMap<Class<? extends MapObject>, MapObjectGroup> mapObjectGroups;
+  private HashMap<Integer, MapObject> mapObjects;
   private ObjectiveNode goal;
   private HashMap<String, Pairable> pairs;
   private int height;
   private int width;
+  private int objCount;
   private GameController controller;
+  private Server server;
+  private Client client;
+  private Thread mpThread;
+
+  public Game() {
+    this.height = 0;
+    this.width = 0;
+    init();
+    this.client = new Client(this, "localhost", 6789);
+    mpThread = new Thread(client);
+  }
 
   public Game(int height, int width) {
+    init();
+    setUpGrid(height, width);
+    this.server = new Server(this);
+    mpThread = new Thread(server);
+  }
+
+  public void mpStart() {
+    mpThread.start();
+  }
+
+  private void init() {
+    MapObjectHelper moh = new MapObjectHelper();
+    this.mapObjectGroups = moh.newMapObjectGroups();
+    this.pairs = new HashMap<>();
+    HashMap<String, Class<? extends MapObject>> objToClass = moh.getObjectiveStringToClass();
+    for (Class<? extends MapObject> cls : objToClass.values()) {
+      mapObjectGroups.get(cls).attach(this);
+    }
+    mapObjectGroups.get(Player.class).attach(this);
+    this.objCount = 0;
+    this.mapObjects = new HashMap<>();
+  }
+
+  public void setUpGrid(int height, int width) {
     this.grid = new Cell[height][width];
     this.height = height;
     this.width = width;
@@ -31,13 +71,6 @@ public class Game implements Observer {
         if (j < width - 1) this.grid[i][j].setAdjacentCell(Direction.RIGHT, this.grid[i][j + 1]);
       }
     }
-    MapObjectHelper moh = new MapObjectHelper();
-    this.mapObjectGroups = moh.newMapObjectGroups();
-    this.pairs = new HashMap<>();
-    HashMap<String, Class<? extends MapObject>> objToClass = moh.getObjectiveStringToClass();
-    for (Class<? extends MapObject> cls : objToClass.values()) {
-      mapObjectGroups.get(cls).attach(this);
-    }
   }
 
   public void setGameController(GameController gameController) {
@@ -49,8 +82,15 @@ public class Game implements Observer {
     }
   }
 
-  public void addMapObject(
+  public MapObject addMapObject(
       Class<? extends MapObject> type, int y, int x, HashMap<String, Object> properties) {
+    MapObject obj = addMapObject(this.objCount, type, y, x, properties);
+    this.objCount++;
+    return obj;
+  }
+
+  public MapObject addMapObject(
+      int id, Class<? extends MapObject> type, int y, int x, HashMap<String, Object> properties) {
     MapObject obj = this.mapObjectGroups.get(type).createNewMapObject(properties);
     if (Pairable.class.isInstance(obj)) {
       Pairable p = (Pairable) obj;
@@ -63,10 +103,40 @@ public class Game implements Observer {
         pairs.put(pk, p);
       }
     }
+    obj.setId(id);
+    this.mapObjects.put(id, obj);
     obj.moveTo(grid[y][x]);
     if (controller != null) {
-      controller.setupMapObject(obj);
+      Platform.runLater(
+          () -> {
+            controller.setupMapObject(obj);
+          });
     }
+    if (server != null) {
+      obj.attach(server);
+    }
+    return obj;
+  }
+
+  public MapObject getMapObjectOfId(int id) {
+    return this.mapObjects.get(id);
+  }
+
+  public Player clonePlayer() {
+    Player localplayer = (Player) mapObjectGroups.get(Player.class).getMapObject();
+    Player newplayer =
+        (Player)
+            this.addMapObject(
+                Player.class, localplayer.getCell().getY(), localplayer.getCell().getX(), null);
+    return newplayer;
+  }
+
+  public Cell getCell(int x, int y) {
+    return grid[y][x];
+  }
+
+  public HashMap<Class<? extends MapObject>, MapObjectGroup> getMapObjectGroups() {
+    return mapObjectGroups;
   }
 
   public void setObjective(ObjectiveNode goal) {
@@ -86,8 +156,12 @@ public class Game implements Observer {
   }
 
   public void makeMove(int direction) {
-    Player player = (Player) mapObjectGroups.get(Player.class).getMapObject();
-    player.moveTo(direction);
+    if (this.client == null) {
+      Player player = (Player) mapObjectGroups.get(Player.class).getMapObject();
+      player.moveTo(direction);
+    } else {
+      this.client.moveTo(direction);
+    }
   }
 
   public void loop() {
@@ -132,10 +206,29 @@ public class Game implements Observer {
     }
   }
 
+  public void gameOver(boolean hasWon) {
+    if (server != null) {
+      server.gameOver(hasWon);
+    }
+    if (controller != null) {
+      Platform.runLater(
+          () -> {
+            controller.gameOver(hasWon);
+          });
+    }
+  }
+
   @Override
   public void update(Subject subject) {
+    if (subject instanceof MapObjectGroup) {
+      MapObjectGroup mgr = (MapObjectGroup) subject;
+      System.out.println(mgr.getName());
+      if (mgr.getName().equals("player")) {
+        gameOver(false);
+      }
+    }
     if (this.hasWon()) {
-      throw new GameOverException(true);
+      gameOver(true);
     }
   }
 }

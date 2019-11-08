@@ -1,7 +1,6 @@
 package unsw.dungeon.gameengine.gameplay;
 
 import java.util.ArrayList;
-import unsw.dungeon.gameengine.GameOverException;
 
 public class Player extends Entity {
   ArrayList<Collectible> inventory;
@@ -12,8 +11,9 @@ public class Player extends Entity {
     // this.setState(SharedConstants.PLAYER_INVINCIBLE_STATE, Integer.MAX_VALUE);
   }
 
-  protected void die() throws GameOverException {
-    throw new GameOverException(false);
+  protected void die() {
+    this.removeFromCell();
+    // throw new GameOverException(false);
   }
 
   protected boolean hasObjectInInventory(Collectible object) {
@@ -37,7 +37,7 @@ public class Player extends Entity {
 
   @Override
   protected boolean canWalkInto(MapObject object) {
-    if (object == this) return true;
+    if (Player.class.isInstance(object)) return true;
     return object.canWalkInto(this);
   }
 

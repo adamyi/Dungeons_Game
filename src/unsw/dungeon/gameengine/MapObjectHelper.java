@@ -23,7 +23,7 @@ public class MapObjectHelper {
     }
 
     protected MapObjectGroup<T> createMapObjectGroup() {
-      return new MapObjectGroup<T>(supplier);
+      return new MapObjectGroup<T>(name, supplier);
     }
 
     protected String getName() {

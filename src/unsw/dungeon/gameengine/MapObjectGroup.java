@@ -12,8 +12,10 @@ public class MapObjectGroup<T extends MapObject> implements Subject {
   private int counter;
   private List<T> mapObjects;
   private List<Observer> observers;
+  private String name;
 
-  public MapObjectGroup(Supplier<T> supplier) {
+  public MapObjectGroup(String name, Supplier<T> supplier) {
+    this.name = name;
     this.supplier = supplier;
     this.mapObjects = new ArrayList<T>();
     this.observers = new ArrayList<>();
@@ -33,6 +35,7 @@ public class MapObjectGroup<T extends MapObject> implements Subject {
     T obj = supplier.get();
     obj.addToMapObjectGroup(this);
     obj.initProperties(properties);
+    obj.setTypeString(name);
     this.mapObjects.add(obj);
     counter++;
     return obj;
@@ -67,6 +70,10 @@ public class MapObjectGroup<T extends MapObject> implements Subject {
 
   public int getNumberOfMapObjects() {
     return mapObjects.size();
+  }
+
+  public String getName() {
+    return name;
   }
 
   @Override
