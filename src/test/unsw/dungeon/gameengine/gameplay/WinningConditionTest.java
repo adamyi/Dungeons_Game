@@ -26,7 +26,8 @@ public class WinningConditionTest {
     treasureCell2.setAdjacentCell(Direction.RIGHT, treasureCell3);
     treasureCell3.setAdjacentCell(Direction.LEFT, treasureCell2);
 
-    MapObjectGroup<Treasure> treasureGroup = new MapObjectGroup<Treasure>(Treasure::new);
+    MapObjectGroup<Treasure> treasureGroup =
+        new MapObjectGroup<Treasure>("treasure", Treasure::new);
     Treasure treasure1 = treasureGroup.createNewMapObject(null);
     Treasure treasure2 = treasureGroup.createNewMapObject(null);
     Treasure treasure3 = treasureGroup.createNewMapObject(null);
@@ -75,7 +76,7 @@ public class WinningConditionTest {
     enemyCell2.setAdjacentCell(Direction.RIGHT, enemyCell3);
     enemyCell3.setAdjacentCell(Direction.LEFT, enemyCell2);
 
-    MapObjectGroup<Enemy> enemyGroup = new MapObjectGroup<Enemy>(Enemy::new);
+    MapObjectGroup<Enemy> enemyGroup = new MapObjectGroup<Enemy>("enemy", Enemy::new);
     Enemy enemy1 = enemyGroup.createNewMapObject(null);
     Enemy enemy2 = enemyGroup.createNewMapObject(null);
     Enemy enemy3 = enemyGroup.createNewMapObject(null);
@@ -118,7 +119,7 @@ public class WinningConditionTest {
 
     Player player = new Player();
 
-    MapObjectGroup<Exit> exitGroup = new MapObjectGroup<Exit>(Exit::new);
+    MapObjectGroup<Exit> exitGroup = new MapObjectGroup<Exit>("exit", Exit::new);
     Exit exit = exitGroup.createNewMapObject(null);
 
     // P E
@@ -181,7 +182,7 @@ public class WinningConditionTest {
     Boulder boulder2 = new Boulder();
 
     MapObjectGroup<FloorSwitch> floorSwitchGroup =
-        new MapObjectGroup<FloorSwitch>(FloorSwitch::new);
+        new MapObjectGroup<FloorSwitch>("switch", FloorSwitch::new);
     FloorSwitch floorSwitch1 = floorSwitchGroup.createNewMapObject(null);
     FloorSwitch floorSwitch2 = floorSwitchGroup.createNewMapObject(null);
 
@@ -233,8 +234,9 @@ public class WinningConditionTest {
 
   @Test
   public void compoundInterest() {
-    MapObjectGroup<Treasure> treasureGroup = new MapObjectGroup<Treasure>(Treasure::new);
-    MapObjectGroup<Enemy> enemyGroup = new MapObjectGroup<Enemy>(Enemy::new);
+    MapObjectGroup<Treasure> treasureGroup =
+        new MapObjectGroup<Treasure>("treasure", Treasure::new);
+    MapObjectGroup<Enemy> enemyGroup = new MapObjectGroup<Enemy>("enemy", Enemy::new);
 
     FOLAndObjectiveNode andNode = new FOLAndObjectiveNode();
     FOLOrObjectiveNode orNode = new FOLOrObjectiveNode();

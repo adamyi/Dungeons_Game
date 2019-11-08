@@ -13,7 +13,7 @@ public class PotionTimerTest {
     Cell potionCell = new Cell(0, 1);
     Player player = new Player();
 
-    MapObjectGroup<Potion> potionGroup = new MapObjectGroup<Potion>(Potion::new);
+    MapObjectGroup<Potion> potionGroup = new MapObjectGroup<Potion>("invincible", Potion::new);
     Potion potion = potionGroup.createNewMapObject(null);
     potion.addToMapObjectGroup(potionGroup);
 

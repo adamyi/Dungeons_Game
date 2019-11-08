@@ -19,9 +19,17 @@ public class DungeonApplication extends Application {
     // DungeonControllerLoader dungeonLoader = new DungeonControllerLoader("maze.json");
     // DungeonController controller = dungeonLoader.loadController();
     //
-    GameLoader gameLoader = new GameLoader("boulders.json");
-    Game game = gameLoader.load();
-    GameController controller = new GameController(game);
+    Game game;
+    GameController controller;
+    if (System.getenv("DUNGEONS_CLIENT") != null) {
+      game = new Game();
+      controller = new GameController(game, false);
+    } else {
+      GameLoader gameLoader = new GameLoader("advanced.json");
+      game = gameLoader.load();
+      controller = new GameController(game, true);
+    }
+    game.mpStart();
 
     FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/DungeonView.fxml"));
     loader.setController(controller);

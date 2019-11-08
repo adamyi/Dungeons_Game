@@ -11,7 +11,7 @@ public class BoulderMoveTest {
     Cell emptyCellRight = new Cell(0, 2);
     Cell otherDirectionCell = new Cell(0, 3);
     Player player = new Player();
-    MapObjectGroup<Boulder> boulderGroup = new MapObjectGroup<Boulder>(Boulder::new);
+    MapObjectGroup<Boulder> boulderGroup = new MapObjectGroup<Boulder>("boulder", Boulder::new);
     Boulder boulder = boulderGroup.createNewMapObject(null);
     boulder.addToMapObjectGroup(boulderGroup);
 
@@ -43,7 +43,7 @@ public class BoulderMoveTest {
     Cell otherDirectionCell1 = new Cell(0, 3);
     Cell otherDirectionCell2 = new Cell(0, 4);
     Player player = new Player();
-    MapObjectGroup<Boulder> boulderGroup = new MapObjectGroup<Boulder>(Boulder::new);
+    MapObjectGroup<Boulder> boulderGroup = new MapObjectGroup<Boulder>("boulder", Boulder::new);
     Boulder boulder1 = boulderGroup.createNewMapObject(null);
     Boulder boulder2 = boulderGroup.createNewMapObject(null);
     boulder1.addToMapObjectGroup(boulderGroup);

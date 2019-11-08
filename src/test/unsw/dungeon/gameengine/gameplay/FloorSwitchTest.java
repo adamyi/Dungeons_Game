@@ -12,11 +12,11 @@ public class FloorSwitchTest {
     Cell emptyCell = new Cell(0, 3);
     Player player = new Player();
     MapObjectGroup<FloorSwitch> floorSwitchGroup =
-        new MapObjectGroup<FloorSwitch>(FloorSwitch::new);
+        new MapObjectGroup<FloorSwitch>("switch", FloorSwitch::new);
     FloorSwitch floorSwitch = floorSwitchGroup.createNewMapObject(null);
     floorSwitch.addToMapObjectGroup(floorSwitchGroup);
 
-    MapObjectGroup<Boulder> boulderGroup = new MapObjectGroup<Boulder>(Boulder::new);
+    MapObjectGroup<Boulder> boulderGroup = new MapObjectGroup<Boulder>("boulder", Boulder::new);
     Boulder boulder = boulderGroup.createNewMapObject(null);
     boulder.addToMapObjectGroup(boulderGroup);
 

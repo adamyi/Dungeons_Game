@@ -1,22 +1,30 @@
 package unsw.dungeon.gameengine.gameplay;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
 import unsw.dungeon.gameengine.MapObjectGroup;
+import unsw.dungeon.gameengine.Observer;
+import unsw.dungeon.gameengine.Subject;
 
-public abstract class MapObject {
+public abstract class MapObject implements Subject {
   private HashMap<String, MapObjectState> states;
   private ObjectProperty<Cell> cell;
   private StringProperty image;
+  private List<Observer> observers;
   private MapObjectGroup group;
+  private Integer id;
+  private String typeString;
 
   public MapObject() {
     this.cell = new SimpleObjectProperty<Cell>(null);
     this.states = new HashMap<>();
     this.image = new SimpleStringProperty(this.initialImage());
+    this.observers = new ArrayList<>();
   }
 
   protected MapObjectGroup getMapObjectGroup() {
@@ -41,8 +49,18 @@ public abstract class MapObject {
     return cell.get();
   }
 
+  public void setCell(Cell cell) {
+    this.cell.set(cell);
+    this.notifyObservers();
+  }
+
   public String getImage() {
     return image.get();
+  }
+
+  public void setImage(String image) {
+    this.image.set(image);
+    this.notifyObservers();
   }
 
   public abstract String initialImage();
@@ -101,7 +119,7 @@ public abstract class MapObject {
     if (getCell() != null) {
       this.getCell().removeMapObject(this);
     }
-    this.cell.set(next);
+    this.setCell(next);
     next.addMapObject(this);
     Player player = (Player) next.getMapObjectOfType(Player.class);
     if (player != null) {
@@ -116,19 +134,50 @@ public abstract class MapObject {
 
   protected abstract void playerInteraction(Cell start, Player player);
 
-  protected void removeFromCell(Boolean decrementCounter) {
+  public void removeFromCell(Boolean decrementCounter) {
     if (this.getCell() != null) {
       this.getCell().removeMapObject(this);
-      this.cell.set(null);
+      this.setCell(null);
     }
     if (decrementCounter) this.group.decrementCounter();
   }
 
-  protected void removeFromCell() {
+  public void removeFromCell() {
     this.removeFromCell(true);
+  }
+
+  public void setId(int id) {
+    this.id = id;
+  }
+
+  public int getId() {
+    return id;
+  }
+
+  public void setTypeString(String typeString) {
+    this.typeString = typeString;
+  }
+
+  public String getTypeString() {
+    return typeString;
   }
 
   protected abstract StringBuilder printCLI();
 
   public abstract double viewOrder();
+
+  @Override
+  public void attach(Observer observer) {
+    this.observers.add(observer);
+  }
+
+  @Override
+  public void detach(Observer observer) {
+    this.observers.remove(observer);
+  }
+
+  @Override
+  public void notifyObservers() {
+    for (Observer observer : this.observers) observer.update(this);
+  }
 }

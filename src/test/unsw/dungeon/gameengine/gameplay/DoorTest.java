@@ -10,7 +10,7 @@ public class DoorTest {
     Cell playerCell = new Cell(0, 0);
     Cell doorCell = new Cell(0, 1);
     Player player = new Player();
-    MapObjectGroup<Door> doorGroup = new MapObjectGroup<Door>(Door::new);
+    MapObjectGroup<Door> doorGroup = new MapObjectGroup<Door>("door", Door::new);
     Door door = doorGroup.createNewMapObject(null);
     door.addToMapObjectGroup(doorGroup);
 

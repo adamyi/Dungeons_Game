@@ -35,6 +35,11 @@ public class CellTest {
     public String initialImage() {
       return "deep_elf_master_archer.png";
     }
+
+    @Override
+    public double viewOrder() {
+      return 10;
+    }
   }
 
   protected class MapObjectChild1 extends MapObject {
@@ -59,6 +64,11 @@ public class CellTest {
     public String initialImage() {
       return "deep_elf_master_archer.png";
     }
+
+    @Override
+    public double viewOrder() {
+      return 10;
+    }
   }
 
   protected class MapObjectChild2 extends MapObject {
@@ -82,6 +92,11 @@ public class CellTest {
     @Override
     public String initialImage() {
       return "deep_elf_master_archer.png";
+    }
+
+    @Override
+    public double viewOrder() {
+      return 10;
     }
   }
 

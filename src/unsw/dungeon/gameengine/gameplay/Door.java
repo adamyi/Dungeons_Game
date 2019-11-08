@@ -40,6 +40,7 @@ public class Door extends Terrain implements Pairable {
     if (this.getState(SharedConstants.DOOR_OPEN_STATE) == null) {
       if (Key.class.isInstance(pair) && (player.hasObjectInInventory(pair))) {
         this.setState(SharedConstants.DOOR_OPEN_STATE);
+        this.setImage("open_door.png");
 
         player.removeFromInventory(pair);
       }

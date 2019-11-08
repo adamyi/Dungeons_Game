@@ -21,9 +21,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import unsw.dungeon.gameengine.Game;
-import unsw.dungeon.gameengine.GameOverException;
+import unsw.dungeon.gameengine.gameplay.Action;
 import unsw.dungeon.gameengine.gameplay.Cell;
-import unsw.dungeon.gameengine.gameplay.Direction;
 import unsw.dungeon.gameengine.gameplay.MapObject;
 
 /** A JavaFX controller for the dungeon. */
@@ -36,10 +35,12 @@ public class GameController {
 
   private Game game;
   private HashMap<KeyCode, LocalDateTime> keysPressed;
+  private boolean authorative;
 
-  public GameController(Game game) {
+  public GameController(Game game, Boolean authorative) {
     this.game = game;
     this.keysPressed = new HashMap<>();
+    this.authorative = authorative;
   }
 
   @FXML
@@ -58,24 +59,22 @@ public class GameController {
 
     game.setGameController(this);
 
-    Timeline timeline =
-        new Timeline(
-            new KeyFrame(
-                Duration.millis(LOOP_INTERVAL_MS),
-                event -> {
-                  try {
+    if (authorative) {
+      Timeline timeline =
+          new Timeline(
+              new KeyFrame(
+                  Duration.millis(LOOP_INTERVAL_MS),
+                  event -> {
                     game.loop();
-                  } catch (GameOverException e) {
-                    handleGameOverException(e);
-                  }
-                }));
-    timeline.setCycleCount(Animation.INDEFINITE);
-    timeline.play();
+                  }));
+      timeline.setCycleCount(Animation.INDEFINITE);
+      timeline.play();
+    }
   }
 
-  private void handleGameOverException(GameOverException e) {
+  public void gameOver(boolean hasWon) {
     GameOverController controller;
-    if (e.hasWon()) {
+    if (hasWon) {
       System.out.println("won");
       controller = new GameOverController("You won!");
 
@@ -106,30 +105,33 @@ public class GameController {
   @FXML
   public void handleKeyPress(KeyEvent event) throws IOException {
     if (hasPressed(event.getCode())) return;
-    try {
-      if (!(hasPressed(KeyCode.UP)
-          || hasPressed(KeyCode.DOWN)
-          || hasPressed(KeyCode.LEFT)
-          || hasPressed(KeyCode.RIGHT))) {
-        switch (event.getCode()) {
-          case UP:
-            game.makeMove(Direction.UP);
-            break;
-          case DOWN:
-            game.makeMove(Direction.DOWN);
-            break;
-          case LEFT:
-            game.makeMove(Direction.LEFT);
-            break;
-          case RIGHT:
-            game.makeMove(Direction.RIGHT);
-            break;
-          default:
-            break;
-        }
+    if (!(hasPressed(KeyCode.UP)
+        || hasPressed(KeyCode.DOWN)
+        || hasPressed(KeyCode.LEFT)
+        || hasPressed(KeyCode.RIGHT))) {
+      switch (event.getCode()) {
+        case UP:
+          game.makeMove(Action.UP);
+          break;
+        case DOWN:
+          game.makeMove(Action.DOWN);
+          break;
+        case LEFT:
+          game.makeMove(Action.LEFT);
+          break;
+        case RIGHT:
+          game.makeMove(Action.RIGHT);
+          break;
+        default:
+          break;
       }
-    } catch (GameOverException e) {
-      handleGameOverException(e);
+    }
+    switch (event.getCode()) {
+      case I:
+        game.makeMove(Action.DRINK_INVINCIBILITY_POTION);
+        break;
+      default:
+        break;
     }
     keysPressed.put(event.getCode(), LocalDateTime.now());
   }
@@ -141,8 +143,13 @@ public class GameController {
     // AnchorPane.setLeftAnchor(node, mapObject.getCell().getX() * CELL_SIZE);
     // AnchorPane.setTopAnchor(node, mapObject.getCell().getY() * CELL_SIZE);
     dungeonPane.getChildren().add(node);
-    node.setTranslateX(mapObject.getCell().getX() * CELL_SIZE);
-    node.setTranslateY(mapObject.getCell().getY() * CELL_SIZE);
+    Cell cell = mapObject.getCell();
+    if (cell == null) {
+      node.setVisible(false);
+    } else {
+      node.setTranslateX(cell.getX() * CELL_SIZE);
+      node.setTranslateY(cell.getY() * CELL_SIZE);
+    }
     mapObject
         .cell()
         .addListener(

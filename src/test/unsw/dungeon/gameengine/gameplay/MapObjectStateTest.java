@@ -32,6 +32,11 @@ public class MapObjectStateTest {
     public String initialImage() {
       return "deep_elf_master_archer.png";
     }
+
+    @Override
+    public double viewOrder() {
+      return 10;
+    }
   }
 
   @Test

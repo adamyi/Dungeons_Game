@@ -1,23 +1,20 @@
 package unsw.dungeon.gameengine.gameplay;
 
 import org.junit.Test;
+import unsw.dungeon.gameengine.Game;
 import unsw.dungeon.gameengine.GameOverException;
 import unsw.dungeon.gameengine.MapObjectGroup;
 
 public class PlayerEnemyCollisionTest {
   @Test
   public void playerDieTest() {
-    Cell playerCell = new Cell(0, 0);
-    Cell enemyCell = new Cell(0, 1);
-    Player player = new Player();
-    Enemy enemy = new Enemy();
+    Game game = new Game(1, 2);
 
-    playerCell.setAdjacentCell(Direction.RIGHT, enemyCell);
-    enemyCell.setAdjacentCell(Direction.RIGHT, playerCell);
+    Player player = (Player) game.addMapObject(Player.class, 0, 0, null);
+    Enemy enemy = (Enemy) game.addMapObject(Enemy.class, 0, 1, null);
 
     try {
-      player.moveTo(enemyCell);
-      enemy.playerInteraction(playerCell, player);
+      player.moveTo(enemy.getCell());
       assert (false);
     } catch (GameOverException e) {
       assert (true);
@@ -29,14 +26,14 @@ public class PlayerEnemyCollisionTest {
     Cell playerCell = new Cell(0, 0);
     Cell enemyCell = new Cell(0, 1);
     Player player = new Player();
-    MapObjectGroup<Enemy> enemyGroup = new MapObjectGroup<Enemy>(Enemy::new);
+    MapObjectGroup<Enemy> enemyGroup = new MapObjectGroup<Enemy>("enemy", Enemy::new);
     Enemy enemy = enemyGroup.createNewMapObject(null);
     enemy.addToMapObjectGroup(enemyGroup);
 
     playerCell.setAdjacentCell(Direction.RIGHT, enemyCell);
     enemyCell.setAdjacentCell(Direction.RIGHT, playerCell);
 
-    MapObjectGroup<Sword> swordGroup = new MapObjectGroup<Sword>(Sword::new);
+    MapObjectGroup<Sword> swordGroup = new MapObjectGroup<Sword>("sword", Sword::new);
     Sword sword = new Sword();
     sword.addToMapObjectGroup(swordGroup);
 
@@ -56,14 +53,14 @@ public class PlayerEnemyCollisionTest {
     Cell playerCell = new Cell(0, 0);
     Cell enemyCell = new Cell(0, 1);
     Player player = new Player();
-    MapObjectGroup<Enemy> enemyGroup = new MapObjectGroup<Enemy>(Enemy::new);
+    MapObjectGroup<Enemy> enemyGroup = new MapObjectGroup<Enemy>("enemy", Enemy::new);
     Enemy enemy = enemyGroup.createNewMapObject(null);
     enemy.addToMapObjectGroup(enemyGroup);
 
     playerCell.setAdjacentCell(Direction.RIGHT, enemyCell);
     enemyCell.setAdjacentCell(Direction.LEFT, playerCell);
 
-    MapObjectGroup<Potion> potionGroup = new MapObjectGroup<Potion>(Potion::new);
+    MapObjectGroup<Potion> potionGroup = new MapObjectGroup<Potion>("invincible", Potion::new);
     Potion potion = new Potion();
     potion.addToMapObjectGroup(potionGroup);
 
