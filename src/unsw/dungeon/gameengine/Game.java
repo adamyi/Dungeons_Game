@@ -155,12 +155,12 @@ public class Game implements Observer {
     return this.width;
   }
 
-  public void makeMove(int direction) {
+  public void makeMove(int action) {
     if (this.client == null) {
       Player player = (Player) mapObjectGroups.get(Player.class).getMapObject();
-      player.moveTo(direction);
+      player.makeMove(action);
     } else {
-      this.client.moveTo(direction);
+      this.client.makeMove(action);
     }
   }
 
@@ -215,6 +215,8 @@ public class Game implements Observer {
           () -> {
             controller.gameOver(hasWon);
           });
+    } else {
+      throw new GameOverException(hasWon);
     }
   }
 

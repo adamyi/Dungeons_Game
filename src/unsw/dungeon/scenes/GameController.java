@@ -21,8 +21,8 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import unsw.dungeon.gameengine.Game;
+import unsw.dungeon.gameengine.gameplay.Action;
 import unsw.dungeon.gameengine.gameplay.Cell;
-import unsw.dungeon.gameengine.gameplay.Direction;
 import unsw.dungeon.gameengine.gameplay.MapObject;
 
 /** A JavaFX controller for the dungeon. */
@@ -111,20 +111,27 @@ public class GameController {
         || hasPressed(KeyCode.RIGHT))) {
       switch (event.getCode()) {
         case UP:
-          game.makeMove(Direction.UP);
+          game.makeMove(Action.UP);
           break;
         case DOWN:
-          game.makeMove(Direction.DOWN);
+          game.makeMove(Action.DOWN);
           break;
         case LEFT:
-          game.makeMove(Direction.LEFT);
+          game.makeMove(Action.LEFT);
           break;
         case RIGHT:
-          game.makeMove(Direction.RIGHT);
+          game.makeMove(Action.RIGHT);
           break;
         default:
           break;
       }
+    }
+    switch (event.getCode()) {
+      case I:
+        game.makeMove(Action.DRINK_INVINCIBILITY_POTION);
+        break;
+      default:
+        break;
     }
     keysPressed.put(event.getCode(), LocalDateTime.now());
   }

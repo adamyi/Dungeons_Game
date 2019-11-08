@@ -35,6 +35,15 @@ public class Player extends Entity {
     inventory.remove(object);
   }
 
+  public void makeMove(int action) {
+    if (action >= Direction.ITERATE_MIN && action <= Direction.ITERATE_MAX) {
+      this.moveTo(action);
+    } else if (action == Action.DRINK_INVINCIBILITY_POTION) {
+      Potion potion = (Potion) this.getCollectibleOfTypeInInventory(Potion.class);
+      if (potion != null) potion.use();
+    }
+  }
+
   @Override
   protected boolean canWalkInto(MapObject object) {
     if (Player.class.isInstance(object)) return true;

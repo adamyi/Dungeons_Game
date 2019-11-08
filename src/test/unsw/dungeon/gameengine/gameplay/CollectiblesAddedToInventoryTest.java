@@ -13,19 +13,20 @@ public class CollectiblesAddedToInventoryTest {
     Cell treasureCell = new Cell(0, 4);
     Player player = new Player();
 
-    MapObjectGroup<Key> keyGroup = new MapObjectGroup<Key>(Key::new);
+    MapObjectGroup<Key> keyGroup = new MapObjectGroup<Key>("key", Key::new);
     Key key = new Key();
     key.addToMapObjectGroup(keyGroup);
 
-    MapObjectGroup<Potion> potionGroup = new MapObjectGroup<Potion>(Potion::new);
+    MapObjectGroup<Potion> potionGroup = new MapObjectGroup<Potion>("invincible", Potion::new);
     Potion potion = new Potion();
     potion.addToMapObjectGroup(potionGroup);
 
-    MapObjectGroup<Sword> swordGroup = new MapObjectGroup<Sword>(Sword::new);
+    MapObjectGroup<Sword> swordGroup = new MapObjectGroup<Sword>("sword", Sword::new);
     Sword sword = new Sword();
     sword.addToMapObjectGroup(swordGroup);
 
-    MapObjectGroup<Treasure> treasureGroup = new MapObjectGroup<Treasure>(Treasure::new);
+    MapObjectGroup<Treasure> treasureGroup =
+        new MapObjectGroup<Treasure>("treasure", Treasure::new);
     Treasure treasure = new Treasure();
     treasure.addToMapObjectGroup(treasureGroup);
 

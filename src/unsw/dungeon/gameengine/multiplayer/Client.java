@@ -30,7 +30,7 @@ public class Client implements Runnable {
     }
   }
 
-  public void moveTo(int direction) {
+  public void makeMove(int direction) {
     JSONObject data = new JSONObject();
     data.put("a", "a");
     data.put("d", direction);
@@ -95,6 +95,7 @@ public class Client implements Runnable {
           } else {
             obj.setCell(game.getCell(data.getInt("x"), data.getInt("y")));
           }
+          if (data.has("g")) obj.setImage(data.getString("g"));
         } else if (data.getString("a").equals("d")) {
           int id = data.getInt("i");
           MapObject obj = game.getMapObjectOfId(id);

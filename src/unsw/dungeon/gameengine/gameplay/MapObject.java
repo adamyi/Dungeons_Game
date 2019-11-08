@@ -58,6 +58,11 @@ public abstract class MapObject implements Subject {
     return image.get();
   }
 
+  public void setImage(String image) {
+    this.image.set(image);
+    this.notifyObservers();
+  }
+
   public abstract String initialImage();
 
   protected void setState(MapObjectState state) {

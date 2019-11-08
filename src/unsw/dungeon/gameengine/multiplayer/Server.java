@@ -46,6 +46,8 @@ public class Server implements Runnable, Observer {
       sendJSON.put("a", "d");
     } else {
       sendJSON.put("a", "m");
+      if (!mapObject.getImage().equals(mapObject.initialImage()))
+        sendJSON.put("g", mapObject.getImage());
       sendJSON.put("x", cell.getX());
       sendJSON.put("y", cell.getY());
     }
@@ -141,7 +143,7 @@ public class Server implements Runnable, Observer {
           }
         } else if (data.getString("a").equals("a")) {
           String astr = String.format("%s:%d", IPAddress.toString().substring(1), port);
-          ip2players.get(astr).moveTo(data.getInt("d"));
+          ip2players.get(astr).makeMove(data.getInt("d"));
         }
       }
     } catch (Exception e) {
