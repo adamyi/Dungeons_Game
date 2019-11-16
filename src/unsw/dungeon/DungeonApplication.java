@@ -8,7 +8,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import unsw.dungeon.gameengine.Game;
 import unsw.dungeon.gameengine.GameLoader;
-import unsw.dungeon.scenes.GameController;
+import unsw.dungeon.scenes.ModeSelectController;
 
 public class DungeonApplication extends Application {
 
@@ -16,30 +16,13 @@ public class DungeonApplication extends Application {
   public void start(Stage primaryStage) throws IOException {
     primaryStage.setTitle("Dungeon");
 
-    // DungeonControllerLoader dungeonLoader = new DungeonControllerLoader("maze.json");
-    // DungeonController controller = dungeonLoader.loadController();
-    //
-    Game game;
-    GameController controller;
-    if (System.getenv("DUNGEONS_CLIENT") != null) {
-      game = new Game();
-      controller = new GameController(game, false);
-    } else {
-      GameLoader gameLoader = new GameLoader("advanced.json");
-      game = gameLoader.load();
-      controller = new GameController(game, true);
-    }
-    game.mpStart();
-
-    FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/DungeonView.fxml"));
-    loader.setController(controller);
+    FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/ModeSelectView.fxml"));
+    loader.setController(new ModeSelectController());
     Parent root = loader.load();
-    Scene scene =
-        new Scene(
-            root, game.getWidth() * controller.CELL_SIZE, game.getHeight() * controller.CELL_SIZE);
-    root.requestFocus();
+    Scene scene = new Scene(root);
     primaryStage.setScene(scene);
     primaryStage.show();
+    primaryStage.setOnCloseRequest(e -> System.exit(0));
   }
 
   public static void main(String[] args) throws Exception {

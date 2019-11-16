@@ -18,6 +18,7 @@ java_binary(
     ]) + [
         "//dungeons",
         "//images",
+        "//thumbnails",
     ],
     runtime_deps = [
         "//lib:json.jar",
