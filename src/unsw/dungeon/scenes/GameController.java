@@ -1,26 +1,18 @@
 package unsw.dungeon.scenes;
 
 import java.io.IOException;
-import java.lang.StringBuilder;
 import java.time.LocalDateTime;
 import java.util.HashMap;
-import java.util.List;
-
-import javax.management.RuntimeErrorException;
-import javax.swing.event.ChangeEvent;
-
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
 import javafx.animation.TranslateTransition;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.ListChangeListener;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -31,9 +23,7 @@ import javafx.util.Duration;
 import unsw.dungeon.gameengine.Game;
 import unsw.dungeon.gameengine.gameplay.Action;
 import unsw.dungeon.gameengine.gameplay.Cell;
-import unsw.dungeon.gameengine.gameplay.Collectible;
 import unsw.dungeon.gameengine.gameplay.MapObject;
-import unsw.dungeon.gameengine.gameplay.Player;
 
 /** A JavaFX controller for the dungeon. */
 public class GameController {
@@ -161,7 +151,7 @@ public class GameController {
       node.setTranslateY(cell.getY() * CELL_SIZE);
     }
     mapObject
-        .cell() // handles moving from cell to cell, disappearing from cell
+        .cell()
         .addListener(
             new ChangeListener<Cell>() {
               @Override
@@ -193,36 +183,15 @@ public class GameController {
               }
             });
     mapObject
-        .image() // handles when object has to change image e.g. door opening
+        .image()
         .addListener(
-          new ChangeListener<String>() {
-            @Override
-            public void changed(
-                ObservableValue<? extends String> observable, String oldValue, String newValue) {
-              Image img = new Image(getClass().getResourceAsStream("/images/" + newValue));
-              node.setImage(img);
-            }
-          });
-    
-    Player player = null;
-    if (mapObject.getClass() == Player.class && mapObject != null)
-      player = (Player)mapObject;
-      player
-          .inventory()
-          .addListener(
-            new ListChangeListener<Collectible>() {
+            new ChangeListener<String>() {
               @Override
-              public void onChanged(
-                  ListChangeListener.Change<? extends Collectible> change) {
-                StringBuilder sb = new StringBuilder();
-
-                for (Collectible col : change.getList()) {
-                  sb.append(col.getClass().toString() + " ");
-                }
-
-                Label inv = new Label(sb.toString());
-                dungeonPane.getChildren().add(inv);
+              public void changed(
+                  ObservableValue<? extends String> observable, String oldValue, String newValue) {
+                Image img = new Image(getClass().getResourceAsStream("/images/" + newValue));
+                node.setImage(img);
               }
-          });
+            });
   }
 }

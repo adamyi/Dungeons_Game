@@ -1,21 +1,14 @@
 package unsw.dungeon.gameengine.gameplay;
 
 import java.util.ArrayList;
-import javafx.beans.property.SimpleListProperty;
 
 public class Player extends Entity {
-  //ArrayList<Collectible> inventory;
-  private SimpleListProperty<Collectible> inventory;
+  ArrayList<Collectible> inventory;
 
   public Player() {
     super();
-    this.inventory = new SimpleListProperty<Collectible>();
-    //this.inventory = new ArrayList<>();
+    this.inventory = new ArrayList<>();
     // this.setState(SharedConstants.PLAYER_INVINCIBLE_STATE, Integer.MAX_VALUE);
-  }
-
-  public SimpleListProperty<Collectible> inventory() {
-    return this.inventory;
   }
 
   protected void die() {
@@ -24,24 +17,22 @@ public class Player extends Entity {
   }
 
   protected boolean hasObjectInInventory(Collectible object) {
-    return inventory.get().contains(object);
+    return inventory.contains(object);
   }
 
   protected void addToInventory(Collectible object) {
-    inventory.get().add(object);
-    this.notifyObservers();
+    inventory.add(object);
   }
 
   protected Collectible getCollectibleOfTypeInInventory(Class<? extends Collectible> type) {
-    for (Collectible item : inventory.get()) {
+    for (Collectible item : inventory) {
       if (type.isInstance(item)) return item;
     }
     return null;
   }
 
   protected void removeFromInventory(Collectible object) {
-    inventory.get().remove(object);
-    this.notifyObservers();
+    inventory.remove(object);
   }
 
   public void makeMove(int action) {
