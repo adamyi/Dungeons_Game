@@ -21,10 +21,14 @@ public class ServerSelectController {
   public void handlePlayButton() {
     try {
       String astr = textServerAddress.getText();
+      String addrstr = astr;
+      int port = 6789;
       int split = astr.lastIndexOf(":");
-      String addrstr = astr.substring(0, split);
-      String portstr = astr.substring(split + 1);
-      int port = Integer.parseInt(portstr);
+      if (split > -1) {
+        addrstr = astr.substring(0, split);
+        String portstr = astr.substring(split + 1);
+        port = Integer.parseInt(portstr);
+      }
 
       Stage stage = (Stage) textServerAddress.getScene().getWindow();
       Game game = new Game(addrstr, port);
