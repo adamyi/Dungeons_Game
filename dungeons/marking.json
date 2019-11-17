@@ -520,6 +520,16 @@
       "type": "invincibility"
     },
     {
+      "x": 5,
+      "y": 14,
+      "type": "invincibility"
+    },
+    {
+      "x": 5,
+      "y": 15,
+      "type": "invincibility"
+    },
+    {
       "x": 4,
       "y": 15,
       "type": "key",

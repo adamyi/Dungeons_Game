@@ -8,4 +8,6 @@ public class SharedConstants {
 
   public static final String DOOR_KEY_PAIR = "door_key_pair";
   public static final String PORTAL_PORTAL_PAIR = "portal_portal_pair";
+
+  public static final Integer PLAYER_INVINCIBLE_DURATION = 10;
 }

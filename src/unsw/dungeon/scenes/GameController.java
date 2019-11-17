@@ -13,6 +13,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ProgressIndicator;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -21,9 +22,12 @@ import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import unsw.dungeon.gameengine.Game;
+import unsw.dungeon.gameengine.SharedConstants;
 import unsw.dungeon.gameengine.gameplay.Action;
 import unsw.dungeon.gameengine.gameplay.Cell;
 import unsw.dungeon.gameengine.gameplay.MapObject;
+import unsw.dungeon.gameengine.gameplay.MapObjectState;
+import unsw.dungeon.gameengine.gameplay.Potion;
 
 /** A JavaFX controller for the dungeon. */
 public class GameController {
@@ -37,10 +41,17 @@ public class GameController {
   private HashMap<KeyCode, LocalDateTime> keysPressed;
   private boolean authorative;
 
+  private ProgressIndicator invincibilityProgress;
+  private MapObjectState invincibilityState;
+  private int invincibilityTotalDuration;
+
   public GameController(Game game, Boolean authorative) {
     this.game = game;
     this.keysPressed = new HashMap<>();
     this.authorative = authorative;
+    this.invincibilityProgress = new ProgressIndicator();
+    this.invincibilityState = new MapObjectState("", 0);
+    this.invincibilityTotalDuration = 0;
   }
 
   @FXML
@@ -59,17 +70,28 @@ public class GameController {
 
     game.setGameController(this);
 
-    if (authorative) {
-      Timeline timeline =
-          new Timeline(
-              new KeyFrame(
-                  Duration.millis(LOOP_INTERVAL_MS),
-                  event -> {
+    dungeonPane.getChildren().add(invincibilityProgress);
+    invincibilityProgress.setVisible(false);
+
+    Timeline timeline =
+        new Timeline(
+            new KeyFrame(
+                Duration.millis(LOOP_INTERVAL_MS),
+                event -> {
+                  if (authorative) {
                     game.loop();
-                  }));
-      timeline.setCycleCount(Animation.INDEFINITE);
-      timeline.play();
-    }
+                  }
+                  if (invincibilityState.isActive()) {
+                    int remaining = this.invincibilityState.getRemainingSeconds();
+                    float progress = 1.0F * remaining / invincibilityTotalDuration;
+                    this.invincibilityProgress.setProgress(progress);
+                  } else {
+                    this.invincibilityProgress.setVisible(false);
+                    this.invincibilityTotalDuration = 0;
+                  }
+                }));
+    timeline.setCycleCount(Animation.INDEFINITE);
+    timeline.play();
   }
 
   public void gameOver(boolean hasWon) {
@@ -158,8 +180,7 @@ public class GameController {
               public void changed(
                   ObservableValue<? extends Cell> observable, Cell oldValue, Cell newValue) {
                 if (newValue != null) {
-                  if (newValue.getPlayerOnly() != null
-                      && !game.isLocalPlayer(newValue.getPlayerOnly())) {
+                  if (!game.isLocalPlayer(newValue.getPlayerOnly())) {
                     node.setVisible(false);
                     return;
                   }
@@ -177,6 +198,14 @@ public class GameController {
                     tt.play();
                   }
                 } else {
+                  if (Potion.class.isInstance(mapObject)
+                      && oldValue != null
+                      && game.isLocalPlayer(oldValue.getPlayerOnly())
+                      && oldValue.getY() > game.getHeight()) {
+                    invincibilityTotalDuration += SharedConstants.PLAYER_INVINCIBLE_DURATION;
+                    invincibilityState.extendDeadline(SharedConstants.PLAYER_INVINCIBLE_DURATION);
+                    invincibilityProgress.setVisible(true);
+                  }
                   TranslateTransition tt =
                       new TranslateTransition(Duration.millis(LOOP_INTERVAL_MS * 0.5), node);
                   tt.setOnFinished(

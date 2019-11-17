@@ -143,7 +143,7 @@ public class Game implements Observer {
   }
 
   public Boolean isLocalPlayer(Player player) {
-    if (player == null) return false;
+    if (player == null) return true;
     Player localplayer = (Player) mapObjectGroups.get(Player.class).getMapObject();
     return localplayer.getId() == player.getId();
   }
