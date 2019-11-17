@@ -23,8 +23,9 @@ public abstract class Collectible extends MapObject {
   }
 
   protected void pickup(Player player) {
-    this.removeFromCell();
+    // this.removeFromCell();
     this.owner = player;
+    this.getMapObjectGroup().decrementCounter();
     player.addToInventory(this);
   }
 

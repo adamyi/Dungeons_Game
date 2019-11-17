@@ -158,6 +158,11 @@ public class GameController {
               public void changed(
                   ObservableValue<? extends Cell> observable, Cell oldValue, Cell newValue) {
                 if (newValue != null) {
+                  if (newValue.getPlayerOnly() != null
+                      && !game.isLocalPlayer(newValue.getPlayerOnly())) {
+                    node.setVisible(false);
+                    return;
+                  }
                   node.setVisible(true);
                   if (oldValue == null) {
                     node.setTranslateX(newValue.getX() * CELL_SIZE);

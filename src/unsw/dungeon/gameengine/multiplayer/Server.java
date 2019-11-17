@@ -16,11 +16,13 @@ import unsw.dungeon.gameengine.gameplay.Player;
 public class Server implements Runnable, Observer {
 
   HashMap<String, Player> ip2players;
+  HashMap<Integer, String> player2ips;
   Game game;
   DatagramSocket serverSocket;
 
   public Server(Game game, int serverPort) {
     ip2players = new HashMap<String, Player>();
+    player2ips = new HashMap<Integer, String>();
     this.game = game;
     try {
       serverSocket = new DatagramSocket(serverPort);
@@ -56,29 +58,47 @@ public class Server implements Runnable, Observer {
     try {
       sendData = sendJSON.toString().getBytes("utf-8");
     } catch (java.io.UnsupportedEncodingException e) {
-      throw new RuntimeException(e);
+      e.printStackTrace();
+      sendData = new byte[0];
     }
     return sendData;
   }
 
   private void sendDataToClients(byte[] sendData) {
     for (String astr : ip2players.keySet()) {
-      try {
-        int split = astr.lastIndexOf(":");
-        String addrstr = astr.substring(0, split);
-        String portstr = astr.substring(split + 1);
-        InetAddress address = InetAddress.getByName(addrstr);
-        int port = Integer.parseInt(portstr);
-        DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
-        serverSocket.send(sendPacket);
-      } catch (Exception e) {
-        throw new RuntimeException(e);
-      }
+      sendDataToClient(astr, sendData);
+    }
+  }
+
+  private void sendDataToClient(String astr, byte[] sendData) {
+    try {
+      int split = astr.lastIndexOf(":");
+      String addrstr = astr.substring(0, split);
+      String portstr = astr.substring(split + 1);
+      InetAddress address = InetAddress.getByName(addrstr);
+      int port = Integer.parseInt(portstr);
+      DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, address, port);
+      serverSocket.send(sendPacket);
+    } catch (Exception e) {
+      e.printStackTrace();
     }
   }
 
   public void moveTo(MapObject obj, Cell cell) {
-    sendDataToClients(moveToData(obj, cell));
+    if (cell == null) {
+      sendDataToClients(moveToData(obj, cell));
+      return;
+    }
+    Player p = cell.getPlayerOnly();
+    if (p == null) {
+      sendDataToClients(moveToData(obj, cell));
+    } else {
+      String pa = player2ips.get(p.getId());
+      for (String astr : ip2players.keySet()) {
+        if (astr.equals(pa)) sendDataToClient(astr, moveToData(obj, cell));
+        else sendDataToClient(astr, moveToData(obj, null));
+      }
+    }
   }
 
   public void gameOver(boolean hasWon) {
@@ -89,7 +109,8 @@ public class Server implements Runnable, Observer {
     try {
       sendData = sendJSON.toString().getBytes("utf-8");
     } catch (java.io.UnsupportedEncodingException e) {
-      throw new RuntimeException(e);
+      e.printStackTrace();
+      sendData = new byte[0];
     }
     sendDataToClients(sendData);
   }
@@ -120,6 +141,7 @@ public class Server implements Runnable, Observer {
           Player p = game.clonePlayer();
           String astr = String.format("%s:%d", IPAddress.toString().substring(1), port);
           ip2players.put(astr, p);
+          player2ips.put(p.getId(), astr);
           JSONObject sendJSON = new JSONObject();
           sendJSON.put("a", "s");
           sendJSON.put("h", game.getHeight());
@@ -128,7 +150,8 @@ public class Server implements Runnable, Observer {
           try {
             sendData = sendJSON.toString().getBytes("utf-8");
           } catch (java.io.UnsupportedEncodingException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
+            sendData = new byte[0];
           }
           DatagramPacket sendPacket =
               new DatagramPacket(sendData, sendData.length, IPAddress, port);
