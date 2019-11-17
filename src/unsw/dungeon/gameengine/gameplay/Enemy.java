@@ -8,7 +8,7 @@ public class Enemy extends Entity implements AutonomousObject {
 
   public Enemy() {
     super();
-    this.strategy = new EnemySimpleStrategy(this);
+    this.strategy = new EnemySimpleStrategy();
   }
 
   public void setEnemyStrategy(EnemyStrategy strategy) {
@@ -21,19 +21,19 @@ public class Enemy extends Entity implements AutonomousObject {
       String strategyKey = (String) properties.get("strategy");
       switch (strategyKey) {
         case "simple":
-          this.strategy = new EnemySimpleStrategy(this);
+          this.strategy = new EnemySimpleStrategy();
           break;
         case "a_star":
-          this.strategy = new EnemyAStarStrategy(this);
+          this.strategy = new EnemyAStarStrategy();
           break;
         case "still":
-          this.strategy = new EnemyStillStrategy(this);
+          this.strategy = new EnemyStillStrategy();
           break;
         case "random":
-          this.strategy = new EnemyRandomStrategy(this);
+          this.strategy = new EnemyRandomStrategy();
           break;
         case "intimidating":
-          this.strategy = new EnemyIntimidatingStrategy(this);
+          this.strategy = new EnemyIntimidatingStrategy();
           break;
       }
     }
@@ -65,7 +65,7 @@ public class Enemy extends Entity implements AutonomousObject {
       // already died
       return;
     }
-    int dir = this.strategy.getMove();
+    int dir = this.strategy.getMove(this);
     if (dir != Direction.UNKNOWN) this.moveTo(dir);
   }
 

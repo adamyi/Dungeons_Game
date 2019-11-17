@@ -8,12 +8,6 @@ import unsw.dungeon.gameengine.SharedConstants;
 // different strategies to coordinate against player
 //
 public class EnemySimpleStrategy implements EnemyStrategy {
-  Enemy enemy;
-
-  protected EnemySimpleStrategy(Enemy enemy) {
-    this.enemy = enemy;
-  }
-
   private class BFSTuple {
     int distance;
     Cell cell;
@@ -32,7 +26,7 @@ public class EnemySimpleStrategy implements EnemyStrategy {
     }
   }
 
-  private int weightedDistanceToPlayer(Cell cell) {
+  private int weightedDistanceToPlayer(Enemy enemy, Cell cell) {
     if (cell == null || (!cell.canWalkInto(enemy))) return Integer.MAX_VALUE;
     HashSet<Cell> visited = new HashSet<>();
     Queue<BFSTuple> queue = new LinkedList<>();
@@ -67,12 +61,13 @@ public class EnemySimpleStrategy implements EnemyStrategy {
   }
 
   @Override
-  public int getMove() {
-    int mind = weightedDistanceToPlayer(enemy.getCell().getAdjacentCell(Direction.ITERATE_MIN));
+  public int getMove(Enemy enemy) {
+    int mind =
+        weightedDistanceToPlayer(enemy, enemy.getCell().getAdjacentCell(Direction.ITERATE_MIN));
     int dir = Direction.ITERATE_MIN;
     boolean doMove = false;
     for (int i = Direction.ITERATE_MIN + 1; i <= Direction.ITERATE_MAX; i++) {
-      int d = weightedDistanceToPlayer(enemy.getCell().getAdjacentCell(i));
+      int d = weightedDistanceToPlayer(enemy, enemy.getCell().getAdjacentCell(i));
       if (d != mind) {
         doMove = true;
         if (d < mind) {

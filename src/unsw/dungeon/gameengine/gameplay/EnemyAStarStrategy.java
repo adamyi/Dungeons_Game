@@ -12,10 +12,6 @@ import java.util.Queue;
 public class EnemyAStarStrategy implements EnemyStrategy {
   Enemy enemy;
 
-  protected EnemyAStarStrategy(Enemy enemy) {
-    this.enemy = enemy;
-  }
-
   private class Node {
     int distance;
     Cell cell;
@@ -151,8 +147,9 @@ public class EnemyAStarStrategy implements EnemyStrategy {
   }
 
   @Override
-  public int getMove() {
-    Cell player = playerBFS(this.enemy.getCell());
+  public int getMove(Enemy enemy) {
+    this.enemy = enemy;
+    Cell player = playerBFS(enemy.getCell());
     if (player == null) {
       return Direction.UNKNOWN;
     }

@@ -8,12 +8,6 @@ import java.util.Queue;
 //
 // this strategy approaches player but tries to keep distance at 3
 public class EnemyIntimidatingStrategy implements EnemyStrategy {
-  Enemy enemy;
-
-  protected EnemyIntimidatingStrategy(Enemy enemy) {
-    this.enemy = enemy;
-  }
-
   private class BFSTuple {
     int distance;
     Cell cell;
@@ -32,7 +26,7 @@ public class EnemyIntimidatingStrategy implements EnemyStrategy {
     }
   }
 
-  private int weightedDistanceToPlayer(Cell cell) {
+  private int weightedDistanceToPlayer(Enemy enemy, Cell cell) {
     if (cell == null || (!cell.canWalkInto(enemy))) return Integer.MAX_VALUE;
     HashSet<Cell> visited = new HashSet<>();
     Queue<BFSTuple> queue = new LinkedList<>();
@@ -61,13 +55,14 @@ public class EnemyIntimidatingStrategy implements EnemyStrategy {
   }
 
   @Override
-  public int getMove() {
-    int mind = weightedDistanceToPlayer(enemy.getCell().getAdjacentCell(Direction.ITERATE_MIN));
+  public int getMove(Enemy enemy) {
+    int mind =
+        weightedDistanceToPlayer(enemy, enemy.getCell().getAdjacentCell(Direction.ITERATE_MIN));
     int maxd = mind;
     int mindir = Direction.ITERATE_MIN;
     int maxdir = Direction.ITERATE_MIN;
     for (int i = Direction.ITERATE_MIN + 1; i <= Direction.ITERATE_MAX; i++) {
-      int d = weightedDistanceToPlayer(enemy.getCell().getAdjacentCell(i));
+      int d = weightedDistanceToPlayer(enemy, enemy.getCell().getAdjacentCell(i));
       if (d < mind) {
         mind = d;
         mindir = i;
