@@ -207,14 +207,26 @@ package "gameengine" <<Rectangle>> {
 
     class "Direction"
 
-
     class "Door" {
       pair : Key
     }
 
-    class "Enemy" {
-      weightedDistanceToPlayer(Cell) : int
+    interface "EnemyStrategy" {
+      getMove(Enemy) : int
     }
+
+    class "Enemy" {
+      strategy : EnemyStrategy
+      setEnemyStrategy(EnemyStrategy)
+    }
+
+    class "EnemySimpleStrategy" implements EnemyStrategy
+    class "EnemyStillStrategy" implements EnemyStrategy
+    class "EnemyRandomStrategy" implements EnemyStrategy
+    class "EnemyIntimidatingStrategy" implements EnemyStrategy
+
+    note "Strategy Pattern" as N4
+    EnemyStrategy .. N4
 
     abstract class "Entity"
 
@@ -366,6 +378,7 @@ package "gameengine" <<Rectangle>> {
 "Terrain" <|-- "FloorSwitch"
 "Terrain" <|-right- "Portal"
 "Terrain" <|-- "Wall"
+"Enemy" o-- "EnemyStrategy"
 
 @enduml
 
