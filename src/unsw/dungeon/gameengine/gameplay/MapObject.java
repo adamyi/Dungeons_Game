@@ -63,7 +63,7 @@ public abstract class MapObject implements Subject {
   }
 
   public String getImage() {
-    return image.get();
+    return this.image.get();
   }
 
   public void setImage(String image) {
