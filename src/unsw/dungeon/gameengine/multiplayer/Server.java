@@ -51,6 +51,7 @@ public class Server implements Runnable, Observer {
       sendJSON.put("a", "m");
       if (!mapObject.getImage().equals(mapObject.initialImage()))
         sendJSON.put("g", mapObject.getImage());
+      if (mapObject.getHue() != 0) sendJSON.put("h", mapObject.getHue());
       sendJSON.put("x", cell.getX());
       sendJSON.put("y", cell.getY());
     }

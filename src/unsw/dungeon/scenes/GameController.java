@@ -14,6 +14,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.ProgressIndicator;
+import javafx.scene.effect.ColorAdjust;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -169,8 +170,11 @@ public class GameController {
 
   public void setupMapObject(MapObject mapObject) {
     Image img = new Image(getClass().getResourceAsStream("/images/" + mapObject.getImage()));
+    ColorAdjust colorAdjust = new ColorAdjust();
+    colorAdjust.hueProperty().bind(mapObject.hue());
     ImageView node = new ImageView(img);
     node.setViewOrder(mapObject.viewOrder());
+    node.setEffect(colorAdjust);
     // AnchorPane.setLeftAnchor(node, mapObject.getCell().getX() * CELL_SIZE);
     // AnchorPane.setTopAnchor(node, mapObject.getCell().getY() * CELL_SIZE);
     dungeonPane.getChildren().add(node);

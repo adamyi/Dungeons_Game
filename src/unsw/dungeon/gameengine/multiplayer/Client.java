@@ -98,6 +98,7 @@ public class Client implements Runnable {
             obj.setCell(game.getCell(data.getInt("x"), data.getInt("y")));
           }
           if (data.has("g")) obj.setImage(data.getString("g"));
+          if (data.has("h")) obj.setHue(data.getDouble("h"));
         } else if (data.getString("a").equals("d")) {
           int id = data.getInt("i");
           MapObject obj = game.getMapObjectOfId(id);

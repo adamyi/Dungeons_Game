@@ -2,6 +2,7 @@ package unsw.dungeon.gameengine;
 
 import java.net.DatagramSocket;
 import java.util.HashMap;
+import java.util.concurrent.ThreadLocalRandom;
 import javafx.application.Platform;
 import unsw.dungeon.gameengine.gameplay.*;
 import unsw.dungeon.gameengine.multiplayer.Client;
@@ -139,6 +140,7 @@ public class Game implements Observer {
         (Player)
             this.addMapObject(
                 Player.class, localplayer.getCell().getY(), localplayer.getCell().getX(), null);
+    newplayer.setHue(ThreadLocalRandom.current().nextDouble(-1.0, 1.0));
     return newplayer;
   }
 

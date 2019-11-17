@@ -3,7 +3,9 @@ package unsw.dungeon.gameengine.gameplay;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.ObjectProperty;
+import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleObjectProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
@@ -15,6 +17,7 @@ public abstract class MapObject implements Subject {
   private HashMap<String, MapObjectState> states;
   private ObjectProperty<Cell> cell;
   private StringProperty image;
+  private DoubleProperty hue;
   private List<Observer> observers;
   private MapObjectGroup group;
   private Integer id;
@@ -24,6 +27,7 @@ public abstract class MapObject implements Subject {
     this.cell = new SimpleObjectProperty<Cell>(null);
     this.states = new HashMap<>();
     this.image = new SimpleStringProperty(this.initialImage());
+    this.hue = new SimpleDoubleProperty(0);
     this.observers = new ArrayList<>();
   }
 
@@ -45,6 +49,10 @@ public abstract class MapObject implements Subject {
     return image;
   }
 
+  public DoubleProperty hue() {
+    return hue;
+  }
+
   public Cell getCell() {
     return cell.get();
   }
@@ -60,6 +68,15 @@ public abstract class MapObject implements Subject {
 
   public void setImage(String image) {
     this.image.set(image);
+    this.notifyObservers();
+  }
+
+  public Double getHue() {
+    return hue.get();
+  }
+
+  public void setHue(Double hue) {
+    this.hue.set(hue);
     this.notifyObservers();
   }
 
