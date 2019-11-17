@@ -1,5 +1,6 @@
 package unsw.dungeon.gameengine.gameplay;
 
+import java.util.concurrent.ThreadLocalRandom;
 import unsw.dungeon.gameengine.SharedConstants;
 import unsw.dungeon.utils.DirectionUtils;
 
@@ -44,6 +45,9 @@ public class Portal extends Terrain implements Pairable {
       throw new IllegalArgumentException();
     }
     this.pair = (Portal) pair;
+    double hue = ThreadLocalRandom.current().nextDouble(-1.0, 1.0);
+    this.setHue(hue);
+    this.pair.setHue(hue);
   }
 
   @Override
