@@ -24,7 +24,7 @@ public class MapSelectController {
 
   public MapSelectController() {
     try {
-      this.maps = MapUtils.getMaps(getClass());
+      this.maps = MapUtils.getMaps(this.getClass());
     } catch (Exception e) {
       e.printStackTrace();
     }
