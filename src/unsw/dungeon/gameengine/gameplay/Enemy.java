@@ -69,7 +69,7 @@ public class Enemy extends Entity implements AutonomousObject {
       }
       for (int i = Direction.ITERATE_MIN; i <= Direction.ITERATE_MAX; i++) {
         Cell adjCell = c.getAdjacentCell(i);
-        if (adjCell != null && (!visited.contains(adjCell))) {
+        if (adjCell != null && (!visited.contains(adjCell)) && adjCell.canWalkInto(this)) {
           // this is actually an optimization for bfs
           // to do this here instead of in each iteration
           // cuz the first time a cell is added to queue

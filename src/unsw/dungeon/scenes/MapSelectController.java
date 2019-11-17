@@ -87,6 +87,14 @@ public class MapSelectController {
               }
             });
 
+    mapListView.setOnMouseClicked(
+        event -> {
+          // load map if double clicked
+          if (event.getClickCount() == 2) {
+            handlePlayButton();
+          }
+        });
+
     for (String mapname : maps.keySet()) {
       mapListView.getItems().add(mapname);
     }
