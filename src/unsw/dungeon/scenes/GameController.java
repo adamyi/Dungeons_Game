@@ -28,7 +28,7 @@ import unsw.dungeon.gameengine.gameplay.MapObject;
 /** A JavaFX controller for the dungeon. */
 public class GameController {
   public static final double CELL_SIZE = 32;
-  public static final double LOOP_INTERVAL_MS = 500;
+  public static final double LOOP_INTERVAL_MS = 300;
 
   // @FXML private GridPane squares;
   @FXML private AnchorPane dungeonPane;
