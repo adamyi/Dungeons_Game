@@ -3,12 +3,26 @@ package unsw.dungeon.gameengine.gameplay;
 import java.util.ArrayList;
 
 public class Player extends Entity {
-  ArrayList<Collectible> inventory;
+  private ArrayList<Collectible> inventory;
+  private Cell[] inventoryGrid;
 
   public Player() {
     super();
     this.inventory = new ArrayList<>();
     // this.setState(SharedConstants.PLAYER_INVINCIBLE_STATE, Integer.MAX_VALUE);
+  }
+
+  public void setUpInventoryGrid(int height, int width) {
+    this.inventoryGrid = new Cell[width];
+    for (int i = 0; i < width; i++) {
+      this.inventoryGrid[i] = new Cell(i, height, this);
+    }
+
+    for (int i = 0; i < width; i++) {
+      if (i > 0) this.inventoryGrid[i].setAdjacentCell(Direction.LEFT, this.inventoryGrid[i - 1]);
+      if (i < width - 1)
+        this.inventoryGrid[i].setAdjacentCell(Direction.RIGHT, this.inventoryGrid[i + 1]);
+    }
   }
 
   protected void die() {
@@ -22,6 +36,8 @@ public class Player extends Entity {
 
   protected void addToInventory(Collectible object) {
     inventory.add(object);
+    if (inventoryGrid != null) object.moveTo(inventoryGrid[inventory.size() - 1]);
+    else object.removeFromCell(false);
   }
 
   protected Collectible getCollectibleOfTypeInInventory(Class<? extends Collectible> type) {
@@ -32,7 +48,14 @@ public class Player extends Entity {
   }
 
   protected void removeFromInventory(Collectible object) {
+    int idx = inventory.indexOf(object);
     inventory.remove(object);
+    if (inventoryGrid != null) {
+      object.removeFromCell(false);
+      for (int i = idx; i < inventory.size(); i++) {
+        inventory.get(i).moveTo(inventoryGrid[i]);
+      }
+    }
   }
 
   public void makeMove(int action) {

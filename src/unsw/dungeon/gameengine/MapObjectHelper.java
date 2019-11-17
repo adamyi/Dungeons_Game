@@ -61,6 +61,8 @@ public class MapObjectHelper {
     enabledMapObjectTypes.add(
         new MapObjectWrapper<Treasure>(Treasure.class, Treasure::new, "treasure", "treasure"));
     enabledMapObjectTypes.add(new MapObjectWrapper<Wall>(Wall.class, Wall::new, "wall", null));
+    enabledMapObjectTypes.add(
+        new MapObjectWrapper<Portal>(Portal.class, Portal::new, "portal", null));
   }
 
   public HashMap<String, Class<? extends MapObject>> getMapObjectStringToClass() {
