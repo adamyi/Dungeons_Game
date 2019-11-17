@@ -57,6 +57,7 @@ public class GameController {
   @FXML
   public void initialize() {
     Image ground = new Image(getClass().getResourceAsStream("/images/dirt_0_new.png"));
+    Image inventoryBox = new Image(getClass().getResourceAsStream("/images/inventory_box.png"));
 
     for (int x = 0; x < game.getWidth(); x++) {
       for (int y = 0; y < game.getHeight(); y++) {
@@ -66,6 +67,14 @@ public class GameController {
         g.setTranslateX(x * CELL_SIZE);
         g.setTranslateY(y * CELL_SIZE);
       }
+    }
+
+    for (int x = 0; x < game.getWidth(); x++) {
+      ImageView g = new ImageView(inventoryBox);
+      g.setViewOrder(Double.POSITIVE_INFINITY);
+      dungeonPane.getChildren().add(g);
+      g.setTranslateX(x * CELL_SIZE);
+      g.setTranslateY(game.getHeight() * CELL_SIZE);
     }
 
     game.setGameController(this);
@@ -201,7 +210,7 @@ public class GameController {
                   if (Potion.class.isInstance(mapObject)
                       && oldValue != null
                       && game.isLocalPlayer(oldValue.getPlayerOnly())
-                      && oldValue.getY() > game.getHeight()) {
+                      && oldValue.getY() >= game.getHeight()) {
                     invincibilityTotalDuration += SharedConstants.PLAYER_INVINCIBLE_DURATION;
                     invincibilityState.extendDeadline(SharedConstants.PLAYER_INVINCIBLE_DURATION);
                     invincibilityProgress.setVisible(true);

@@ -59,10 +59,10 @@ public class Game implements Observer {
   }
 
   public void setUpGrid(int height, int width) {
-    this.grid = new Cell[height + 2][width];
+    this.grid = new Cell[height + 1][width];
     this.height = height;
     this.width = width;
-    for (int i = 0; i < height + 2; i++) {
+    for (int i = 0; i < height + 1; i++) {
       for (int j = 0; j < width; j++) {
         this.grid[i][j] = new Cell(j, i);
       }
@@ -169,7 +169,7 @@ public class Game implements Observer {
   }
 
   public int getDisplayHeight() {
-    return this.height + 2;
+    return this.height + 1;
   }
 
   public int getWidth() {

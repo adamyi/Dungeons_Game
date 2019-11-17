@@ -160,7 +160,10 @@ public class Server implements Runnable, Observer {
           HashMap<Class<? extends MapObject>, MapObjectGroup> groups = game.getMapObjectGroups();
           for (MapObjectGroup group : groups.values()) {
             for (int i = 0; i < group.getNumberOfMapObjects(); i++) {
-              byte[] sendData = moveToData(group.getMapObject(i), group.getMapObject(i).getCell());
+              MapObject obj = group.getMapObject(i);
+              Cell c = obj.getCell();
+              if (c != null && c.getPlayerOnly() != null) c = null;
+              byte[] sendData = moveToData(obj, c);
               DatagramPacket sendPacket =
                   new DatagramPacket(sendData, sendData.length, IPAddress, port);
               serverSocket.send(sendPacket);

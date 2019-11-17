@@ -15,7 +15,7 @@ public class Player extends Entity {
   public void setUpInventoryGrid(int height, int width) {
     this.inventoryGrid = new Cell[width];
     for (int i = 0; i < width; i++) {
-      this.inventoryGrid[i] = new Cell(i, height + 1, this);
+      this.inventoryGrid[i] = new Cell(i, height, this);
     }
 
     for (int i = 0; i < width; i++) {
