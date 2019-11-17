@@ -483,6 +483,12 @@
       "type": "player"
     },
     {
+      "x": 5,
+      "y": 5,
+      "type": "enemy",
+      "strategy": "intimidating",
+    },
+    {
       "x": 2,
       "y": 2,
       "type": "portal",

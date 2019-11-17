@@ -9,10 +9,10 @@ import java.util.Queue;
 
 // different strategies to coordinate against player
 //
-public class EnemyDefaultStrategy implements EnemyStrategy {
+public class EnemyAStarStrategy implements EnemyStrategy {
   Enemy enemy;
 
-  protected EnemyDefaultStrategy(Enemy enemy) {
+  protected EnemyAStarStrategy(Enemy enemy) {
     this.enemy = enemy;
   }
 

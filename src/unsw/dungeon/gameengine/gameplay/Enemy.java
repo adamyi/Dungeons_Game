@@ -24,13 +24,16 @@ public class Enemy extends Entity implements AutonomousObject {
           this.strategy = new EnemySimpleStrategy(this);
           break;
         case "a_star":
-          this.strategy = new EnemyDefaultStrategy(this); // TODO: rename this to EnemyAStarStrategy
+          this.strategy = new EnemyAStarStrategy(this);
           break;
         case "still":
           this.strategy = new EnemyStillStrategy(this);
           break;
         case "random":
           this.strategy = new EnemyRandomStrategy(this);
+          break;
+        case "intimidating":
+          this.strategy = new EnemyIntimidatingStrategy(this);
           break;
       }
     }
