@@ -1,21 +1,15 @@
 package unsw.dungeon.gameengine.gameplay;
 
-import java.lang.Math;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.PriorityQueue;
 import java.util.Queue;
-import unsw.dungeon.gameengine.SharedConstants;
-import unsw.dungeon.gameengine.gameplay.Player;
-import unsw.dungeon.gameengine.gameplay.Enemy;
-import unsw.dungeon.gameengine.gameplay.Direction;
-import unsw.dungeon.gameengine.gameplay.Cell;
-import unsw.dungeon.utils.DirectionUtils;
+
 // different strategies to coordinate against player
-// 
-public class EnemyDefaultStrategy implements EnemyStrategy{
+//
+public class EnemyDefaultStrategy implements EnemyStrategy {
   Enemy enemy;
 
   protected EnemyDefaultStrategy(Enemy enemy) {
@@ -50,16 +44,17 @@ public class EnemyDefaultStrategy implements EnemyStrategy{
     }
   }
 
-  private static Comparator<Node> nodeComparator = new Comparator<Node>(){
-    @Override
-    public int compare(Node a, Node b) {
-      return a.getfScore() - b.getfScore();
-    }
-  };
+  private static Comparator<Node> nodeComparator =
+      new Comparator<Node>() {
+        @Override
+        public int compare(Node a, Node b) {
+          return a.getfScore() - b.getfScore();
+        }
+      };
 
   private int reconstructPath(HashMap<Cell, Cell> cameFrom, Cell current) {
     int distance = 0;
-    int direction = 
+    // int direction =
     while (current != null) {
       current = cameFrom.get(current);
       distance++;
@@ -70,10 +65,11 @@ public class EnemyDefaultStrategy implements EnemyStrategy{
   // find path to player cell
   private int aStartForPlayer(Cell start, Cell player) {
     HashMap<Cell, Cell> cameFrom = new HashMap<>();
-    PriorityQueue<Node> queue = new PriorityQueue<>(0, nodeComparator); // priority queue in order of fScore
+    PriorityQueue<Node> queue =
+        new PriorityQueue<>(0, nodeComparator); // priority queue in order of fScore
     HashMap<Cell, Integer> gScore = new HashMap<>();
     HashMap<Cell, Integer> fScore = new HashMap<>();
-    
+
     gScore.put(start, 0);
     fScore.put(start, h(start, player));
 
@@ -117,9 +113,9 @@ public class EnemyDefaultStrategy implements EnemyStrategy{
   }
 
   private int h(Cell start, Cell goal) {
-    double x = Math.pow((double)(start.getX()-goal.getX()), 2.0);
-    double y = Math.pow((double)(start.getY()-goal.getY()), 2.0);
-    return (int)Math.floor(Math.sqrt(x + y));
+    double x = Math.pow((double) (start.getX() - goal.getX()), 2.0);
+    double y = Math.pow((double) (start.getY() - goal.getY()), 2.0);
+    return (int) Math.floor(Math.sqrt(x + y));
   }
 
   private int d(Cell neighbour) {
@@ -136,7 +132,7 @@ public class EnemyDefaultStrategy implements EnemyStrategy{
       Node tup = queue.poll();
       Cell c = tup.getCell();
       Player p = (Player) c.getMapObjectOfType(Player.class);
-      if (p != null) {  // found player
+      if (p != null) { // found player
         return c;
       }
       for (int i = Direction.ITERATE_MIN; i <= Direction.ITERATE_MAX; i++) {
@@ -155,16 +151,13 @@ public class EnemyDefaultStrategy implements EnemyStrategy{
   }
 
   @Override
-  public void implementStrategy() {
+  public int getMove() {
     Cell player = playerBFS(this.enemy.getCell());
     if (player == null) {
-      return;
+      return Direction.UNKNOWN;
     }
 
-    this.enemy.moveTo(direction);
+    // return direction;
+    return Direction.UNKNOWN;
   }
-  /*
-  @Override
-  public void implementStrategy() {}
-  */
 }
