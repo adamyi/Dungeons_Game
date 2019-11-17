@@ -95,9 +95,13 @@ package "gameengine" <<Rectangle>> {
     setGameController(GameController)
     addMapObject(Class<? extends MapObject>, int, int, HashMap<String, Object>) : MapObject
     addMapObject(int, Class<? extends MapObject>, int, int, HashMap<String, Object>) : MapObject
+    isLocalPlayer(Player) : boolean
+    clonePlayer() : Player
     hasWon() : boolean
     getHeight() : int
     getWidth() : int
+    getDisplayHeight() : int
+    getDisplayWidth() : int
     makeMove(int)
     loop()
     gameOver(boolean)
@@ -105,7 +109,6 @@ package "gameengine" <<Rectangle>> {
     setSocket(DatagramSocket)
     playCLIVersion()
     printCLI()
-    update(Subject)
   }
 
   class "MapObjectHelper" {
@@ -151,15 +154,15 @@ package "gameengine" <<Rectangle>> {
       init(String)
       run()
     }
-    class "Server" implements Observer {
+    class "Server" {
       ip2players : HashMap<String, Player>
       game : Game
       serverSocket : DatagramSocket
       moveToData(MapObject, Cell): byte[]
       sendDataToClients(byte[])
+      sendDataToClient(String, byte[])
       moveTo(MapObject, Cell)
       gameOver(boolean)
-      update(Subject)
       run()
     }
   }
@@ -177,6 +180,7 @@ package "gameengine" <<Rectangle>> {
       adjacentCells : Cell[]
       x : int
       y : int
+      playerOnly : Player
       addMapObject(MapObject)
       canWalkInto(MapObject) : boolean
       getAdjacentCell(int) : Cell
@@ -188,6 +192,7 @@ package "gameengine" <<Rectangle>> {
       setAdjacentCell(int, Cell)
       getX() : int
       getY() : int
+      getPlayerOnly() : Player
     }
 
     abstract class "Collectible" {
@@ -221,10 +226,11 @@ package "gameengine" <<Rectangle>> {
       pair : Door
     }
 
-    abstract class "MapObject" {
+    abstract class "MapObject" implements Subject {
       states : HashMap<String, MapObjectState>
       cell : ObjectProperty<Cell>
       image : StringProperty
+      hue : DoubleProperty
       observers: List<Observer>
       id: Integer
       typeString : String
@@ -235,6 +241,8 @@ package "gameengine" <<Rectangle>> {
       setCell(Cell)
       getImage() : String
       setImage(String)
+      getHue() : Double
+      setHue(Double)
       getState(String) : MapObjectState
       initProperties(HashMap<String, Object>)
       moveTo(Cell)
@@ -260,6 +268,8 @@ package "gameengine" <<Rectangle>> {
       forever : Boolean
       deadline : LocalDateTime
       extendDeadline(int)
+      getRemainingSeconds() : int
+      getName() : String
     }
 
     note "An extensible API to facilitate State Pattern, which is used in Player, Switch, Boulder" as N3
@@ -280,6 +290,7 @@ package "gameengine" <<Rectangle>> {
       hasObjectInInventory(Collectible) : boolean
       makeMove(int)
       removeFromInventory(Collectible)
+      setUpInventoryGrid(int, int)
     }
 
     class "Portal" {
@@ -306,7 +317,7 @@ package "gameengine" <<Rectangle>> {
 }
 
 "AutonomousObject" <|.. "Enemy"
-"AutonomousObject" <|.right. "Exit"
+"AutonomousObject" <|.left. "Exit"
 "AutonomousObject" <|.. "FloorSwitch"
 "Cell" -down- "*" "MapObject"
 "Collectible" <|-right- "Key"
@@ -339,12 +350,15 @@ package "gameengine" <<Rectangle>> {
 "ObjectiveNode" <|-right- "LeafObjectiveNode"
 ' "ObjectiveNode" -- "MapObjectGroup"
 "Observer" <|.. "Game"
+"Observer" <|.. "MapObject"
+"Server" .right.|> "Observer"
+"Server" .right[hidden]. "MapObjectGroup"
 "Observer" -right- "Subject"
 "Pairable" <|.. "Door"
 "Pairable" <|.. "Key"
 "Pairable" <|-left- "Portal"
 ' "Player" -up- "Cell"
-"Player" -- "Server"
+"Player" -up- "Server"
 "Subject" <|.. "MapObjectGroup"
 "Terrain" <|-- "Boulder"
 "Terrain" <|-- "Door"
