@@ -2,6 +2,7 @@ package unsw.dungeon.gameengine;
 
 import java.net.DatagramSocket;
 import java.util.HashMap;
+import java.util.concurrent.ThreadLocalRandom;
 import javafx.application.Platform;
 import unsw.dungeon.gameengine.gameplay.*;
 import unsw.dungeon.gameengine.multiplayer.Client;
@@ -59,14 +60,15 @@ public class Game implements Observer {
   }
 
   public void setUpGrid(int height, int width) {
-    this.grid = new Cell[height][width];
+    this.grid = new Cell[height + 1][width];
     this.height = height;
     this.width = width;
-    for (int i = 0; i < height; i++) {
+    for (int i = 0; i < height + 1; i++) {
       for (int j = 0; j < width; j++) {
         this.grid[i][j] = new Cell(j, i);
       }
     }
+
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         if (i > 0) this.grid[i][j].setAdjacentCell(Direction.UP, this.grid[i - 1][j]);
@@ -121,6 +123,10 @@ public class Game implements Observer {
     if (server != null) {
       obj.attach(server);
     }
+    if (type == Player.class) {
+      ((Player) obj).setUpInventoryGrid(this.height, this.width);
+      obj.attach(this);
+    }
     return obj;
   }
 
@@ -134,7 +140,14 @@ public class Game implements Observer {
         (Player)
             this.addMapObject(
                 Player.class, localplayer.getCell().getY(), localplayer.getCell().getX(), null);
+    newplayer.setHue(ThreadLocalRandom.current().nextDouble(-1.0, 1.0));
     return newplayer;
+  }
+
+  public Boolean isLocalPlayer(Player player) {
+    if (player == null) return true;
+    Player localplayer = (Player) mapObjectGroups.get(Player.class).getMapObject();
+    return localplayer.getId() == player.getId();
   }
 
   public Cell getCell(int x, int y) {
@@ -157,7 +170,15 @@ public class Game implements Observer {
     return this.height;
   }
 
+  public int getDisplayHeight() {
+    return this.height + 1;
+  }
+
   public int getWidth() {
+    return this.width;
+  }
+
+  public int getDisplayWidth() {
     return this.width;
   }
 
@@ -244,9 +265,11 @@ public class Game implements Observer {
       if (mgr.getName().equals("player")) {
         gameOver(false);
       }
-    }
-    if (this.hasWon()) {
-      gameOver(true);
+      if (this.hasWon()) {
+        gameOver(true);
+      }
+    } else if (subject instanceof Player) {
+      Player p = (Player) subject;
     }
   }
 }

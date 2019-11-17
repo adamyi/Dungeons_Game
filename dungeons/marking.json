@@ -483,6 +483,18 @@
       "type": "player"
     },
     {
+      "x": 2,
+      "y": 2,
+      "type": "portal",
+      "id": 0
+    },
+    {
+      "x": 3,
+      "y": 3,
+      "type": "portal",
+      "id": 1
+    },
+    {
       "x": 4,
       "y": 4,
       "type": "switch"
@@ -505,6 +517,16 @@
     {
       "x": 5,
       "y": 13,
+      "type": "invincibility"
+    },
+    {
+      "x": 5,
+      "y": 14,
+      "type": "invincibility"
+    },
+    {
+      "x": 5,
+      "y": 15,
       "type": "invincibility"
     },
     {
@@ -562,6 +584,18 @@
       "x": 14,
       "y": 5,
       "type": "treasure"
+    },
+    {
+      "x": 14,
+      "y": 6,
+      "type": "portal",
+      "id": 0
+    },
+    {
+      "x": 16,
+      "y": 2,
+      "type": "portal",
+      "id": 1
     },
     {
       "x": 16,

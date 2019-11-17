@@ -46,8 +46,8 @@ public class MapSelectController {
       Scene scene =
           new Scene(
               root,
-              game.getWidth() * controller.CELL_SIZE,
-              game.getHeight() * controller.CELL_SIZE);
+              game.getDisplayWidth() * controller.CELL_SIZE,
+              game.getDisplayHeight() * controller.CELL_SIZE);
       scene.getRoot().requestFocus();
 
       stage.setScene(scene);

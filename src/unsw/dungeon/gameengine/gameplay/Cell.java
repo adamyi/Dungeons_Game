@@ -6,6 +6,7 @@ public class Cell {
   public static final int CLI_MODE_PRINT_LENGTH = 4;
   private ArrayList<MapObject> mapObjects;
   private Cell[] adjacentCells;
+  private Player playerOnly;
 
   private int x;
   private int y;
@@ -18,6 +19,15 @@ public class Cell {
     for (int i = 0; i < 4; i++) {
       adjacentCells[i] = null;
     }
+  }
+
+  public Cell(int x, int y, Player player) {
+    this(x, y);
+    this.playerOnly = player;
+  }
+
+  public Player getPlayerOnly() {
+    return playerOnly;
   }
 
   public void setAdjacentCell(int direction, Cell cell) {

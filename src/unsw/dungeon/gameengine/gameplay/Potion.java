@@ -8,7 +8,9 @@ public class Potion extends Collectible {
   }
 
   protected void use() {
-    this.getOwner().setState(SharedConstants.PLAYER_INVINCIBLE_STATE, 10);
+    this.getOwner()
+        .setState(
+            SharedConstants.PLAYER_INVINCIBLE_STATE, SharedConstants.PLAYER_INVINCIBLE_DURATION);
     this.getOwner().removeFromInventory(this);
   }
 
