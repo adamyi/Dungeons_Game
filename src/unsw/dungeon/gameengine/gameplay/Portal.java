@@ -1,6 +1,7 @@
 package unsw.dungeon.gameengine.gameplay;
 
 import unsw.dungeon.gameengine.SharedConstants;
+import unsw.dungeon.utils.DirectionUtils;
 
 public class Portal extends Terrain implements Pairable {
   private Portal pair;
@@ -9,12 +10,22 @@ public class Portal extends Terrain implements Pairable {
     super();
   }
 
-  private void movePlayer(Player player) {
+  private void movePlayer(Player player, int defaultDirection) {
     Cell portalAdjacentCell = null;
+    if (defaultDirection != Direction.UNKNOWN) {
+      portalAdjacentCell = pair.getCell().getAdjacentCell(defaultDirection);
+      if (portalAdjacentCell.canWalkInto(player)) {
+        player.setCell(pair.getCell());
+        player.moveTo(portalAdjacentCell);
+        return;
+      }
+    }
     for (int direction = Direction.ITERATE_MIN; direction <= Direction.ITERATE_MAX; direction++) {
       portalAdjacentCell = pair.getCell().getAdjacentCell(direction);
       if (portalAdjacentCell.canWalkInto(player)) {
+        player.setCell(pair.getCell());
         player.moveTo(portalAdjacentCell);
+        return;
       }
     }
   }
@@ -47,7 +58,7 @@ public class Portal extends Terrain implements Pairable {
 
   @Override
   protected void playerInteraction(Cell start, Player player) {
-    this.movePlayer(player);
+    this.movePlayer(player, DirectionUtils.getDirectionBetweenAdjacentCells(start, this.getCell()));
   }
 
   @Override

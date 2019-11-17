@@ -483,6 +483,18 @@
       "type": "player"
     },
     {
+      "x": 2,
+      "y": 2,
+      "type": "portal",
+      "id": 0
+    },
+    {
+      "x": 3,
+      "y": 3,
+      "type": "portal",
+      "id": 1
+    },
+    {
       "x": 4,
       "y": 4,
       "type": "switch"
@@ -562,6 +574,18 @@
       "x": 14,
       "y": 5,
       "type": "treasure"
+    },
+    {
+      "x": 14,
+      "y": 6,
+      "type": "portal",
+      "id": 0
+    },
+    {
+      "x": 16,
+      "y": 2,
+      "type": "portal",
+      "id": 1
     },
     {
       "x": 16,

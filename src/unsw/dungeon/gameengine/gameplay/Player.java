@@ -36,7 +36,8 @@ public class Player extends Entity {
 
   protected void addToInventory(Collectible object) {
     inventory.add(object);
-    object.moveTo(inventoryGrid[inventory.size() - 1]);
+    if (inventoryGrid != null) object.moveTo(inventoryGrid[inventory.size() - 1]);
+    else object.removeFromCell(false);
   }
 
   protected Collectible getCollectibleOfTypeInInventory(Class<? extends Collectible> type) {
@@ -49,9 +50,11 @@ public class Player extends Entity {
   protected void removeFromInventory(Collectible object) {
     int idx = inventory.indexOf(object);
     inventory.remove(object);
-    object.removeFromCell(false);
-    for (int i = idx; i < inventory.size(); i++) {
-      inventory.get(i).moveTo(inventoryGrid[i]);
+    if (inventoryGrid != null) {
+      object.removeFromCell(false);
+      for (int i = idx; i < inventory.size(); i++) {
+        inventory.get(i).moveTo(inventoryGrid[i]);
+      }
     }
   }
 
