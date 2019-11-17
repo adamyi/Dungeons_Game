@@ -553,6 +553,18 @@
       "type": "bomb"
     },
     {
+      "x": 12,
+      "y": 15,
+      "type": "enemy",
+      "strategy": "still"
+    },
+    {
+      "x": 13,
+      "y": 15,
+      "type": "enemy",
+      "strategy": "random"
+    },
+    {
       "x": 14,
       "y": 15,
       "type": "enemy"

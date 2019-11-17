@@ -1,5 +1,6 @@
 package unsw.dungeon.gameengine.gameplay;
 
+import java.util.HashMap;
 import unsw.dungeon.gameengine.SharedConstants;
 
 public class Enemy extends Entity implements AutonomousObject {
@@ -8,6 +9,31 @@ public class Enemy extends Entity implements AutonomousObject {
   public Enemy() {
     super();
     this.strategy = new EnemySimpleStrategy(this);
+  }
+
+  public void setEnemyStrategy(EnemyStrategy strategy) {
+    this.strategy = strategy;
+  }
+
+  @Override
+  public void initProperties(HashMap<String, Object> properties) {
+    if (properties.containsKey("strategy")) {
+      String strategyKey = (String) properties.get("strategy");
+      switch (strategyKey) {
+        case "simple":
+          this.strategy = new EnemySimpleStrategy(this);
+          break;
+        case "a_star":
+          this.strategy = new EnemyDefaultStrategy(this); // TODO: rename this to EnemyAStarStrategy
+          break;
+        case "still":
+          this.strategy = new EnemyStillStrategy(this);
+          break;
+        case "random":
+          this.strategy = new EnemyRandomStrategy(this);
+          break;
+      }
+    }
   }
 
   @Override
