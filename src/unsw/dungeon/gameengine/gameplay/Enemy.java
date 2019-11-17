@@ -17,6 +17,7 @@ public class Enemy extends Entity implements AutonomousObject {
 
   @Override
   public void initProperties(HashMap<String, Object> properties) {
+    if (properties == null) return;
     if (properties.containsKey("strategy")) {
       String strategyKey = (String) properties.get("strategy");
       switch (strategyKey) {
